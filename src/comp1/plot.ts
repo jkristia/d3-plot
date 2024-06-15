@@ -21,10 +21,16 @@ export interface IPlot {
     readonly plotArea: Rect;
 }
 
+export interface IPlotTypeOptions {
+    cssClasses?: string[]
+}
+
 export class PlotTypeBase {
     protected _plot: IPlot | null = null;
     protected _plotRoot: D3Selection<any> | null = null;
 
+    constructor(protected _options?: IPlotTypeOptions) {}
+    
     public get plotRoot(): D3Selection<any> | null {
         return this._plotRoot;
     }
@@ -32,8 +38,11 @@ export class PlotTypeBase {
         this._plot = plot;
     }
     public initializeLayout() {
-        this._plotRoot = d3.create('g')
-            .classed('jk-plot-base', true)
+        this._plotRoot = d3.create('svg:g')
+            .classed('plot-base', true)
+        if (this._options?.cssClasses) {
+            this._plotRoot.classed(this._options?.cssClasses.join(' '), true)
+        }
     }
     public updateLayout() {
     }
@@ -48,13 +57,15 @@ export class Frame extends PlotTypeBase {
             .append('rect')
     }
     public override updateLayout() {
-        const r = this._plot?.plotArea;
-        if (!r || !this._rect) {
+        const r = 4;
+        const area = this._plot?.plotArea;
+        if (!area || !this._rect) {
             return;
         }
         this._rect
-            .attr('x', r.left).attr('y', r.top)
-            .attr('width', r.width).attr('height', r.height)
+            .attr('x', area.left).attr('y', area.top)
+            .attr('rx', r).attr('ry', r)
+            .attr('width', area.width).attr('height', area.height)
     }
 }
 
@@ -64,6 +75,7 @@ export class Plot implements IPlot {
     private _margin = { left: 10, top: 10, right: 10, bottom: 10 };
     private _size: { width: number, height: number } = { width: 0, height: 0 };
     private _plots: PlotTypeBase[] = [];
+    private _initialized = false
 
     public get plotArea(): Rect {
         return {
@@ -78,7 +90,7 @@ export class Plot implements IPlot {
         private _rootElm?: HTMLElement,
         private _options?: IPlotOptions
     ) {
-        this._root = d3.create('svg');
+        this._root = d3.create('svg:svg');
         this._plots = _options?.plots || [];
         this._plots.forEach(p => p.setPlot(this));
         this.size({
@@ -89,10 +101,9 @@ export class Plot implements IPlot {
             d3.select(_rootElm).append(() => this._root.node())
         }
     }
-    hack = true
     public plot(): SVGSVGElement {
-        if (this.hack) {
-            this.hack = false;
+        if (!this._initialized) {
+            this._initialized = true;
             this.initializeLayout();
             this.updateLayout();
         }
@@ -110,7 +121,7 @@ export class Plot implements IPlot {
             .attr('width', this._size.width)
             .attr('height', this._size.height)
 
-        console.log('this plotarea ', this.plotArea)
+        console.log('this plotarea ', this.plotArea, this._size)
 
         this.updateLayout();
     }

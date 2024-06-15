@@ -10,13 +10,13 @@ import { Frame, Plot } from './plot';
 })
 export class Comp1Component implements OnInit, OnDestroy {
 	private _plot!: Plot
+	private _plotAnchorElm!: HTMLElement;
 	constructor(
 		private _elm: ElementRef
 	) {}
 
 	private onResize = (e: any) => {
-		const elm = this._elm.nativeElement as HTMLElement;
-		const size = elm.getBoundingClientRect();
+		const size = this._plotAnchorElm.getBoundingClientRect();
 		this._plot.size({
 			width: size.width,
 			height: size.height,
@@ -26,10 +26,10 @@ export class Comp1Component implements OnInit, OnDestroy {
 	}
 	ngOnInit(): void {
 		const elm = this._elm.nativeElement as HTMLElement;
-		const anchor = elm.querySelector('.d3-container') as HTMLElement
-		this._plot = new Plot(anchor, {
+		this._plotAnchorElm = elm.querySelector('.d3-container') as HTMLElement
+		this._plot = new Plot(this._plotAnchorElm, {
 			plots: [
-				new Frame(),
+				new Frame({ cssClasses: ['custom-b']}),
 			]
 		})
 		window.addEventListener('resize', this.onResize);

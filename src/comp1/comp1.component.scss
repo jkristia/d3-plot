@@ -4,3 +4,20 @@
     padding: 20px;
     background-color: rgba(64, 64, 92, 0.54);
 }
+.d3-container {
+    height: 100%;
+    width: 100%;
+}
+
+::ng-deep .d3-container {
+    .plot-base.plot-frame {
+        pointer-events: none;
+        fill: transparent;
+        fill: rgba(89, 89, 145, 0.54);
+        stroke: rgb(214, 214, 214);
+        // stroke-width: 1px;
+    }
+    .plot-base.plot-frame.custom-b {
+        fill: rgb(16, 16, 16);
+    }
+}
