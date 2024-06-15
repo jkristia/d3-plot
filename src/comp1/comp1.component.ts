@@ -1,5 +1,5 @@
 import { Component, ElementRef, OnDestroy, OnInit } from '@angular/core';
-import { Frame, Plot } from './plot';
+import { Frame, Plot, Rect } from './plot';
 
 @Component({
 	selector: 'comp1',
@@ -29,8 +29,9 @@ export class Comp1Component implements OnInit, OnDestroy {
 		this._plotAnchorElm = elm.querySelector('.d3-container') as HTMLElement
 		this._plot = new Plot(this._plotAnchorElm, {
 			plots: [
+				new Frame({ cssClasses: ['custom-a'] }),
 				new Frame({ cssClasses: ['custom-b'] })
-					.area(() => { return { left: 0, top: 0, width: 100, height: 100 } })
+					.area(() => { return new Rect({ left: 0, top: 0, width: 100, height: 100 }).inflate(-1) })
 				,
 			]
 		})

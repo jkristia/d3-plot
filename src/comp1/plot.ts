@@ -6,9 +6,29 @@ export interface Size {
     width: number;
     height: number;
 }
-export interface Rect extends Size {
+export class Rect {
     left: number;
     top: number;
+    width: number;
+    height: number;
+    constructor(r?: {
+        left: number,
+        top: number,
+        width: number,
+        height: number,
+    }) {
+        this.left = r?.left || 0;
+        this.top = r?.top || 0;
+        this.width = r?.width || 0;
+        this.height = r?.height || 0;
+    }
+    public inflate(amount: number): Rect {
+        this.left -= amount;
+        this.top -= amount;
+        this.width += amount * 2;
+        this.height += amount * 2;
+        return this;
+    }
 }
 
 export interface IPlotOptions {
@@ -35,8 +55,8 @@ export class PlotTypeBase {
     protected _plot: IPlot | null = null;
     protected _plotRoot: D3Selection<any> | null = null;
 
-    constructor(protected _options?: IPlotTypeOptions) {}
-    
+    constructor(protected _options?: IPlotTypeOptions) { }
+
     public get plotRoot(): D3Selection<any> | null {
         return this._plotRoot;
     }
@@ -111,12 +131,12 @@ export class Plot implements IPlot {
     private _initialized = false
 
     public get plotArea(): Rect {
-        return {
+        return new Rect({
             left: this._margin.left,
             top: this._margin.top,
             width: this._size.width - (this._margin.left + this._margin.right),
             height: this._size.height - (this._margin.top + this._margin.bottom),
-        }
+        })
     }
 
     constructor(
