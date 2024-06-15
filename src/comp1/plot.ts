@@ -55,6 +55,28 @@ export class Frame extends PlotTypeBase {
         super.initializeLayout();
         this._rect = this._plotRoot?.classed('plot-frame', true)
             .append('rect')
+            this.dummy()
+    }
+    dymmyY = 0;
+    shrink = true
+
+    private dummy() {
+        setTimeout(() => {
+            if (this.dymmyY > 0) {
+                this.shrink = true;
+            }
+            if (this.dymmyY < -100) {
+                this.shrink = false;
+            }
+            const step = 2
+            if (this.shrink) {
+                this.dymmyY -= step;
+            } else {
+                this.dymmyY += step;
+            }
+            this.updateLayout()
+            this.dummy();
+        }, 33);
     }
     public override updateLayout() {
         const r = 4;
@@ -63,9 +85,10 @@ export class Frame extends PlotTypeBase {
             return;
         }
         this._rect
-            .attr('x', area.left).attr('y', area.top)
+            .attr('x', area.left).attr('y', area.top - this.dymmyY)
             .attr('rx', r).attr('ry', r)
-            .attr('width', area.width).attr('height', area.height)
+            .attr('width', area.width + (this.dymmyY + 2))
+            .attr('height', area.height + (this.dymmyY + 2))
     }
 }
 
