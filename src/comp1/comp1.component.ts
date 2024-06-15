@@ -13,7 +13,7 @@ export class Comp1Component implements OnInit, OnDestroy {
 	private _plotAnchorElm!: HTMLElement;
 	constructor(
 		private _elm: ElementRef
-	) {}
+	) { }
 
 	private onResize = (e: any) => {
 		const size = this._plotAnchorElm.getBoundingClientRect();
@@ -29,7 +29,9 @@ export class Comp1Component implements OnInit, OnDestroy {
 		this._plotAnchorElm = elm.querySelector('.d3-container') as HTMLElement
 		this._plot = new Plot(this._plotAnchorElm, {
 			plots: [
-				new Frame({ cssClasses: ['custom-b']}),
+				new Frame({ cssClasses: ['custom-b'] })
+					.area(() => { return { left: 0, top: 0, width: 100, height: 100 } })
+				,
 			]
 		})
 		window.addEventListener('resize', this.onResize);

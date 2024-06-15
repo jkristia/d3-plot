@@ -25,6 +25,12 @@ export interface IPlotTypeOptions {
     cssClasses?: string[]
 }
 
+class Util {
+    static isFunction(f: any): boolean {
+        return typeof f === 'function';
+    }
+}
+
 export class PlotTypeBase {
     protected _plot: IPlot | null = null;
     protected _plotRoot: D3Selection<any> | null = null;
@@ -46,49 +52,53 @@ export class PlotTypeBase {
     }
     public updateLayout() {
     }
+
+
+    private _area?: Rect;
+    private _areaFn?: ValueFunc<Rect>;
+    public area(v: Rect | ValueFunc<Rect>): PlotTypeBase {
+        if (Util.isFunction(v)) {
+            this._areaFn = v as any;
+        }
+        return this;
+    }
+
+    protected getPlotArea(): Rect {
+        if (this._areaFn) {
+            return this._areaFn();
+        }
+        if (this._area) {
+            return this._area;
+        }
+        return this._plot!.plotArea;
+    }
 }
+
+export type ValueFunc<T> = () => T;
 
 export class Frame extends PlotTypeBase {
 
-    private _rect?: D3Selection
+    private _rect?: D3Selection;
+    public override area(v: Rect | ValueFunc<Rect>): Frame {
+        super.area(v)
+        return this;
+    }
     public override initializeLayout() {
         super.initializeLayout();
         this._rect = this._plotRoot?.classed('plot-frame', true)
             .append('rect')
-            this.dummy()
-    }
-    dymmyY = 0;
-    shrink = true
-
-    private dummy() {
-        setTimeout(() => {
-            if (this.dymmyY > 0) {
-                this.shrink = true;
-            }
-            if (this.dymmyY < -100) {
-                this.shrink = false;
-            }
-            const step = 2
-            if (this.shrink) {
-                this.dymmyY -= step;
-            } else {
-                this.dymmyY += step;
-            }
-            this.updateLayout()
-            this.dummy();
-        }, 33);
     }
     public override updateLayout() {
         const r = 4;
-        const area = this._plot?.plotArea;
+        const area = this.getPlotArea();
         if (!area || !this._rect) {
             return;
         }
         this._rect
-            .attr('x', area.left).attr('y', area.top - this.dymmyY)
+            .attr('x', area.left).attr('y', area.top)
             .attr('rx', r).attr('ry', r)
-            .attr('width', area.width + (this.dymmyY + 2))
-            .attr('height', area.height + (this.dymmyY + 2))
+            .attr('width', area.width)
+            .attr('height', area.height)
     }
 }
 
