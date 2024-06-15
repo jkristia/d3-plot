@@ -2,34 +2,104 @@ import * as d3 from 'd3';
 
 type D3Selection<T = any> = d3.Selection<any, T, null, undefined>;
 
+export interface Size {
+    width: number;
+    height: number;
+}
+export interface Rect extends Size {
+    left: number;
+    top: number;
+}
+
 export interface IPlotOptions {
     width?: number;
     height?: number;
-
+    plots?: PlotTypeBase[]
 }
 
+export interface IPlot {
+    readonly plotArea: Rect;
+}
 
-export class Plot {
+export class PlotTypeBase {
+    protected _plot: IPlot | null = null;
+    protected _plotRoot: D3Selection<any> | null = null;
+
+    public get plotRoot(): D3Selection<any> | null {
+        return this._plotRoot;
+    }
+    public setPlot(plot: IPlot) {
+        this._plot = plot;
+    }
+    public initializeLayout() {
+        this._plotRoot = d3.create('g')
+            .classed('jk-plot-base', true)
+    }
+    public updateLayout() {
+    }
+}
+
+export class Frame extends PlotTypeBase {
+
+    private _rect?: D3Selection
+    public override initializeLayout() {
+        super.initializeLayout();
+        this._rect = this._plotRoot?.classed('plot-frame', true)
+            .append('rect')
+    }
+    public override updateLayout() {
+        const r = this._plot?.plotArea;
+        if (!r || !this._rect) {
+            return;
+        }
+        this._rect
+            .attr('x', r.left).attr('y', r.top)
+            .attr('width', r.width).attr('height', r.height)
+    }
+}
+
+export class Plot implements IPlot {
 
     private _root!: D3Selection;
-    private _size: { width: number, height: number} = { width: 0, height: 0};
+    private _margin = { left: 10, top: 10, right: 10, bottom: 10 };
+    private _size: { width: number, height: number } = { width: 0, height: 0 };
+    private _plots: PlotTypeBase[] = [];
 
+    public get plotArea(): Rect {
+        return {
+            left: this._margin.left,
+            top: this._margin.top,
+            width: this._size.width - (this._margin.left + this._margin.right),
+            height: this._size.height - (this._margin.top + this._margin.bottom),
+        }
+    }
 
     constructor(
         private _rootElm?: HTMLElement,
         private _options?: IPlotOptions
     ) {
         this._root = d3.create('svg');
+        this._plots = _options?.plots || [];
+        this._plots.forEach(p => p.setPlot(this));
         this.size({
             width: _options?.width || 600,
             height: _options?.height || 400,
         })
+        if (_rootElm) {
+            d3.select(_rootElm).append(() => this._root.node())
+        }
     }
+    hack = true
     public plot(): SVGSVGElement {
+        if (this.hack) {
+            this.hack = false;
+            this.initializeLayout();
+            this.updateLayout();
+        }
         return this._root.node();
     }
 
-    public size(newSize: { width?: number, height?: number}) {
+    public size(newSize: { width?: number, height?: number }) {
         if (newSize.width !== undefined) {
             this._size.width = newSize.width;
         }
@@ -40,12 +110,22 @@ export class Plot {
             .attr('width', this._size.width)
             .attr('height', this._size.height)
 
+        console.log('this plotarea ', this.plotArea)
+
         this.updateLayout();
     }
 
     protected initializeLayout() {
+        this._plots.forEach(p => {
+            p.initializeLayout()
+            if (p.plotRoot) {
+                this._root.append(() => p.plotRoot!.node())
+            }
+        });
     }
     protected updateLayout() {
+        this._plots.forEach(p => {
+            p.updateLayout()
+        });
     }
-
 }
