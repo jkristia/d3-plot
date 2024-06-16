@@ -4,13 +4,13 @@ import { Rect, Util } from "../../plot/util";
 import { PlotTypeBase } from "../../plot/plot-types/plottype";
 
 export interface ILineData {
-    points: LinePoint[];   // null will break the line
+    points: (LinePoint | null)[];   // null will break the line
 }
 
 export class Line extends PlotTypeBase {
 
     private _path?: D3Selection;
-    private _points?: D3Selection<LinePoint>;
+    private _points?: D3Selection<LinePoint | null>;
 
     constructor(private _data: ILineData, options?: IPlotTypeOptions) {
         super(options)
@@ -29,19 +29,19 @@ export class Line extends PlotTypeBase {
             .data(this._data.points)
     }
 
-    private appendPoint(points: D3Selection<LinePoint>): D3Selection<LinePoint> {
+    private appendPoint(points: D3Selection<LinePoint | null>): D3Selection<LinePoint | null> {
         return points.append('circle')
             .classed('plot-point', true)
             .attr('r', 4)
-            .attr('cx', d => d?.x)
-            .attr('cy', d => d?.y)
+            .attr('cx', d => d?.x as any)
+            .attr('cy', d => d?.y as any)
     }
 
-    private yPoint(point: LinePoint, area: Rect): number {
-        return area.bottom - point?.y;
+    private yPoint(point: LinePoint | null, area: Rect): number {
+        return area.bottom - (point?.y || 0);
     }
-    private xPoint(point: LinePoint, area: Rect): number {
-        return area.left + point?.x;
+    private xPoint(point: LinePoint | null, area: Rect): number {
+        return area.left + (point?.x || 0);
     }
     public override updateLayout() {
         if (!this._path || !this._points) {
@@ -61,7 +61,7 @@ export class Line extends PlotTypeBase {
                 ,
             )
 
-        const line = d3.line<LinePoint>()
+        const line = d3.line<LinePoint | null>()
             .x((d) => this.xPoint(d, area))
             .y((d) => this.yPoint(d, area))
             // https://d3js.org/d3-shape/line#line_defined

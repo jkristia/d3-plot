@@ -15,7 +15,7 @@ class Data implements ILineData{
 		{ x: 250, y: 50},
 		{ x: 290, y: 5},
 		{ x: 300, y: 0},
-	] as any
+	]
 }
 
 
