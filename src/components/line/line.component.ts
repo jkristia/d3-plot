@@ -25,25 +25,38 @@ class Data implements ILineData {
 	}
 }
 
+type SET = LinePoint[];
 class JitterData implements ILineData {
     dataChanged = new Subject<void>;
-	points = [
-		{ x: 100, y: 120 },
-		{ x: 200, y: 120 },
-		null,
-		{ x: 100, y: 220 },
-		{ x: 200, y: 220 },
-	]
+	private _sets: SET[] = []
+	points: (LinePoint | null)[] = []
+
 	constructor() {
+		for (let setno of Util.range(2)) {
+			const set: LinePoint[] = []
+			this._sets.push(set);
+			for (let x of Util.range(50, 250, 2)) {
+				set.push({
+					x,
+					y: 0
+				})
+			}
+		}
+		this.points = [];
+		this._sets.forEach( s => {
+			s.forEach(p => this.points.push(p))
+			this.points.push(null)
+		})
 		this.pretendJitter()
 	}
 	private pretendJitter() {
+		const randomY = d3.randomInt(0, 20);
+		this._sets.forEach( (s,i) => {
+			s.forEach( sample => {
+				sample.y = 110 + (i * 40) + randomY()
+			})
+		})
 		setTimeout(() => {
-			const randomY = d3.randomInt(0, 10);
-			this.points[0]!.y = 120 + randomY();
-			this.points[1]!.y = 120 + randomY();
-			this.points[3]!.y = 220 + randomY();
-			this.points[4]!.y = 220 + randomY();
 			this.dataChanged.next();
 			this.pretendJitter();
 		}, 30);
@@ -58,7 +71,7 @@ class ManyLinesAndPoints implements ILineData {
 		const randomStartY = d3.randomInt(20, 300);
 		// const noOfLines = 200;
 		// const noOfSamples = 100;
-		const noOfLines = 3;
+		const noOfLines = 300;
 		const noOfSamples = 200;
 		for (let _ of Util.range(noOfLines)) {
 			const y = randomStartY();
@@ -98,7 +111,10 @@ export class LineComponent {
 				new Line(this._data3, { cssClasses: ['line-3'], showPoint: false }),
 				// keep the 2 lines at the same x-scale
 				new Line(this._data),
-				new Line(this._data2, { cssClasses: ['line-2'] }).getDomain(() => [0, this._data.max]),
+				new Line(this._data2, {
+					cssClasses: ['line-2'],
+					showPoint: false,
+				}).getDomain(() => [0, this._data.max]),
 			]
 		})
 	}
