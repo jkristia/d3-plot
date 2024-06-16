@@ -17,8 +17,8 @@ export class TransitionLineDemo extends PlotTypeBase {
     }
     private fillData() {
         const area = this.getPlotArea();
-        const randomX = d3.randomInt(0, area?.width);
-        const randomY = d3.randomInt(0, area.height);
+        const randomX = d3.randomInt(area.left, area.right);
+        const randomY = d3.randomInt(area.top, area.bottom);
         for (let i of Util.range(20)) {
             this.data.push({
                 x: randomX(),
@@ -30,12 +30,13 @@ export class TransitionLineDemo extends PlotTypeBase {
     private dummy() {
         const area = this.getPlotArea()
         setTimeout(() => {
-            const randomX = d3.randomInt(0, area?.width);
-            const randomY = d3.randomInt(0, area?.height);
+            const randomX = d3.randomInt(area.left, area.right);
+            const randomY = d3.randomInt(area.top, area.bottom);
             this.data.forEach(d => {
                 d.x = randomX()
                 d.y = randomY()
             })
+            // clamp a few lines to see boundary
             this.data[0].x = area.left
             this.data[0].y = area.top
             this.data[1].x = area.right

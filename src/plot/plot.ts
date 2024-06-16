@@ -21,7 +21,7 @@ export class Plot implements IPlot {
     }
 
     constructor(
-        private _rootElm?: HTMLElement,
+        private _rootElm?: HTMLElement | null,
         private _options?: IPlotOptions
     ) {
         this._root = d3.create('svg:svg');
@@ -34,6 +34,14 @@ export class Plot implements IPlot {
         if (_rootElm) {
             d3.select(_rootElm).append(() => this._root.node())
         }
+    }
+    public attach(rootElm: HTMLElement) {
+        if (this._rootElm) {
+            // remove existing nodes
+            this._rootElm.innerHTML = ''
+        }
+        this._rootElm = rootElm;
+        d3.select(rootElm).append(() => this._root.node())
     }
     public plot(): SVGSVGElement {
         if (!this._initialized) {
