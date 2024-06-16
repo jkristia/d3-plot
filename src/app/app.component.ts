@@ -1,13 +1,13 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { Comp1Component } from '../comp1/comp1.component';
+import { TransitionLineComponent } from '../components/transition-line/transition-line.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
   imports: [
     RouterOutlet,
-    Comp1Component,
+    TransitionLineComponent,
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
