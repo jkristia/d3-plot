@@ -15,7 +15,8 @@ export interface IPlot {
 }
 
 export interface IPlotTypeOptions {
-    cssClasses?: string[]
+    cssClasses?: string[];
+    showPoint?: boolean;
 }
 
 export type ValueFunc<T> = () => T;
