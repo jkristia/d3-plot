@@ -41,7 +41,7 @@ export class Plot implements IPlot {
             this._rootElm.innerHTML = ''
         }
         this._rootElm = rootElm;
-        d3.select(rootElm).append(() => this._root.node())
+        d3.select(rootElm).append(() => this.plot())
     }
     public plot(): SVGSVGElement {
         if (!this._initialized) {

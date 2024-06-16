@@ -23,6 +23,5 @@ export class Comp1Component {
 				new TransitionLineDemo({ cssClasses: ['custom-a'] }),
 			]
 		})
-
 	}
 }

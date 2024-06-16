@@ -1,6 +1,9 @@
 import { Component, ElementRef, Input, OnDestroy, OnInit } from '@angular/core';
 import { Plot } from '../plot';
 
+/*
+*	PlotBaseComponent is used for attached d3 plot to angular component and enable resizing of d3 plot
+*/
 @Component({
 	selector: 'plot-base',
 	standalone: true,
@@ -17,26 +20,23 @@ export class PlotBaseComponent implements OnInit, OnDestroy {
 	constructor(
 		private _elm: ElementRef
 	) { }
-
-	private onResize = (e: any) => {
-		const size = this._plotAnchorElm.getBoundingClientRect();
-		this.plot?.size({
-			width: size.width,
-			height: size.height,
-		})
-		console.log(this.plot?.plot())
-
-	}
 	ngOnInit(): void {
 		const elm = this._elm.nativeElement as HTMLElement;
 		this._plotAnchorElm = elm.querySelector('.d3-container') as HTMLElement
 		if (this.plot) {
-			this.plot.attach(this._plotAnchorElm)
+			this.plot.attach(this._plotAnchorElm);
 		}
 		window.addEventListener('resize', this.onResize);
 		this.onResize(null)
 	}
 	ngOnDestroy(): void {
 		window.removeEventListener('resize', this.onResize);
+	}
+	private onResize = (e: any) => {
+		const size = this._plotAnchorElm.getBoundingClientRect();
+		this.plot?.size({
+			width: size.width,
+			height: size.height,
+		})
 	}
 }
