@@ -32,9 +32,9 @@ export class Comp1Component implements OnInit, OnDestroy {
 		this._plot = new Plot(this._plotAnchorElm, {
 			plots: [
 				new Frame({ cssClasses: ['custom-a'] }),
-				new Frame({ cssClasses: ['custom-b'] })
-					.area(() => { return new Rect({ left: 0, top: 0, width: 100, height: 100 }).inflate(-1) })
-				,
+				// new Frame({ cssClasses: ['custom-b'] })
+				// 	.area(() => { return new Rect({ left: 0, top: 0, width: 100, height: 100 }).inflate(-1) })
+				// ,
 				new Line(),
 			]
 		})

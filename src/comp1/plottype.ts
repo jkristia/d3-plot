@@ -40,7 +40,7 @@ export class PlotTypeBase {
         if (this._area) {
             return this._area;
         }
-        return this._plot!.plotArea;
+        return this._plot?.plotArea || new Rect();
     }
 }
 
@@ -78,16 +78,16 @@ export class Line extends PlotTypeBase {
     private data: T[] = []
     private _path?: D3Selection;
     private _points?: D3Selection<T>;
+    private _delay = 1000;
 
     constructor(options?: IPlotTypeOptions) {
         super(options)
-        this.fillData();
-        this.dummy();
     }
     private fillData() {
-        const randomX = d3.randomInt(0, 600);
-        const randomY = d3.randomInt(0, 500);
-        for (let i of Util.range(1)) {
+        const rect = this.getPlotArea();
+        const randomX = d3.randomInt(0, rect?.width);
+        const randomY = d3.randomInt(0, rect.height);
+        for (let i of Util.range(20)) {
             this.data.push({
                 x: randomX(),
                 y: randomY()
@@ -96,28 +96,32 @@ export class Line extends PlotTypeBase {
     }
 
     private dummy() {
+        const rect = this.getPlotArea();
         setTimeout(() => {
-            const randomX = d3.randomInt(0, 600);
-            const randomY = d3.randomInt(0, 600);
+            const randomX = d3.randomInt(0, rect?.width);
+            const randomY = d3.randomInt(0, rect?.height);
             this.data.forEach(d => {
                 d.x = randomX()
                 d.y = randomY()
             })
-            this.data.push({
-                x: randomX(),
-                y: randomY(),
-            })
+            // if (this.data.length < 20) {
+            //     this.data.push({
+            //         x: randomX(),
+            //         y: randomY(),
+            //     })
+            // }
             this.dummy()
             this.updateLayout();
-        }, 1000);
+        }, this._delay);
     }
 
     public override initializeLayout() {
         super.initializeLayout();
+        this.fillData();
+        this.dummy();
         this._path = this._plotRoot?.classed('plot-line', true)
             .append('path')
             .attr('fill', 'none')
-
 
         // prepare the points, 
         // but points are created in update as the sample count might have changed
@@ -146,15 +150,15 @@ export class Line extends PlotTypeBase {
                 enter => this.appendPoint(enter),
                 // update remaining points
                 update => update.transition()
-                    .duration(1000)
+                    .duration(this._delay)
                     .attr('cx', d => d.x)
                     .attr('cy', d => d.y)
                 ,
             )
 
-        const rect = this.getPlotArea();
-        const maxY = 600; // d3.max(data, d => d.y);
-        this._plotRoot?.attr('transform', `translate(${rect.left}, ${rect.height - maxY!})`)
+        // const rect = this.getPlotArea();
+        // const maxY = 0;//600; // d3.max(data, d => d.y);
+        // this._plotRoot?.attr('transform', `translate(${rect.left}, ${rect.height - maxY!})`)
 
         const line = d3.line<T>()
             .x((d) => d.x)
@@ -163,7 +167,7 @@ export class Line extends PlotTypeBase {
 
         this._path
             .transition()
-            .duration(1000)
+            .duration(this._delay)
             .attr('d', line(this.data))
     }
 
