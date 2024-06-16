@@ -7,7 +7,7 @@ import { TransitionLineDemo } from './transition-line-demo';
 
 
 @Component({
-	selector: 'transition-line',
+	selector: 'transition-line-demo',
 	standalone: true,
 	imports: [
 		PlotBaseComponent		

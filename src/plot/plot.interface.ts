@@ -19,4 +19,4 @@ export interface IPlotTypeOptions {
 }
 
 export type ValueFunc<T> = () => T;
-
+export type LinePoint = { x: number, y: number };
