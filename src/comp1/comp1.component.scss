@@ -20,4 +20,13 @@
     .plot-base.plot-frame.custom-b {
         fill: rgb(16, 16, 16);
     }
+
+    .plot-base.plot-line {
+        stroke: #978cc9;
+    }
+    .plot-base.plot-line .plot-point {
+        fill: #6c6492;
+        stroke: #978cc9;
+    }
+
 }
