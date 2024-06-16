@@ -87,7 +87,7 @@ export class Line extends PlotTypeBase {
     private fillData() {
         const randomX = d3.randomInt(0, 600);
         const randomY = d3.randomInt(0, 500);
-        for (let i of Util.range(20)) {
+        for (let i of Util.range(1)) {
             this.data.push({
                 x: randomX(),
                 y: randomY()
@@ -103,10 +103,10 @@ export class Line extends PlotTypeBase {
                 d.x = randomX()
                 d.y = randomY()
             })
-            // this.data.push({
-            //     x: randomX(),
-            //     y: randomY(),
-            // })
+            this.data.push({
+                x: randomX(),
+                y: randomY(),
+            })
             this.dummy()
             this.updateLayout();
         }, 1000);
@@ -118,20 +118,40 @@ export class Line extends PlotTypeBase {
             .append('path')
             .attr('fill', 'none')
 
+
+        // prepare the points, 
+        // but points are created in update as the sample count might have changed
         this._points = this._plotRoot!
             .selectAll('.plot-point')
             .data(this.data)
-            .enter()
-            .append('circle')
+    }
+
+    private appendPoint(points: D3Selection<T>): D3Selection<T> {
+        return points.append('circle')
             .classed('plot-point', true)
             .attr('r', 4)
             .attr('cx', d => d.x)
             .attr('cy', d => d.y)
     }
+
     public override updateLayout() {
         if (!this._path || !this._points) {
             return
         }
+        this._points = this._plotRoot!
+            .selectAll('.plot-point')
+            .data(this.data)
+            .join(
+                // add new sample points
+                enter => this.appendPoint(enter),
+                // update remaining points
+                update => update.transition()
+                    .duration(1000)
+                    .attr('cx', d => d.x)
+                    .attr('cy', d => d.y)
+                ,
+            )
+
         const rect = this.getPlotArea();
         const maxY = 600; // d3.max(data, d => d.y);
         this._plotRoot?.attr('transform', `translate(${rect.left}, ${rect.height - maxY!})`)
@@ -140,11 +160,6 @@ export class Line extends PlotTypeBase {
             .x((d) => d.x)
             .y((d) => d.y)
             ;
-        this._points!
-            .transition()
-            .duration(1000)
-            .attr('cx', d => d.x)
-            .attr('cy', d => d.y)
 
         this._path
             .transition()
