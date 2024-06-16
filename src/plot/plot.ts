@@ -1,6 +1,7 @@
 import * as d3 from 'd3';
-import { IPlot, D3Selection, Rect, IPlotOptions } from "./plot.interface";
-import { PlotTypeBase } from "./plottype";
+import { IPlot, D3Selection, IPlotOptions } from "./plot.interface";
+import { PlotTypeBase } from "./plot-types/plottype";
+import { Rect } from './util';
 
 export class Plot implements IPlot {
 

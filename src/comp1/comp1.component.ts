@@ -1,7 +1,6 @@
 import { Component, ElementRef, OnDestroy, OnInit } from '@angular/core';
-import { Plot } from './plot';
-import { Rect } from './plot.interface';
-import { Frame, Line } from './plottype';
+import { Plot } from '../plot/plot';
+import { Frame, TransitionLineDemo } from '../plot/plot-types';
 
 @Component({
 	selector: 'comp1',
@@ -35,7 +34,7 @@ export class Comp1Component implements OnInit, OnDestroy {
 				// new Frame({ cssClasses: ['custom-b'] })
 				// 	.area(() => { return new Rect({ left: 0, top: 0, width: 100, height: 100 }).inflate(-1) })
 				// ,
-				new Line(),
+				new TransitionLineDemo(),
 			]
 		})
 		window.addEventListener('resize', this.onResize);

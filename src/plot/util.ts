@@ -1,17 +1,20 @@
-import * as d3 from 'd3';
-import { PlotTypeBase } from './plottype';
-
-export type D3Selection<T = any> = d3.Selection<any, T, null, undefined>;
 
 export interface Size {
     width: number;
     height: number;
 }
+
 export class Rect {
-    left: number;
-    top: number;
-    width: number;
-    height: number;
+    readonly left: number;
+    readonly top: number;
+    readonly width: number;
+    readonly height: number;
+    public get right(): number {
+        return this.left + this.width;
+    }
+    public get bottom(): number {
+        return this.top + this.height;
+    }
     constructor(r?: {
         left: number,
         top: number,
@@ -24,26 +27,14 @@ export class Rect {
         this.height = r?.height || 0;
     }
     public inflate(amount: number): Rect {
-        this.left -= amount;
-        this.top -= amount;
-        this.width += amount * 2;
-        this.height += amount * 2;
+        return new Rect({
+            left: this.left - amount,
+            top: this.top - amount,
+            width: this.width + amount * 2,
+            height: this.height + amount * 2,
+        })
         return this;
     }
-}
-
-export interface IPlotOptions {
-    width?: number;
-    height?: number;
-    plots?: PlotTypeBase[]
-}
-
-export interface IPlot {
-    readonly plotArea: Rect;
-}
-
-export interface IPlotTypeOptions {
-    cssClasses?: string[]
 }
 
 export class Util {
