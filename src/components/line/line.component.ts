@@ -86,6 +86,47 @@ class ManyLinesAndPoints implements ILineData {
 	}
 }
 
+class SinusData implements ILineData {
+    dataChanged = new Subject<void>;
+
+	points: (LinePoint | null)[] = []
+	startAngle = 5;
+	stepAngle = (Math.PI / 180) * 5;
+	noOfSamples = 500;
+	yOffset = 250;
+	amplitude = 50;
+	random = d3.randomInt(0, 10)
+	constructor() {
+			let angle = this.startAngle;
+			for (let x of Util.range(0, this.noOfSamples)) {
+				this.points.push({
+					x,
+					y: Math.sin(angle)
+				})
+				angle += this.stepAngle;
+			}
+			this.points.push(null)
+			this.pretendJitter()
+		}
+	private pretendJitter() {
+		let angle = this.startAngle;
+		this.startAngle += 0.1;
+		this.points.forEach(p => {
+			if (!p) {
+				return;
+			}
+			const noise = this.random() * 2
+			p.y = this.yOffset + Math.sin(angle) * this.amplitude + noise
+			angle += this.stepAngle;
+		})
+		this.dataChanged.next();
+		setTimeout(() => {
+			this.pretendJitter();
+		}, 30);
+	}
+
+
+}
 
 @Component({
 	selector: 'line-demo',
@@ -98,9 +139,10 @@ class ManyLinesAndPoints implements ILineData {
 })
 export class LineComponent {
 	public plot: Plot
-	_data = new Data();
-	_data2 = new JitterData();
-	_data3 = new ManyLinesAndPoints();
+	_lineData = new Data();
+	_jitterData = new JitterData();
+	_manyLinesData = new ManyLinesAndPoints();
+	_sinusData = new SinusData();
 	constructor(
 		private _elm: ElementRef
 	) {
@@ -108,13 +150,21 @@ export class LineComponent {
 		this.plot = new Plot(null, {
 			plots: [
 				new Frame(),
-				new Line(this._data3, { cssClasses: ['line-3'], showPoint: false }),
-				// keep the 2 lines at the same x-scale
-				new Line(this._data),
-				new Line(this._data2, {
+				// render many lines set in the background, first layer
+				new Line(this._manyLinesData, { cssClasses: ['line-3'], showPoint: false }),
+				// render discontinuous line jitter line at the same scale (using same domain)
+				new Line(this._lineData),
+				new Line(this._jitterData, {
 					cssClasses: ['line-2'],
 					showPoint: false,
-				}).getDomain(() => [0, this._data.max]),
+				})
+				.getDomain(() => [0, this._lineData.max]) // keep the 2 lines at the same x-scale
+				,
+				// render a noisy sinus slowly moving across the plot area
+				new Line(this._sinusData, {
+					cssClasses: ['line-4'],
+					showPoint: false,
+				})
 			]
 		})
 	}

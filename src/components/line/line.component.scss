@@ -13,5 +13,10 @@
                 stroke: rgba(136, 136, 136, 0.414);
             }
         }
+        &.line-4 {
+            path, circle {
+                stroke: rgba(26, 173, 241, 0.947);
+            }
+        }
     }
 }
