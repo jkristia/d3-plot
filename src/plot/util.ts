@@ -5,15 +5,21 @@ export interface Size {
 }
 
 export class Rect {
-    readonly left: number;
-    readonly top: number;
-    readonly width: number;
-    readonly height: number;
+    left: number;
+    top: number;
+    width: number;
+    height: number;
     public get right(): number {
         return this.left + this.width;
     }
+    public set right(rightValue: number) {
+        this.width = Math.max(0, rightValue - this.left);
+    }
     public get bottom(): number {
         return this.top + this.height;
+    }
+    public set bottom(bottomValue: number) {
+        this.height = Math.max(0, bottomValue - this.top);
     }
     constructor(r?: {
         left: number,
@@ -46,7 +52,7 @@ export class Util {
         let end = b!;
         step = step || 1;
         if (b === undefined) {
-            start = 0; 
+            start = 0;
             end = a;
         }
         while (start < end) {

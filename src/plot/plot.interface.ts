@@ -20,4 +20,12 @@ export interface IPlotTypeOptions {
 }
 
 export type ValueFunc<T> = () => T;
+export type ValueOrFunc = number | ValueFunc<number>;
 export type LinePoint = { x: number, y: number };
+
+export interface Areas {
+    labelTopHeight?: ValueOrFunc;
+    labelLeftWidth?: ValueOrFunc;
+    labelRightWidth?: ValueOrFunc;
+    labelBottomHeight?: ValueOrFunc;
+}

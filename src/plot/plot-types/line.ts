@@ -79,8 +79,8 @@ export class Line extends PlotTypeBase {
             .defined(d => d !== null) // allow for discontinuous line
             ;
 
-            console.log('JKJKJK', this._data.points)
-            console.log(line(this._data.points))
+            // console.log('JKJKJK', this._data.points)
+            // console.log(line(this._data.points))
         this._path
             .attr('d', line(this._data.points))
     }
