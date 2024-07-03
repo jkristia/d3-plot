@@ -23,8 +23,8 @@ export class PlotAreaComponent {
 			areas: {
 				topHeight: 20,
 				bottomHeight: 30,
-				leftWidth: 20,
-				rightWidth: 30,
+				leftWidth: 30,
+				rightWidth: 40,
 			},
 			plots: [
 				// test frame for label area

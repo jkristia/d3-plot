@@ -30,7 +30,7 @@ export class Frame extends PlotTypeBase {
         }
     }
     public override updateLayout() {
-        const r = 4;
+        const r = 0;
         const area = this.getPlotArea();
         if (!area || !this._rect) {
             return;
