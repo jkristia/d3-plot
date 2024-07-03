@@ -29,19 +29,19 @@ export class PlotAreaComponent {
 			plots: [
 				// test frame for label area
 				new Frame({ cssClasses: ['top-label'] })
-					.text('top area').area(() => this.plot?.topArea.inflate(-2)),
+					.text('top area').area(() => this.plot?.topArea.inflate(-1.5)),
 
 				new Frame({ cssClasses: ['bottom-label'] })
-					.text('bottom area').area(() => this.plot?.bottomArea.inflate(-2)),
+					.text('bottom area').area(() => this.plot?.bottomArea.inflate(-1.5)),
 
 				new Frame({ cssClasses: ['left-label'] })
-					.text('left area', { rotate: -90 }).area(() => this.plot?.leftArea.inflate(-2)),
+					.text('left area', { rotate: -90 }).area(() => this.plot?.leftArea.inflate(-1.5)),
 
 				new Frame({ cssClasses: ['right-label'] })
-					.text('right area', { rotate: 90 }).area(() => this.plot?.rightArea.inflate(-2)),
+					.text('right area', { rotate: 90 }).area(() => this.plot?.rightArea.inflate(-1.5)),
 
 				new Frame({ cssClasses: ['plot-area'] })
-					.text('plot area').area(() => this.plot?.plotArea.inflate(-2)),
+					.text('plot area').area(() => this.plot?.plotArea.inflate(-1.5)),
 			]
 		})
 	}
