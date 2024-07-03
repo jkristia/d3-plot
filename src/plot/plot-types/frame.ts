@@ -31,7 +31,7 @@ export class Frame extends PlotTypeBase {
     }
     public override updateLayout() {
         const r = 0;
-        const area = this.getPlotArea();
+        const area = this.getPlotArea()?.offset(); // render thinner line by offsetting 
         if (!area || !this._rect) {
             return;
         }

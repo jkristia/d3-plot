@@ -14,7 +14,9 @@ class Data implements ILineData {
 		{ x: 20, y: 2 },
 		{ x: 30, y: 5 },
 		{ x: 100, y: 100 },
-		{ x: 110, y: 90 },
+		{ x: 110, y: 100 },
+		{ x: 115, y: 90 },
+		{ x: 115, y: 140 },
 		{ x: 120, y: 190 },
 		null,
 		{ x: 140, y: 190 },
@@ -149,12 +151,11 @@ export class LineComponent {
 	constructor(
 		private _elm: ElementRef
 	) {
-
 		this.plot = new Plot(null, {
 			plots: [
-				new Frame().area(() => this.plot?.plotArea.inflate(-0.5)),
+				new Frame().area(() => this.plot?.plotArea),
 				// render many lines set in the background, first layer
-				new Line(this._manyLinesData, { cssClasses: ['line-3'], showPoint: false }),
+				// new Line(this._manyLinesData, { cssClasses: ['line-3'], showPoint: false }),
 				// render discontinuous line jitter line at the same scale (using same domain)
 				new Line(this._lineData),
 				new Line(this._jitterData, {

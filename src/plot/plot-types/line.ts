@@ -55,7 +55,7 @@ export class Line extends PlotTypeBase {
         if (!this._path) {
             return
         }
-        const area = this.getPlotArea();
+        const area = this.getPlotArea().offset();
         this.updateScales(area);
         if (this.showPoint) {
             this._points = this._plotRoot!

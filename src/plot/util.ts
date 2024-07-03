@@ -49,7 +49,14 @@ export class Rect {
             width: this.width + amount * 2,
             height: this.height + amount * 2,
         })
-        return this;
+    }
+    public offset(amount: number = 0.5): Rect {
+        return new Rect({
+            left: this.left + amount,
+            top: this.top - amount,
+            width: this.width,
+            height: this.height,
+        })
     }
 }
 
