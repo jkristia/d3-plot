@@ -3,6 +3,10 @@ export interface Size {
     width: number;
     height: number;
 }
+export interface Point {
+    x: number;
+    y: number;
+}
 
 export class Rect {
     left: number;
@@ -20,6 +24,12 @@ export class Rect {
     }
     public set bottom(bottomValue: number) {
         this.height = Math.max(0, bottomValue - this.top);
+    }
+    public get center(): Point {
+        return {
+            x: this.left + ((this.right - this.left) / 2),
+            y: this.top + ((this.bottom - this.top) / 2),
+        }
     }
     constructor(r?: {
         left: number,

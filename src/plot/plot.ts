@@ -13,114 +13,36 @@ export class Plot implements IPlot {
     private _plots: PlotTypeBase[] = [];
     private _initialized = false;
     private _areas: Areas = {
-        labelTopHeight: 20,
-        labelLeftWidth: 20,
-        labelRightWidth: 20,
-        labelBottomHeight: 20,
+        topHeight: 0,
+        leftWidth: 0,
+        rightWidth: 0,
+        bottomHeight: 0,
     }
 
     private _fullArea: Rect = new Rect();
-    private _topLabelArea: Rect = new Rect();
-    private _bottomLabelArea: Rect = new Rect();
-    private _leftLabelArea: Rect = new Rect();
-    private _rightLabelArea: Rect = new Rect();
+    private _topArea: Rect = new Rect();
+    private _bottomArea: Rect = new Rect();
+    private _leftArea: Rect = new Rect();
+    private _rightArea: Rect = new Rect();
     private _plotArea: Rect = new Rect();
 
     public get fullArea(): Rect {
         return this._fullArea;
     }
-    public get topLabelArea(): Rect {
-        return this._topLabelArea;
+    public get topArea(): Rect {
+        return this._topArea;
     }
-    public get bottomLabelArea(): Rect {
-        return this._bottomLabelArea;
+    public get bottomArea(): Rect {
+        return this._bottomArea;
     }
-    public get leftLabelArea(): Rect {
-        return this._leftLabelArea;
+    public get leftArea(): Rect {
+        return this._leftArea;
     }
-    public get rightLabelArea(): Rect {
-        return this._rightLabelArea;
+    public get rightArea(): Rect {
+        return this._rightArea;
     }
     public get plotArea(): Rect {
         return this._plotArea;
-    }
-    
-    private calcFullArea(): Rect {
-        return new Rect({
-            left: this._margin.left,
-            top: this._margin.top,
-            width: this._size.width - (this._margin.left + this._margin.right),
-            height: this._size.height - (this._margin.top + this._margin.bottom),
-        })
-    }
-    private calcTopLabelArea(): Rect {
-        const rect = this.calcFullArea();
-        const a = this._areas;
-        if (a.labelTopHeight !== undefined) {
-            if (Util.isFunction(a.labelTopHeight)) {
-                const f = a.labelTopHeight as ValueFunc<number>;
-                rect.height = f()
-            } else {
-                rect.height = a.labelTopHeight as number;
-            }
-        }
-        return rect;
-    }
-    private calcBottomLabelArea(): Rect {
-        const rect = this.calcFullArea();
-        const a = this._areas;
-        if (a.labelBottomHeight !== undefined) {
-            if (Util.isFunction(a.labelBottomHeight)) {
-                const f = a.labelBottomHeight as ValueFunc<number>;
-                rect.top = rect.bottom - f()
-            } else {
-                rect.top = rect.bottom - (a.labelBottomHeight as number);
-            }
-        }
-        return rect;
-    }
-    private calcLeftLabelArea(): Rect {
-        const rect = this.calcFullArea();
-        const a = this._areas;
-        if (a.labelLeftWidth !== undefined) {
-            if (Util.isFunction(a.labelLeftWidth)) {
-                const f = a.labelLeftWidth as ValueFunc<number>;
-                rect.width = f()
-            } else {
-                rect.width = a.labelLeftWidth as number;
-            }
-        }
-        return rect;
-    }
-    private calcRightLabelArea(): Rect {
-        const rect = this.calcFullArea();
-        const a = this._areas;
-        if (a.labelRightWidth !== undefined) {
-            if (Util.isFunction(a.labelRightWidth)) {
-                const f = a.labelRightWidth as ValueFunc<number>;
-                rect.left = rect.right - f();
-                rect.width = rect.right - f();
-            } else {
-                rect.left = rect.right - (a.labelRightWidth as number)
-                rect.right = rect.left + (a.labelRightWidth as number);
-            }
-        }
-        return rect;
-    }
-
-    public calculateAreas() {
-        console.log('calculateAreas')
-        this._fullArea = this.calcFullArea();
-        this._topLabelArea = this.calcTopLabelArea();
-        this._bottomLabelArea = this.calcBottomLabelArea();
-        this._leftLabelArea = this.calcLeftLabelArea();
-        this._rightLabelArea = this.calcRightLabelArea();
-        const r = new Rect()
-        r.left = this.leftLabelArea.right;
-        r.right = this.rightLabelArea.left;
-        r.top =this.topLabelArea.bottom;
-        r.bottom = this.bottomLabelArea.top;
-        this._plotArea = r;
     }
 
     constructor(
@@ -137,6 +59,7 @@ export class Plot implements IPlot {
         if (_rootElm) {
             d3.select(_rootElm).append(() => this._root.node())
         }
+        this._areas = _options?.areas || this._areas;
     }
     public attach(rootElm: HTMLElement) {
         if (this._rootElm) {
@@ -167,7 +90,6 @@ export class Plot implements IPlot {
             .attr('height', this._size.height)
 
         this.calculateAreas()
-        console.log('this plotarea ', this.plotArea, this._size)
         this.updateLayout();
     }
 
@@ -183,5 +105,90 @@ export class Plot implements IPlot {
         this._plots.forEach(p => {
             p.updateLayout()
         });
+    }
+    protected calculateAreas() {
+        this._fullArea = this.calcFullArea();
+        this._topArea = this.calcTopLabelArea();
+        this._bottomArea = this.calcBottomLabelArea();
+        this._leftArea = this.calcLeftLabelArea();
+        this._rightArea = this.calcRightLabelArea();
+        const r = new Rect()
+        r.left = this.leftArea.right;
+        r.right = this.rightArea.left;
+        r.top =this.topArea.bottom;
+        r.bottom = this.bottomArea.top;
+        this._plotArea = r;
+    }
+    private calcFullArea(): Rect {
+        return new Rect({
+            left: this._margin.left,
+            top: this._margin.top,
+            width: this._size.width - (this._margin.left + this._margin.right),
+            height: this._size.height - (this._margin.top + this._margin.bottom),
+        })
+    }
+    private calcTopLabelArea(): Rect {
+        const rect = this.calcFullArea();
+        const a = this._areas;
+        a.topHeight = a.topHeight || 0;
+        if (a.topHeight !== undefined) {
+            if (Util.isFunction(a.topHeight)) {
+                const f = a.topHeight as ValueFunc<number>;
+                rect.height = f()
+            } else {
+                rect.height = a.topHeight as number;
+            }
+        }
+        return rect;
+    }
+    private calcBottomLabelArea(): Rect {
+        const rect = this.calcFullArea();
+        const a = this._areas;
+        a.bottomHeight = a.bottomHeight || 0;
+        if (a.bottomHeight !== undefined) {
+            if (Util.isFunction(a.bottomHeight)) {
+                const f = a.bottomHeight as ValueFunc<number>;
+                rect.top = rect.bottom - f()
+                rect.height = f();
+            } else {
+                rect.top = rect.bottom - (a.bottomHeight as number);
+                rect.height = (a.bottomHeight as number);
+            }
+        }
+        return rect;
+    }
+    private calcLeftLabelArea(): Rect {
+        const rect = this.calcFullArea();
+        const a = this._areas;
+        a.leftWidth = a.leftWidth || 0;
+        if (a.leftWidth !== undefined) {
+            rect.top = this._topArea.bottom;
+            rect.bottom = this._bottomArea.top;
+            if (Util.isFunction(a.leftWidth)) {
+                const f = a.leftWidth as ValueFunc<number>;
+                rect.width = f()
+            } else {
+                rect.width = a.leftWidth as number;
+            }
+        }
+        return rect;
+    }
+    private calcRightLabelArea(): Rect {
+        const rect = this.calcFullArea();
+        const a = this._areas;
+        a.rightWidth = a.rightWidth || 0;
+        if (a.rightWidth !== undefined) {
+            rect.top = this._topArea.bottom;
+            rect.bottom = this._bottomArea.top;
+            if (Util.isFunction(a.rightWidth)) {
+                const f = a.rightWidth as ValueFunc<number>;
+                rect.left = rect.right - f();
+                rect.width = rect.right - f();
+            } else {
+                rect.left = rect.right - (a.rightWidth as number)
+                rect.right = rect.left + (a.rightWidth as number);
+            }
+        }
+        return rect;
     }
 }

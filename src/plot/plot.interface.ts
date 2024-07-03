@@ -7,6 +7,7 @@ export type D3Selection<T = any> = d3.Selection<any, T, null, undefined>;
 export interface IPlotOptions {
     width?: number;
     height?: number;
+    areas?: Areas;
     plots?: PlotTypeBase[]
 }
 
@@ -24,8 +25,8 @@ export type ValueOrFunc = number | ValueFunc<number>;
 export type LinePoint = { x: number, y: number };
 
 export interface Areas {
-    labelTopHeight?: ValueOrFunc;
-    labelLeftWidth?: ValueOrFunc;
-    labelRightWidth?: ValueOrFunc;
-    labelBottomHeight?: ValueOrFunc;
+    topHeight?: ValueOrFunc;
+    leftWidth?: ValueOrFunc;
+    rightWidth?: ValueOrFunc;
+    bottomHeight?: ValueOrFunc;
 }

@@ -28,6 +28,9 @@ export class PlotBaseComponent implements OnInit, OnDestroy {
 		}
 		window.addEventListener('resize', this.onResize);
 		this.onResize(null)
+		setTimeout(() => {
+			this.onResize(null)
+		});
 	}
 	ngOnDestroy(): void {
 		window.removeEventListener('resize', this.onResize);

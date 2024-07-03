@@ -7,6 +7,7 @@
     height: 100%;
     padding: 10px;
     background-color: #343537;
+    overflow: auto;
 }
 .content {
     width: 100%;
@@ -19,6 +20,10 @@
     }
     .demo2 {
         height: 400px;
+        width: 100%;
+    }
+    .demo3 {
+        height: 300px;
         width: 100%;
     }
 }
