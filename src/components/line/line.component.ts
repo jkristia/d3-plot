@@ -102,25 +102,39 @@ class SinusData implements ILineData {
 	amplitude = 50;
 	random = d3.randomInt(0, 10)
 	constructor() {
-			let angle = this.startAngle;
-			for (let x of Util.range(0, this.noOfSamples)) {
-				this.points.push({
-					x,
-					y: Math.sin(angle)
-				})
-				angle += this.stepAngle;
-			}
-			this.points.push(null)
+			// let angle = this.startAngle;
+			// for (let x of Util.range(0, this.noOfSamples)) {
+			// 	this.points.push({
+			// 		x,
+			// 		y: Math.sin(angle)
+			// 	})
+			// 	angle += this.stepAngle;
+			// }
+			// this.points.push(null)
 			this.pretendJitter()
 		}
 	private pretendJitter() {
+		if (this.points.length >= this.noOfSamples) {
+			// start 'scrolling' once all samples have been added
+			this.startAngle += 0.2;
+		}
 		let angle = this.startAngle;
-		this.startAngle += 0.1;
+		const notoadd = 20;
+		// grow the line until max samples are added
+		if (this.points.length < this.noOfSamples) {
+			const x = this.points.length;
+			for (let i = 0; i < notoadd; i++) {
+				this.points.push({
+					x: x + i,
+					y: 0
+				})
+			}
+		}
 		this.points.forEach(p => {
 			if (!p) {
 				return;
 			}
-			const noise = this.random() * 2
+			const noise = this.random() * 1;
 			p.y = this.yOffset + Math.sin(angle) * this.amplitude + noise
 			angle += this.stepAngle;
 		})
@@ -169,6 +183,7 @@ export class LineComponent {
 					cssClasses: ['line-4'],
 					showPoint: false,
 				})
+				.getDomain(() => [0, this._sinusData.noOfSamples]) // set domain to full width
 			]
 		})
 	}
