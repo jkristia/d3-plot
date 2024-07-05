@@ -166,7 +166,18 @@ export class LineComponent {
 		private _elm: ElementRef
 	) {
 		this.plot = new Plot(null, {
+			areas: {
+				topHeight: 20,
+				leftWidth: 30,
+				rightWidth: 5,
+				bottomHeight: 5,
+			},
 			plots: [
+				// left label
+				new Frame({ cssClasses: ['left-label'] })
+					.text('Random Noise', { rotate: -90 }).area(() => this.plot?.leftArea),
+
+				// plots
 				new Frame().area(() => this.plot?.plotArea),
 				// render many lines set in the background, first layer
 				// new Line(this._manyLinesData, { cssClasses: ['line-3'], showPoint: false }),

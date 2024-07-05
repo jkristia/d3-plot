@@ -12,6 +12,11 @@ export interface IPlotOptions {
 }
 
 export interface IPlot {
+    readonly fullArea: Rect;
+    readonly topArea: Rect;
+    readonly bottomArea: Rect;
+    readonly leftArea: Rect;
+    readonly rightArea: Rect;
     readonly plotArea: Rect;
 }
 

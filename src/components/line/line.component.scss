@@ -1,3 +1,5 @@
+$line-color: rgba(26, 173, 241, 0.947);
+
 .container {
     width: 100%;
     height: 100%;
@@ -15,8 +17,15 @@
         }
         &.line-4 {
             path, circle {
-                stroke: rgba(26, 173, 241, 0.947);
+                stroke: $line-color;
             }
+        }
+    }
+    ::ng-deep .plot-base.plot-frame.left-label {
+        stroke: transparent;
+        fill: transparent;
+        text {
+            fill: $line-color;
         }
     }
 }
