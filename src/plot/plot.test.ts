@@ -1,12 +1,6 @@
 import { Plot } from "./plot"
 
 describe('plot areas', () => {
-	// let plot: Plot;
-	// beforeEach(() => {
-	// 	plot = new Plot(null, {
-	// 		areas: { topHeight: 15, leftWidth: 25, rightWidth: 35, bottomHeight: 45, }
-	// 	})
-	// })
 	it('areas', () => {
 		const plot = new Plot(null, {
 			areas: { topHeight: 15, leftWidth: 25, rightWidth: 35, bottomHeight: 45, }
