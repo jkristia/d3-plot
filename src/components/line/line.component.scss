@@ -21,10 +21,16 @@ $line-color: rgba(26, 173, 241, 0.947);
             }
         }
     }
-    ::ng-deep .plot-base.plot-frame.left-label {
-        stroke: transparent;
-        fill: transparent;
-        text {
+    ::ng-deep .plot-base {
+        &.left-label {
+            fill: $line-color;
+        }
+        &.title {
+            font-size: 16px;
+            fill: $line-color;
+        }
+        &.footnote {
+            font-size: 10px;
             fill: $line-color;
         }
     }

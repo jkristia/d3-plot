@@ -1,7 +1,7 @@
 import * as d3 from 'd3';
 import { Component, ElementRef, OnDestroy, OnInit } from '@angular/core';
 import { Plot } from '../../plot/plot';
-import { Frame, ILineData, Line } from '../../plot/plot-types';
+import { Frame, ILineData, Line, Text } from '../../plot/plot-types';
 import { PlotBaseComponent } from '../../plot/plot-component/plot.component';
 import { Subject } from 'rxjs';
 import { Util } from '../../plot/util';
@@ -170,12 +170,20 @@ export class LineComponent {
 				topHeight: 20,
 				leftWidth: 30,
 				rightWidth: 5,
-				bottomHeight: 5,
+				bottomHeight: 15,
 			},
 			plots: [
+				// title
+				new Text({ text: 'Multiple Lines', cssClasses: ['title'] }).area(() => this.plot?.topArea),
 				// left label
-				new Frame({ cssClasses: ['left-label'] })
-					.text('Random Noise', { rotate: -90 }).area(() => this.plot?.leftArea),
+				new Text({ text: 'Random Noise', rotate: -90, cssClasses: ['left-label'] }).area(() => this.plot?.leftArea),
+				// bottom label
+				new Text({
+					text: '**footnote',
+					position: 'right',
+					offset: { x: -10, y: 4},
+					cssClasses: ['footnote']
+				}).area(() => this.plot?.bottomArea),
 
 				// plots
 				new Frame().area(() => this.plot?.plotArea),
