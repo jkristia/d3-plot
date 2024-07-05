@@ -1,7 +1,8 @@
 import * as d3 from 'd3';
 import { IPlot, D3Selection, IPlotOptions, Areas, ValueFunc } from "./plot.interface";
 import { PlotTypeBase } from "./plot-types/plottype";
-import { Rect, Util } from './util';
+import { Util } from './util';
+import { Rect } from "./rect";
 
 
 

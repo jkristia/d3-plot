@@ -1,6 +1,7 @@
 import * as d3 from "d3";
 import { D3Selection, IPlotTypeOptions, LinePoint } from "../../plot/plot.interface";
-import { Rect, Util } from "../../plot/util";
+import { Util } from "../../plot/util";
+import { Rect } from "../rect";
 import { PlotTypeBase } from "../../plot/plot-types/plottype";
 import { Subject } from "rxjs";
 

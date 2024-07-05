@@ -1,6 +1,6 @@
 import * as d3 from 'd3';
 import { PlotTypeBase } from './plot-types/plottype';
-import { Rect } from './util';
+import { Rect } from "./rect";
 
 export type D3Selection<T = any> = d3.Selection<any, T, null, undefined>;
 
