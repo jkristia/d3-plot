@@ -9,6 +9,12 @@
     "test": "jest --watch"
   },
   "private": true,
+  "jest": {
+    "testEnvironment": "jsdom",
+    "moduleNameMapper": {
+      "d3": "<rootDir>/node_modules/d3/dist/d3.min.js"
+    }
+  },
   "dependencies": {
     "@angular/animations": "^18.0.0",
     "@angular/common": "^18.0.0",
@@ -34,6 +40,7 @@
     "@types/jest": "^29.5.12",
     "babel-jest": "^29.7.0",
     "jest": "^29.7.0",
+    "jest-environment-jsdom": "^29.7.0",
     "jest-preset-angular": "^14.1.1"
   }
 }
