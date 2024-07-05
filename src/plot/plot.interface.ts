@@ -7,6 +7,7 @@ export type D3Selection<T = any> = d3.Selection<any, T, null, undefined>;
 export interface IPlotOptions {
     width?: number;
     height?: number;
+    margin?: Margin;
     areas?: Areas;
     plots?: PlotTypeBase[]
 }
@@ -34,4 +35,10 @@ export interface Areas {
     leftWidth?: ValueOrFunc;
     rightWidth?: ValueOrFunc;
     bottomHeight?: ValueOrFunc;
+}
+export interface Margin {
+    left: number;
+    top: number;
+    right: number;
+    bottom: number;
 }

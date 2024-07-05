@@ -1,5 +1,5 @@
 import * as d3 from 'd3';
-import { IPlot, D3Selection, IPlotOptions, Areas, ValueFunc } from "./plot.interface";
+import { IPlot, D3Selection, IPlotOptions, Areas, ValueFunc, Margin } from "./plot.interface";
 import { PlotTypeBase } from "./plot-types/plottype";
 import { Util } from './util';
 import { Rect } from "./rect";
@@ -9,7 +9,7 @@ import { Rect } from "./rect";
 export class Plot implements IPlot {
 
     private _root!: D3Selection;
-    private _margin = { left: 0, top: 0, right: 0, bottom: 0 };
+    private _margin: Margin = { left: 0, top: 0, right: 0, bottom: 0 };
     private _size: { width: number, height: number } = { width: 0, height: 0 };
     private _plots: PlotTypeBase[] = [];
     private _initialized = false;
@@ -61,6 +61,7 @@ export class Plot implements IPlot {
             d3.select(_rootElm).append(() => this._root.node())
         }
         this._areas = _options?.areas || this._areas;
+        this._margin = _options?.margin || this._margin;
     }
     public attach(rootElm: HTMLElement) {
         if (this._rootElm) {

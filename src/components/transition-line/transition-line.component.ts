@@ -21,6 +21,7 @@ export class TransitionLineComponent {
 		private _elm: ElementRef
 	) {
 		this.plot = new Plot(null, {
+			margin: { left: 5, top: 5, right: 5, bottom: 5},
 			plots: [
 				new Frame(),
 				new TransitionLineDemo({ cssClasses: ['custom-a'] }),
