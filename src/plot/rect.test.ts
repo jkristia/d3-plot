@@ -34,6 +34,12 @@ test('rect inflate', () => {
 	expect(r.height).toBe(192);
 	expect(r.bottom).toBe(202);
 	expect(r.center).toEqual({ x: 55, y: 106 })
+	expect(r.rect).toEqual({
+		left: 9,
+		top: 10,
+		right: 101,
+		bottom: 202
+	})
 })
 test('rect offset', () => {
 	let original = new Rect({ top: 6, left: 5, width: 100, height: 200 });
@@ -46,5 +52,12 @@ test('rect offset', () => {
 	expect(r.height).toBe(200);
 	expect(r.bottom).toBe(205.5);
 	expect(r.center).toEqual({ x: 55.5, y: 105.5 })
-
+})
+test('rect set-right', () => {
+	let r = new Rect({ top: 6, left: 5, width: 100, height: 200 });
+	expect(r.rect).toEqual({ left: 5, top: 6, right: 105, bottom: 206 })
+	expect(r.width).toBe(100)
+	r.right = 90
+	expect(r.rect).toEqual({ left: 5, top: 6, right: 90, bottom: 206 })
+	expect(r.width).toBe(85)
 })

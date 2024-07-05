@@ -30,6 +30,14 @@ export class Rect {
             y: this.top + ((this.bottom - this.top) / 2),
         };
     }
+    public get rect(): { left: number, top: number, right: number, bottom: number} {
+        return {
+            left: this.left,
+            top: this.top,
+            right: this.right,
+            bottom: this.bottom
+        }
+    }
     constructor(r?: {
         left: number;
         top: number;

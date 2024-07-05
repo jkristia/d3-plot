@@ -9,7 +9,7 @@ import { Rect } from "./rect";
 export class Plot implements IPlot {
 
     private _root!: D3Selection;
-    private _margin = { left: 10, top: 10, right: 10, bottom: 10 };
+    private _margin = { left: 0, top: 0, right: 0, bottom: 0 };
     private _size: { width: number, height: number } = { width: 0, height: 0 };
     private _plots: PlotTypeBase[] = [];
     private _initialized = false;
