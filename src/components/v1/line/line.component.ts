@@ -1,7 +1,7 @@
 import * as d3 from 'd3';
 import { Component, ElementRef, OnDestroy, OnInit } from '@angular/core';
 import { Frame, ILineData, Line, Text } from '../../../plot/v1/plot-types';
-import { PlotBaseComponent } from '../../../plot/v1/plot-component/plot.component';
+import { PlotBaseV1Component } from '../../../plot/v1/plot-component/plot.component';
 import { Subject } from 'rxjs';
 import { PlotV1 } from '../../../plot';
 import { Point, Util } from '../../../plot/util';
@@ -150,7 +150,7 @@ class SinusData implements ILineData {
 	selector: 'line-demo',
 	standalone: true,
 	imports: [
-		PlotBaseComponent
+		PlotBaseV1Component
 	],
 	templateUrl: './line.component.html',
 	styleUrl: './line.component.scss'

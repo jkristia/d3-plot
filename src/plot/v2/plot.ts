@@ -41,9 +41,10 @@ export class PlotV2 {
     //     return this._plotArea;
     // }
 
+    private _rootElm?: HTMLElement | null = null;
+
     constructor(
-        private _rootElm?: HTMLElement | null,
-        // private _options?: IPlotOptionsV1
+        private _options?: any//IPlotOptionsV1
     ) {
         // this._root = d3.create('svg:svg');
         // this._plots = _options?.plots || [];

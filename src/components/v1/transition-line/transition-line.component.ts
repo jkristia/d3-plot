@@ -1,5 +1,5 @@
 import { Component, ElementRef, OnDestroy, OnInit } from '@angular/core';
-import { PlotBaseComponent } from '../../../plot/v1/plot-component/plot.component';
+import { PlotBaseV1Component } from '../../../plot/v1/plot-component/plot.component';
 import { TransitionLineDemo } from './transition-line-demo';
 import { PlotV1, Frame } from '../../../plot';
 
@@ -9,7 +9,7 @@ import { PlotV1, Frame } from '../../../plot';
 	selector: 'transition-line-demo',
 	standalone: true,
 	imports: [
-		PlotBaseComponent		
+		PlotBaseV1Component		
 	],
   templateUrl: './transition-line.component.html',
   styleUrl: './transition-line.component.scss'

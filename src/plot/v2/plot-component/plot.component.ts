@@ -9,7 +9,7 @@ import { PlotV2 } from '../plot';
 	standalone: true,
 	imports: [],
 	templateUrl: './plot.component.html',
-	styleUrls: ['./plot.component.scss', '../plot-style.scss']
+	styleUrls: ['./plot.component.scss']
 })
 export class PlotBaseComponent implements OnInit, OnDestroy {
 

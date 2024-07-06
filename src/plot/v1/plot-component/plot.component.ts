@@ -11,7 +11,7 @@ import { PlotV1 } from '../plotv1';
 	templateUrl: './plot.component.html',
 	styleUrls: ['./plot.component.scss', '../plot-style.scss']
 })
-export class PlotBaseComponent implements OnInit, OnDestroy {
+export class PlotBaseV1Component implements OnInit, OnDestroy {
 
 	@Input() plot: PlotV1 | null = null;
 

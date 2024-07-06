@@ -1,5 +1,5 @@
 import { Component, ElementRef } from '@angular/core';
-import { PlotBaseComponent } from '../../../plot/v1/plot-component/plot.component';
+import { PlotBaseV1Component } from '../../../plot/v1/plot-component/plot.component';
 import { PlotV1 } from '../../../plot';
 import { Frame } from '../../../plot';
 
@@ -8,7 +8,7 @@ import { Frame } from '../../../plot';
 	selector: 'plot-area-demo',
 	standalone: true,
 	imports: [
-		PlotBaseComponent
+		PlotBaseV1Component
 	],
 	templateUrl: './plot-area.component.html',
 	styleUrl: './plot-area.component.scss'
