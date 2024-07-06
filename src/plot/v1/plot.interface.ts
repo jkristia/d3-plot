@@ -1,18 +1,18 @@
 import * as d3 from 'd3';
 import { PlotTypeBase } from './plot-types/plottype';
-import { Rect } from "./rect";
+import { Margin, Rect } from '../util';
 
 export type D3Selection<T = any> = d3.Selection<any, T, null, undefined>;
 
-export interface IPlotOptions {
+export interface IPlotOptionsV1 {
     width?: number;
     height?: number;
     margin?: Margin;
-    areas?: Areas;
+    areas?: AreasV1;
     plots?: PlotTypeBase[]
 }
 
-export interface IPlot {
+export interface IPlotV1 {
     readonly fullArea: Rect;
     readonly topArea: Rect;
     readonly bottomArea: Rect;
@@ -21,31 +21,17 @@ export interface IPlot {
     readonly plotArea: Rect;
 }
 
-export interface IPlotTypeOptions {
+export interface IPlotTypeOptionsV1 {
     cssClasses?: string[];
     showPoint?: boolean;
 }
 
 export type ValueFunc<T> = () => T;
 export type ValueOrFunc = number | ValueFunc<number>;
-export interface Point {
-    x: number;
-    y: number;
-}
-export interface Size {
-    width: number;
-    height: number;
-}
 
-export interface Areas {
+export interface AreasV1 {
     topHeight?: ValueOrFunc;
     leftWidth?: ValueOrFunc;
     rightWidth?: ValueOrFunc;
     bottomHeight?: ValueOrFunc;
-}
-export interface Margin {
-    left: number;
-    top: number;
-    right: number;
-    bottom: number;
 }

@@ -1,8 +1,8 @@
 import * as d3 from "d3";
 import { Subject } from "rxjs";
 import { PlotTypeBase } from "./plottype";
-import { Point, D3Selection, IPlotTypeOptions } from "../plot.interface";
-import { Rect } from "../rect";
+import { D3Selection, IPlotTypeOptionsV1 } from "../plot.interface";
+import { Point, Rect } from "../../util";
 
 export interface ILineData {
     points: (Point | null)[];   // null will break the line
@@ -22,7 +22,7 @@ export class Line extends PlotTypeBase {
         return true;
     }
 
-    constructor(protected _data: ILineData, options?: IPlotTypeOptions) {
+    constructor(protected _data: ILineData, options?: IPlotTypeOptionsV1) {
         super(options)
         if (_data.dataChanged) {
             _data.dataChanged.subscribe(() => this.updateLayout())

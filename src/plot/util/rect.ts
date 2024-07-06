@@ -1,4 +1,17 @@
-import { Point } from "./plot.interface";
+export interface Point {
+    x: number;
+    y: number;
+}
+export interface Size {
+    width: number;
+    height: number;
+}
+export interface Margin {
+    left: number;
+    top: number;
+    right: number;
+    bottom: number;
+}
 
 export class Rect {
     left: number;

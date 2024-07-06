@@ -1,4 +1,4 @@
-import { PlotV1 } from "./plot"
+import { PlotV1 } from "./plotv1"
 
 describe('plot areas', () => {
 	it('areas', () => {

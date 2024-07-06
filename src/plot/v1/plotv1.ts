@@ -1,19 +1,18 @@
 import * as d3 from 'd3';
-import { IPlot, D3Selection, IPlotOptions, Areas, ValueFunc, Margin } from "./plot.interface";
+import { IPlotV1, D3Selection, IPlotOptionsV1, AreasV1, ValueFunc } from "./plot.interface";
 import { PlotTypeBase } from "./plot-types/plottype";
-import { Util } from './util';
-import { Rect } from "./rect";
+import { Rect, Util, Margin } from '../util';
 
 
 
-export class PlotV1 implements IPlot {
+export class PlotV1 implements IPlotV1 {
 
     private _root!: D3Selection;
     private _margin: Margin = { left: 0, top: 0, right: 0, bottom: 0 };
     private _size: { width: number, height: number } = { width: 0, height: 0 };
     private _plots: PlotTypeBase[] = [];
     private _initialized = false;
-    private _areas: Areas = {
+    private _areas: AreasV1 = {
         topHeight: 0,
         leftWidth: 0,
         rightWidth: 0,
@@ -48,7 +47,7 @@ export class PlotV1 implements IPlot {
 
     constructor(
         private _rootElm?: HTMLElement | null,
-        private _options?: IPlotOptions
+        private _options?: IPlotOptionsV1
     ) {
         this._root = d3.create('svg:svg');
         this._plots = _options?.plots || [];

@@ -3,8 +3,8 @@ import { Component, ElementRef, OnDestroy, OnInit } from '@angular/core';
 import { Frame, ILineData, Line, Text } from '../../../plot/v1/plot-types';
 import { PlotBaseComponent } from '../../../plot/v1/plot-component/plot.component';
 import { Subject } from 'rxjs';
-import { PlotV1, Point } from '../../../plot';
-import { Util } from '../../../plot/v1/util';
+import { PlotV1 } from '../../../plot';
+import { Point, Util } from '../../../plot/util';
 
 class Data implements ILineData {
 	points = [

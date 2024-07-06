@@ -1,18 +1,17 @@
 import * as d3 from 'd3';
-import { IPlot, D3Selection, IPlotTypeOptions, ValueFunc } from "../plot.interface";
-import { Util } from '../util';
-import { Rect } from "../rect";
+import { IPlotV1, D3Selection, IPlotTypeOptionsV1, ValueFunc } from "../plot.interface";
+import { Rect, Util } from '../../util';
 
 export class PlotTypeBase {
-    protected _plot: IPlot | null = null;
+    protected _plot: IPlotV1 | null = null;
     protected _plotRoot: D3Selection<any> | null = null;
 
-    constructor(protected _options?: IPlotTypeOptions) { }
+    constructor(protected _options?: IPlotTypeOptionsV1) { }
 
     public get plotRoot(): D3Selection<any> | null {
         return this._plotRoot;
     }
-    public setPlot(plot: IPlot) {
+    public setPlot(plot: IPlotV1) {
         this._plot = plot;
     }
     public initializeLayout() {

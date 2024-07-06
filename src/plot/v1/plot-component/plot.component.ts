@@ -1,5 +1,5 @@
 import { Component, ElementRef, Input, OnDestroy, OnInit } from '@angular/core';
-import { PlotV1 } from '../plot';
+import { PlotV1 } from '../plotv1';
 
 /*
 *	PlotBaseComponent is used for attached d3 plot to angular component and enable resizing of d3 plot

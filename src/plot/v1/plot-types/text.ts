@@ -1,8 +1,9 @@
 
-import { D3Selection, IPlotTypeOptions, ValueFunc, Point } from "../plot.interface";
+import { Point } from "../../util";
+import { D3Selection, IPlotTypeOptionsV1 } from "../plot.interface";
 import { PlotTypeBase } from "./plottype";
 
-export interface TextOptions extends IPlotTypeOptions {
+export interface TextOptions extends IPlotTypeOptionsV1 {
     text?: string;
     rotate?: number;
     position?: 'center' | 'right';

@@ -1,7 +1,7 @@
 import * as d3 from "d3";
 import { PlotTypeBase } from "../../../plot/v1/plot-types/plottype";
-import { D3Selection, IPlotTypeOptions } from "../../../plot";
-import { Util } from "../../../plot/v1/util";
+import { D3Selection, IPlotTypeOptionsV1 } from "../../../plot";
+import { Util } from "../../../plot/util";
 
 type Point = { x: number, y: number };
 
@@ -12,7 +12,7 @@ export class TransitionLineDemo extends PlotTypeBase {
     private _points?: D3Selection<Point>;
     private _delay = 1000;
 
-    constructor(options?: IPlotTypeOptions) {
+    constructor(options?: IPlotTypeOptionsV1) {
         super(options)
     }
     private fillData() {
