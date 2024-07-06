@@ -3,6 +3,7 @@
   "version": "0.2.0",
   "configurations": [
     {
+      // run `npm start` in terminal, then `F5` to debug
       "name": "Launch Chrome",
       "request": "launch",
       "type": "chrome",
