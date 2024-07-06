@@ -1,8 +1,8 @@
 import * as d3 from "d3";
 import { Subject } from "rxjs";
 import { PlotTypeBase } from "./plottype";
-import { D3Selection, IPlotTypeOptionsV1 } from "../plot.interface";
-import { Point, Rect } from "../../util";
+import { IPlotTypeOptionsV1 } from "../plot.interface";
+import { D3Selection, Point, Rect } from "../../util";
 
 export interface ILineData {
     points: (Point | null)[];   // null will break the line

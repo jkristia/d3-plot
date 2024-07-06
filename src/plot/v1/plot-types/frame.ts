@@ -1,5 +1,4 @@
-import { Rect } from "../../util";
-import { D3Selection, ValueFunc } from "../plot.interface";
+import { D3Selection, Rect, ValueFunc } from "../../util";
 import { PlotTypeBase } from "./plottype";
 
 export class Frame extends PlotTypeBase {

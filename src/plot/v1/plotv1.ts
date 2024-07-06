@@ -1,7 +1,7 @@
 import * as d3 from 'd3';
-import { IPlotV1, D3Selection, IPlotOptionsV1, AreasV1, ValueFunc } from "./plot.interface";
+import { IPlotV1, IPlotOptionsV1, AreasV1 } from "./plot.interface";
 import { PlotTypeBase } from "./plot-types/plottype";
-import { Rect, Util, Margin } from '../util';
+import { Rect, Util, Margin, D3Selection, ValueFunc } from '../util';
 
 
 

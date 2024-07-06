@@ -1,17 +1,4 @@
-export interface Point {
-    x: number;
-    y: number;
-}
-export interface Size {
-    width: number;
-    height: number;
-}
-export interface Margin {
-    left: number;
-    top: number;
-    right: number;
-    bottom: number;
-}
+import { Point } from "./interfaces";
 
 export class Rect {
     left: number;

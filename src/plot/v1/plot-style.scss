@@ -1,6 +1,6 @@
 
 ::ng-deep .d3-container {
-    .plot-base.plot-frame {
+    .plot-v1-base.plot-frame {
         pointer-events: none;
         fill: transparent;
         fill: rgba(89, 89, 145, 0.54);
@@ -8,10 +8,10 @@
         // stroke-width: 1px;
     }
 
-    .plot-base.plot-line {
+    .plot-v1-base.plot-line {
         stroke: #978cc9;
     }
-    .plot-base.plot-line .plot-point {
+    .plot-v1-base.plot-line .plot-point {
         fill: #6c6492;
         stroke: #978cc9;
     }

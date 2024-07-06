@@ -1,6 +1,6 @@
 
-import { Point } from "../../util";
-import { D3Selection, IPlotTypeOptionsV1 } from "../plot.interface";
+import { D3Selection, Point } from "../../util";
+import { IPlotTypeOptionsV1 } from "../plot.interface";
 import { PlotTypeBase } from "./plottype";
 
 export interface TextOptions extends IPlotTypeOptionsV1 {

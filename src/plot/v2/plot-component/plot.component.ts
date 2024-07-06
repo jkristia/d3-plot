@@ -1,11 +1,11 @@
 import { Component, ElementRef, Input, OnDestroy, OnInit } from '@angular/core';
-import { PlotV1 } from '../plotv1';
+import { PlotV2 } from '../plot';
 
 /*
 *	PlotBaseComponent is used for attached d3 plot to angular component and enable resizing of d3 plot
 */
 @Component({
-	selector: 'plot-v1-base',
+	selector: 'plot-v2-base',
 	standalone: true,
 	imports: [],
 	templateUrl: './plot.component.html',
@@ -13,7 +13,7 @@ import { PlotV1 } from '../plotv1';
 })
 export class PlotBaseComponent implements OnInit, OnDestroy {
 
-	@Input() plot: PlotV1 | null = null;
+	@Input() plot: PlotV2 | null = null;
 
 	protected _plotAnchorElm!: HTMLElement;
 

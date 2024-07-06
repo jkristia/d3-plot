@@ -1,6 +1,6 @@
 import * as d3 from 'd3';
-import { IPlotV1, D3Selection, IPlotTypeOptionsV1, ValueFunc } from "../plot.interface";
-import { Rect, Util } from '../../util';
+import { IPlotV1, IPlotTypeOptionsV1 } from "../plot.interface";
+import { D3Selection, Rect, Util, ValueFunc } from '../../util';
 
 export class PlotTypeBase {
     protected _plot: IPlotV1 | null = null;
@@ -16,7 +16,7 @@ export class PlotTypeBase {
     }
     public initializeLayout() {
         this._plotRoot = d3.create('svg:g')
-            .classed('plot-base', true)
+            .classed('plot-v1-base', true)
         if (this._options?.cssClasses) {
             this._plotRoot.classed(this._options?.cssClasses.join(' '), true)
         }
