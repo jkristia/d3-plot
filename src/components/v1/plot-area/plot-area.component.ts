@@ -1,7 +1,7 @@
 import { Component, ElementRef } from '@angular/core';
-import { Plot } from '../../plot/plot';
-import { Frame } from '../../plot/plot-types';
-import { PlotBaseComponent } from '../../plot/plot-component/plot.component';
+import { PlotBaseComponent } from '../../../plot/v1/plot-component/plot.component';
+import { PlotV1 } from '../../../plot';
+import { Frame } from '../../../plot';
 
 
 @Component({
@@ -14,12 +14,12 @@ import { PlotBaseComponent } from '../../plot/plot-component/plot.component';
 	styleUrl: './plot-area.component.scss'
 })
 export class PlotAreaComponent {
-	public plot: Plot
+	public plot: PlotV1
 	constructor(
 		private _elm: ElementRef
 	) {
 
-		this.plot = new Plot(null, {
+		this.plot = new PlotV1(null, {
 			areas: {
 				topHeight: 20,
 				bottomHeight: 30,

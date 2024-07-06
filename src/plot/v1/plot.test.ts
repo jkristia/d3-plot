@@ -1,8 +1,8 @@
-import { Plot } from "./plot"
+import { PlotV1 } from "./plot"
 
 describe('plot areas', () => {
 	it('areas', () => {
-		const plot = new Plot(null, {
+		const plot = new PlotV1(null, {
 			areas: { topHeight: 15, leftWidth: 25, rightWidth: 35, bottomHeight: 45, }
 		})
 
@@ -16,7 +16,7 @@ describe('plot areas', () => {
 	})
 
 	it('margin', () => {
-		const plot = new Plot(null, {
+		const plot = new PlotV1(null, {
 			margin: { top: 5, left: 6, right: 7, bottom: 8}
 		})
 		plot.size({ width: 300, height: 200 });
@@ -24,7 +24,7 @@ describe('plot areas', () => {
 		expect(plot.plotArea.rect).toEqual({ top: 5, left: 6, right: 293, bottom: 192 });
 	})
 	it('margin & area', () => {
-		const plot = new Plot(null, {
+		const plot = new PlotV1(null, {
 			margin: { top: 5, left: 5, right: 5, bottom: 5},
 			areas: { topHeight: 10, leftWidth: 20, rightWidth: 30, bottomHeight: 40, }
 		})

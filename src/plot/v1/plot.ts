@@ -6,7 +6,7 @@ import { Rect } from "./rect";
 
 
 
-export class Plot implements IPlot {
+export class PlotV1 implements IPlot {
 
     private _root!: D3Selection;
     private _margin: Margin = { left: 0, top: 0, right: 0, bottom: 0 };

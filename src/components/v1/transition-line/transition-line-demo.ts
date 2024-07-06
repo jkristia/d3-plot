@@ -1,7 +1,7 @@
 import * as d3 from "d3";
-import { D3Selection, IPlotTypeOptions } from "../../plot/plot.interface";
-import { Util } from "../../plot/util";
-import { PlotTypeBase } from "../../plot/plot-types/plottype";
+import { PlotTypeBase } from "../../../plot/v1/plot-types/plottype";
+import { D3Selection, IPlotTypeOptions } from "../../../plot";
+import { Util } from "../../../plot/v1/util";
 
 type Point = { x: number, y: number };
 

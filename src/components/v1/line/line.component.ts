@@ -1,11 +1,10 @@
 import * as d3 from 'd3';
 import { Component, ElementRef, OnDestroy, OnInit } from '@angular/core';
-import { Plot } from '../../plot/plot';
-import { Frame, ILineData, Line, Text } from '../../plot/plot-types';
-import { PlotBaseComponent } from '../../plot/plot-component/plot.component';
+import { Frame, ILineData, Line, Text } from '../../../plot/v1/plot-types';
+import { PlotBaseComponent } from '../../../plot/v1/plot-component/plot.component';
 import { Subject } from 'rxjs';
-import { Util } from '../../plot/util';
-import { Point } from '../../plot';
+import { PlotV1, Point } from '../../../plot';
+import { Util } from '../../../plot/v1/util';
 
 class Data implements ILineData {
 	points = [
@@ -157,7 +156,7 @@ class SinusData implements ILineData {
 	styleUrl: './line.component.scss'
 })
 export class LineComponent {
-	public plot: Plot
+	public plot: PlotV1
 	_lineData = new Data();
 	_jitterData = new JitterData();
 	_manyLinesData = new ManyLinesAndPoints();
@@ -165,7 +164,7 @@ export class LineComponent {
 	constructor(
 		private _elm: ElementRef
 	) {
-		this.plot = new Plot(null, {
+		this.plot = new PlotV1(null, {
 			areas: {
 				topHeight: 20,
 				leftWidth: 30,

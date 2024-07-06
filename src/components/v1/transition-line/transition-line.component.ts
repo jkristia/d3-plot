@@ -1,8 +1,7 @@
 import { Component, ElementRef, OnDestroy, OnInit } from '@angular/core';
-import { Plot } from '../../plot/plot';
-import { Frame } from '../../plot/plot-types';
-import { PlotBaseComponent } from '../../plot/plot-component/plot.component';
+import { PlotBaseComponent } from '../../../plot/v1/plot-component/plot.component';
 import { TransitionLineDemo } from './transition-line-demo';
+import { PlotV1, Frame } from '../../../plot';
 
 
 
@@ -16,11 +15,11 @@ import { TransitionLineDemo } from './transition-line-demo';
   styleUrl: './transition-line.component.scss'
 })
 export class TransitionLineComponent {
-	public plot: Plot
+	public plot: PlotV1
 	constructor(
 		private _elm: ElementRef
 	) {
-		this.plot = new Plot(null, {
+		this.plot = new PlotV1(null, {
 			margin: { left: 5, top: 5, right: 5, bottom: 5},
 			plots: [
 				new Frame(),
