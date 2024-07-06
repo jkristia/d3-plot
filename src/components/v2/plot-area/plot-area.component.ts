@@ -15,6 +15,10 @@ export class PlotAreaV2Component {
 	public plot: PlotV2
 	constructor() {
 		this.plot = new PlotV2({
+			titleArea: {
+				height: 20,
+				plots: []
+			}
 			// areas: {
 			// 	topHeight: 20,
 			// 	bottomHeight: 30,

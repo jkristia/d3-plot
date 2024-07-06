@@ -1,9 +1,11 @@
 import * as d3 from 'd3';
 import { Rect, Util, Margin, D3Selection } from '../util';
+import { IPlotOptions } from './plot.interface';
 
 export class PlotV2 {
 
     private _root!: D3Selection;
+    private _rootElm?: HTMLElement | null = null;
     // private _margin: Margin = { left: 0, top: 0, right: 0, bottom: 0 };
     // private _size: { width: number, height: number } = { width: 0, height: 0 };
     // private _plots: PlotTypeBase[] = [];
@@ -41,12 +43,19 @@ export class PlotV2 {
     //     return this._plotArea;
     // }
 
-    private _rootElm?: HTMLElement | null = null;
+    private _titleArea!: D3Selection;
+
+    private _plotArea!: D3Selection;
 
     constructor(
-        private _options?: any//IPlotOptionsV1
+        private _options: IPlotOptions
     ) {
-        // this._root = d3.create('svg:svg');
+        this._root = d3.create('svg:svg');
+        if (_options.titleArea?.height) {
+            this._titleArea = this._root.append('svg')
+        }
+        this._plotArea = this._root.append('svg')
+
         // this._plots = _options?.plots || [];
         // this._plots.forEach(p => p.setPlot(this));
         // this.size({
@@ -57,7 +66,7 @@ export class PlotV2 {
         //     d3.select(_rootElm).append(() => this._root.node())
         // }
         // this._areas = _options?.areas || this._areas;
-        // this._margin = _options?.margin || this._margin;
+        // _options?.margin = _options?.margin || this._margin;
     }
     public attach(rootElm: HTMLElement) {
         if (this._rootElm) {
@@ -65,17 +74,20 @@ export class PlotV2 {
             this._rootElm.innerHTML = ''
         }
         this._rootElm = rootElm;
-        d3.select(rootElm).append(() => this.plot())
+        if (this._titleArea) {
+            d3.select(rootElm).append(this._titleArea.node())
+        }
+        // d3.select(rootElm).append(() => this.plot())
     }
-    public plot(): SVGSVGElement {
-        // if (!this._initialized) {
-        //     this._initialized = true;
-        //     this.initializeLayout();
-        //     this.updateLayout();
-        // }
-        // return this._root.node();
-        return null as any;
-    }
+    // public plot(): SVGSVGElement {
+    //     // if (!this._initialized) {
+    //     //     this._initialized = true;
+    //     //     this.initializeLayout();
+    //     //     this.updateLayout();
+    //     // }
+    //     // return this._root.node();
+    //     return null as any;
+    // }
 
     public size(newSize: { width?: number, height?: number }) {
         // if (newSize.width !== undefined) {
