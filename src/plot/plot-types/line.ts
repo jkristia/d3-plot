@@ -1,19 +1,18 @@
 import * as d3 from "d3";
-import { D3Selection, IPlotTypeOptions, LinePoint } from "../../plot/plot.interface";
-import { Util } from "../../plot/util";
+import { D3Selection, IPlotTypeOptions, Point } from "../../plot/plot.interface";
 import { Rect } from "../rect";
 import { PlotTypeBase } from "../../plot/plot-types/plottype";
 import { Subject } from "rxjs";
 
 export interface ILineData {
-    points: (LinePoint | null)[];   // null will break the line
+    points: (Point | null)[];   // null will break the line
     dataChanged?: Subject<void>;
 }
 
 export class Line extends PlotTypeBase {
 
     private _path?: D3Selection;
-    private _points?: D3Selection<LinePoint | null>;
+    private _points?: D3Selection<Point | null>;
     protected _xScale = d3.scaleLinear()
 
     protected get showPoint(): boolean {
@@ -45,7 +44,7 @@ export class Line extends PlotTypeBase {
         }
     }
 
-    private appendPoint(points: D3Selection<LinePoint | null>): D3Selection<LinePoint | null> {
+    private appendPoint(points: D3Selection<Point | null>): D3Selection<Point | null> {
         return points.append('circle')
             .classed('plot-point', true)
             .attr('r', 4)
@@ -73,15 +72,12 @@ export class Line extends PlotTypeBase {
                 )
         }
 
-        const line = d3.line<LinePoint | null>()
+        const line = d3.line<Point | null>()
             .x((d) => this.xPoint(d, area))
             .y((d) => this.yPoint(d, area))
             // https://d3js.org/d3-shape/line#line_defined
             .defined(d => d !== null) // allow for discontinuous line
             ;
-
-            // console.log('JKJKJK', this._data.points)
-            // console.log(line(this._data.points))
         this._path
             .attr('d', line(this._data.points))
     }
@@ -105,10 +101,10 @@ export class Line extends PlotTypeBase {
             .domain(domain)
             .range(range)
     }
-    private yPoint(point: LinePoint | null, area: Rect): number {
+    private yPoint(point: Point | null, area: Rect): number {
         return area.bottom - (point?.y || 0);
     }
-    private xPoint(point: LinePoint | null, area: Rect): number {
+    private xPoint(point: Point | null, area: Rect): number {
         return area.left + this._xScale(point?.x || 0);
     }
 }

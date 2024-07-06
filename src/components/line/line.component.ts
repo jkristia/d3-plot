@@ -5,7 +5,7 @@ import { Frame, ILineData, Line, Text } from '../../plot/plot-types';
 import { PlotBaseComponent } from '../../plot/plot-component/plot.component';
 import { Subject } from 'rxjs';
 import { Util } from '../../plot/util';
-import { LinePoint } from '../../plot';
+import { Point } from '../../plot';
 
 class Data implements ILineData {
 	points = [
@@ -30,15 +30,15 @@ class Data implements ILineData {
 	}
 }
 
-type SET = LinePoint[];
+type SET = Point[];
 class JitterData implements ILineData {
     dataChanged = new Subject<void>;
 	private _sets: SET[] = []
-	points: (LinePoint | null)[] = []
+	points: (Point | null)[] = []
 
 	constructor() {
 		for (let setno of Util.range(2)) {
-			const set: LinePoint[] = []
+			const set: Point[] = []
 			this._sets.push(set);
 			for (let x of Util.range(50, 250, 2)) {
 				set.push({
@@ -69,7 +69,7 @@ class JitterData implements ILineData {
 }
 
 class ManyLinesAndPoints implements ILineData {
-	points: (LinePoint | null)[] = []
+	points: (Point | null)[] = []
 	constructor() {
 
 		const randomY = d3.randomInt(0, 40);
@@ -94,7 +94,7 @@ class ManyLinesAndPoints implements ILineData {
 class SinusData implements ILineData {
     dataChanged = new Subject<void>;
 
-	points: (LinePoint | null)[] = []
+	points: (Point | null)[] = []
 	startAngle = 5;
 	stepAngle = (Math.PI / 180) * 5;
 	noOfSamples = 500;

@@ -1,6 +1,5 @@
 
-import { D3Selection, IPlotTypeOptions, ValueFunc } from "../plot.interface";
-import { Point } from "../rect";
+import { D3Selection, IPlotTypeOptions, ValueFunc, Point } from "../plot.interface";
 import { PlotTypeBase } from "./plottype";
 
 export interface TextOptions extends IPlotTypeOptions {
