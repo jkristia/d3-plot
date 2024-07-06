@@ -3,7 +3,7 @@ import { PlotBaseComponent, PlotV2 } from '../../../plot';
 
 
 @Component({
-	selector: 'plot-area-demo',
+	selector: 'plot-area-v2',
 	standalone: true,
 	imports: [
 		PlotBaseComponent
@@ -11,7 +11,7 @@ import { PlotBaseComponent, PlotV2 } from '../../../plot';
 	templateUrl: './plot-area.component.html',
 	styleUrl: './plot-area.component.scss'
 })
-export class PlotAreaComponent {
+export class PlotAreaV2Component {
 	public plot: PlotV2
 	constructor() {
 		this.plot = new PlotV2({
