@@ -1,6 +1,8 @@
 $color-background: #363640;
 $color-title: rgb(245, 245, 245);
 
+$color-line-elm: rgb(126, 124, 173);
+
 ::ng-deep .d3-container {
     font-family: sans-serif;
     background-color: $color-background;
@@ -11,5 +13,15 @@ $color-title: rgb(245, 245, 245);
         font-size: 20px;
         stroke: transparent;
         fill: $color-title;
+    }
+    .plot-elm.line-series-elm {
+        stroke: $color-line-elm;
+        circle {
+            fill: $color-line-elm;
+        }
+
+
+
+
     }
 }

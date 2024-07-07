@@ -49,8 +49,10 @@ class Area {
         if (this.rect.isEmpty) {
             return;
         }
+        // area passed to plot is the area of canvas, meaning sarts at (0,0)
+        const r = new Rect({ left: 0, top: 0, width: this.rect.width, height: this.rect.height });
         (this.plots || []).forEach(p => {
-            p.updateLayout(this.rect)
+            p.updateLayout(r)
         });
     }
 }

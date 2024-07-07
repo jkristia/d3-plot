@@ -25,3 +25,8 @@ export interface IPlotOptions {
     }
     plots?: PlotItem[];
 }
+
+export interface IPlotItemOptions {
+    margin?: Margin;
+    cssClasses?: string[];
+}

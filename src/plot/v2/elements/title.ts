@@ -4,7 +4,6 @@ import { Margin, Rect } from "../../util";
 
 export class TitleItem extends PlotItem {
 
-    private margin: Margin = { left: 5, top: 0, right: 0, bottom: 0 }
     constructor(private _text: string) {
         super();
     }
@@ -16,7 +15,7 @@ export class TitleItem extends PlotItem {
             .attr('text-anchor', 'start')
     }
     public override updateLayout(area: Rect) {
-        const r = area.adjustMargin(this.margin)
+        const r = area.adjustMargin(this._margin)
         this._rootElm?.attr('transform', `translate(${r.left}, ${r.center.y})`)
     }
 }

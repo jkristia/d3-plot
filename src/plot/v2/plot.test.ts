@@ -2,7 +2,7 @@ import * as d3 from 'd3';
 import { D3Selection, Rect } from '../util';
 import { PlotV2 } from './plot';
 import { PlotItem } from './plot.item';
-import { TitleItem } from './elements';
+import { LineSeries, TitleItem } from './elements';
 
 class UnitItem extends PlotItem {
     get r(): Rect {
@@ -12,7 +12,6 @@ class UnitItem extends PlotItem {
     initcount = 0;
     updatecount = 0;
     public override initializeLayout() {
-        super.initializeLayout();
         this.initcount++;
     }
     public override updateLayout(area: Rect) {
@@ -122,8 +121,8 @@ describe('plot areas', () => {
         })
         plot.attach(root);
         plot.size({ width: 600, height: 400 })
-        expect((plot.left.plots[0] as UnitItem).r.toString()).toBe('[top: 1, left: 1, width: 298, height: 398]')
-        expect((plot.center.plots[0] as UnitItem).r.toString()).toBe('[top: 0, left: 300, width: 300, height: 400]')
+        expect((plot.left.plots[0] as UnitItem).r.toString()).toBe('[top: 6, left: 6, width: 288, height: 388]')
+        expect((plot.center.plots[0] as UnitItem).r.toString()).toBe('[top: 5, left: 5, width: 290, height: 390]')
     })
 })
 
@@ -137,7 +136,7 @@ describe('plot options', () => {
         let p = new PlotV2({}).attach(root);
         let svg = root.firstChild as SVGSVGElement;
         expect(svg.classList.toString()).toBe('d3-plot')
-        p = new PlotV2({ cssClass: 'custom-css'}).attach(root);
+        p = new PlotV2({ cssClass: 'custom-css' }).attach(root);
         svg = root.firstChild as SVGSVGElement;
         expect(svg.classList.toString()).toBe('d3-plot custom-css')
     })
@@ -157,5 +156,16 @@ describe('plot options', () => {
         elm = root.querySelector('.title-elm text');
         expect(elm?.innerHTML).toBe('use default title')
         expect(p.top.rect.toString()).toEqual('[top: 0, left: 0, width: 0, height: 40]')
+    })
+    test('single line elm', () => {
+        let p = new PlotV2({
+            plots: [new LineSeries({ points: [{ x: 0, y: 0 }, { x: 10, y: 10 }] })]
+        })
+        .attach(root)
+        .size({ width: 600, height: 400 });
+        let elm = root.querySelector('.line-series-elm');
+        // fix this when scale is moved out from lineseries
+        // expect(elm?.innerHTML).toBe('hey')
+
     })
 })
