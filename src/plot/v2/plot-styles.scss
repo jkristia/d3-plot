@@ -1,7 +1,7 @@
 $color-background: #363640;
 $color-title: rgb(245, 245, 245);
-
 $color-line-elm: rgb(126, 124, 173);
+$color-axis: gray;
 
 ::ng-deep .d3-container {
     font-family: sans-serif;
@@ -19,9 +19,21 @@ $color-line-elm: rgb(126, 124, 173);
         circle {
             fill: $color-line-elm;
         }
-
-
-
+    }
+    .axis-container {
+        stroke: $color-axis;
+        path {
+            stroke: $color-axis;
+            stroke-width: 0.5;
+        }
+        g.tick line {
+            stroke: $color-axis;
+            stroke-width: 0.5;
+        }
+        g.tick text {
+            stroke: transparent;
+            fill: $color-axis;
+        }
 
     }
 }

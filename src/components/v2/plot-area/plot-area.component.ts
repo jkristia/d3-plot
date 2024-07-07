@@ -22,7 +22,7 @@ export class PlotAreaV2Component {
 			title: 'Architecture Share Over Time (Count)',
 
 			plots: [
-				new DataSeries({ points: dataSmp() }, { cssClasses: ['smp'], showPointMarkers: true }),
+				new DataSeries({ points: dataSmp() }, { cssClasses: ['smp'], showPointMarkers: true, hackMoveThis: true }),
 				new DataSeries({ points: dataMmp() }, { cssClasses: ['mmp'], showPointMarkers: true }),
 				new DataSeries({ points: dataCnstl() }, { cssClasses: ['cnstl'], showPointMarkers: true }),
 				new DataSeries({ points: dataCluster() }, { cssClasses: ['cluster'], showPointMarkers: true }),
