@@ -16,15 +16,9 @@ export class PlotAreaV2Component {
 	constructor() {
 		this.plot = new PlotV2({
 			titleArea: { height: 20, plots: [] },
-			leftArea: { width: 20, plots: [] },
-			rightArea: { width: 20, plots: [] },
-			footerArea: { height: 20, plots: [] },
-			// areas: {
-			// 	topHeight: 20,
-			// 	bottomHeight: 30,
-			// 	leftWidth: 30,
-			// 	rightWidth: 40,
-			// },
+			leftArea: { width: 100, plots: [] },
+			// rightArea: { width: 20, plots: [] },
+			// footerArea: { height: 20, plots: [] },
 			// plots: [
 			// 	// test frame for label area
 			// 	new Frame({ cssClasses: ['top-label'] })
