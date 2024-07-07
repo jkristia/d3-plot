@@ -2,6 +2,7 @@ $color-background: #363640;
 $color-title: rgb(245, 245, 245);
 $color-line-elm: rgb(126, 124, 173);
 $color-axis: gray;
+$color-axis-text: #a4a4a4;
 
 ::ng-deep .d3-container {
     font-family: sans-serif;
@@ -32,7 +33,7 @@ $color-axis: gray;
         }
         g.tick text {
             stroke: transparent;
-            fill: $color-axis;
+            fill: $color-axis-text;
         }
 
     }

@@ -130,7 +130,8 @@ export class LineSeries extends PlotItem {
         if ((this._options as ILineOptions)?.hackMoveThis) {
             const xticks = this._xScale.ticks(2)
             const yticks = this._yScale.ticks(5)
-            this._xAxisBottom.tickValues([1997, 1999, 2001, 2003, 2005, 2007])
+            // this._xAxisBottom.tickValues([1997, 1999, 2001, 2003, 2005, 2007])
+            this._xAxisBottom.ticks(10)
             this._xAxisElm?.call(this._xAxisBottom)
             this._xAxisElm?.attr('transform', `translate(0, ${area.height})`)
 
