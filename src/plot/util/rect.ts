@@ -58,4 +58,7 @@ export class Rect {
             height: this.height,
         });
     }
+    public toString(): string {
+        return `[top: ${this.top}, left: ${this.left}, width: ${this.width}, height: ${this.height}]`;
+    }
 }

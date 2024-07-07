@@ -1,5 +1,5 @@
 import * as d3 from 'd3';
-import { Rect, Util, Margin, D3Selection, Size } from '../util';
+import { Rect, D3Selection, Size } from '../util';
 import { IPlotOptions } from './plot.interface';
 import { PlotItem } from './plot.item';
 
@@ -16,7 +16,6 @@ class Area {
                 .classed('plot-background', true)
         }
     }
-
     public applyRect(): D3Selection {
         this.root!
             .attr('x', this.rect.left)
@@ -39,19 +38,25 @@ export class PlotV2 {
     private _size: Size = { width: 0, height: 0 };
     private _root!: D3Selection;
     private _rootElm?: HTMLElement | null = null;
-    private _titleArea: Area = new Area();
+    private _topArea: Area = new Area();
     private _leftArea: Area = new Area();
     private _rightArea: Area = new Area();
-    private _footerArea: Area = new Area();
-    private _plotArea: Area = new Area();
+    private _bottomArea: Area = new Area();
+    private _centerArea: Area = new Area();
+    
+    public get top(): Area { return this._topArea; }
+    public get left(): Area { return this._leftArea; }
+    public get right(): Area { return this._rightArea; }
+    public get bottom(): Area { return this._bottomArea; }
+    public get center(): Area { return this._centerArea; }
 
     constructor(
         private _options: IPlotOptions
     ) {
         this._root = d3.create('svg:svg').classed('d3-plot', true);
         if (_options.titleArea?.height) {
-            this._titleArea = new Area(this._root.append('svg:svg').classed('title-area', true));
-            this._titleArea.plots = _options.titleArea.plots || [];
+            this._topArea = new Area(this._root.append('svg:svg').classed('title-area', true));
+            this._topArea.plots = _options.titleArea.plots || [];
         }
         if (_options.leftArea?.width) {
             this._leftArea = new Area(this._root.append('svg:svg').classed('left-area', true));
@@ -62,11 +67,11 @@ export class PlotV2 {
             this._rightArea.plots = _options.rightArea.plots || [];
         }
         if (_options.footerArea?.height) {
-            this._footerArea = new Area(this._root.append('svg:svg').classed('footer-area', true));
-            this._footerArea.plots = _options.footerArea.plots || [];
+            this._bottomArea = new Area(this._root.append('svg:svg').classed('footer-area', true));
+            this._bottomArea.plots = _options.footerArea.plots || [];
         }
-        this._plotArea = new Area(this._root.append('svg:svg').classed('plot-area', true))
-        this._plotArea.plots = _options.plots || [];
+        this._centerArea = new Area(this._root.append('svg:svg').classed('plot-area', true))
+        this._centerArea.plots = _options.plots || [];
     }
 
     public attach(rootElm: HTMLElement) {
@@ -78,13 +83,9 @@ export class PlotV2 {
         d3.select(rootElm).append(() => this.plot())
     }
     private plot(): SVGSVGElement {
-        // if (!this._initialized) {
-        //     this._initialized = true;
-        //     this.initializeLayout();
-        //     this.updateLayout();
-        // }
+        this.initializeLayout();
+        this.updateLayout();
         return this._root.node();
-        // return null as any;
     }
 
     public size(newSize: { width?: number, height?: number }) {
@@ -99,7 +100,7 @@ export class PlotV2 {
             .attr('height', this._size.height)
 
         this.calculateAreas()
-        // this.updateLayout();
+        this.updateLayout();
     }
 
     protected initializeLayout() {
@@ -116,11 +117,11 @@ export class PlotV2 {
         // });
     }
     protected calculateAreas() {
-        const top = this._titleArea;
+        const top = this._topArea;
         const left = this._leftArea;
         const right = this._rightArea;
-        const bottom = this._footerArea;
-        const plot = this._plotArea;
+        const bottom = this._bottomArea;
+        const plot = this._centerArea;
 
         if (this._options.titleArea?.height) {
             top.rect.width = this._size.width;
