@@ -61,3 +61,19 @@ test('rect set-right', () => {
 	expect(r.rect).toEqual({ left: 5, top: 6, right: 90, bottom: 206 })
 	expect(r.width).toBe(85)
 })
+test('isempty', () => {
+	let r = new Rect()
+	expect(r.isEmpty).toBe(true);
+	r.width = 1;
+	r.height = 0;
+	expect(r.isEmpty).toBe(false);
+	r.width = 0;
+	r.height = 1;
+	expect(r.isEmpty).toBe(false);
+})
+test('adjust margin', () => {
+	let r = new Rect({left: 0, top: 0, width: 100, height: 100})
+	let r2 = r.adjustMargin({ left: 5, top: 6, right: 7, bottom: 8})
+	expect(r2.toString()).toEqual('[top: 6, left: 5, width: 88, height: 86]')
+
+})

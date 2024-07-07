@@ -4,12 +4,12 @@ import { PlotTypeBase } from "./plottype";
 import { IPlotTypeOptionsV1 } from "../plot.interface";
 import { D3Selection, Point, Rect } from "../../util";
 
-export interface ILineData {
+export interface ILineDataV1 {
     points: (Point | null)[];   // null will break the line
     dataChanged?: Subject<void>;
 }
 
-export class Line extends PlotTypeBase {
+export class LineV1 extends PlotTypeBase {
 
     private _path?: D3Selection;
     private _points?: D3Selection<Point | null>;
@@ -22,7 +22,7 @@ export class Line extends PlotTypeBase {
         return true;
     }
 
-    constructor(protected _data: ILineData, options?: IPlotTypeOptionsV1) {
+    constructor(protected _data: ILineDataV1, options?: IPlotTypeOptionsV1) {
         super(options)
         if (_data.dataChanged) {
             _data.dataChanged.subscribe(() => this.updateLayout())
@@ -83,12 +83,12 @@ export class Line extends PlotTypeBase {
     }
 
     private _fnRange?: () => [number, number]
-    public getRange(fn: () => [number, number]): Line {
+    public getRange(fn: () => [number, number]): LineV1 {
         this._fnRange = fn;
         return this;
     }
     private _fnDomain?: () => [number, number]
-    public getDomain(fn: () => [number, number]): Line {
+    public getDomain(fn: () => [number, number]): LineV1 {
         this._fnDomain = fn;
         return this;
     }

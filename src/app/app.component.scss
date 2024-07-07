@@ -11,9 +11,15 @@
 }
 .content {
     width: 100%;
-    height: 100%;
+    // height: 100%;
     display: flex;
     flex-direction: column;
+    // overflow: auto;
+    .plot-area-v2 {
+        height: 300px;
+        width: 100%;
+        padding: 5px;
+    }
     .demo1 {
         height: 200px;
         width: 300px;

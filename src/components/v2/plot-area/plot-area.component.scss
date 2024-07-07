@@ -1,4 +1,47 @@
+$color-line-elm-smp: rgb(209, 161, 209);
+$color-line-elm-mmp: rgb(238, 172, 197);
+$color-line-elm-cluster: rgb(126, 124, 173);
+$color-line-elm-cnstl: rgb(123, 86, 133);
+
 .container {
     width: 100%;
     height: 100%;
+
+    // ::ng-deep :hover.plot-background {
+    //     fill: rgba(73, 74, 106, 0.7);
+    // }
+
+    ::ng-deep .plot-elm.line-series-elm {
+        stroke-width: 2px;
+        &:hover {
+            stroke-width: 4px;
+            circle {
+                r: 6;
+            }
+        }
+        &.smp {
+            stroke: $color-line-elm-smp;
+            .point-marker {
+                fill: $color-line-elm-smp;
+            }
+        }
+        &.mmp {
+            stroke: $color-line-elm-mmp;
+            .point-marker {
+                fill: $color-line-elm-mmp;
+            }
+        }
+        &.cluster {
+            stroke: $color-line-elm-cluster;
+            .point-marker {
+                fill: $color-line-elm-cluster;
+            }
+        }
+        &.cnstl {
+            stroke: $color-line-elm-cnstl;
+            .point-marker {
+                fill: $color-line-elm-cnstl;
+            }
+        }
+    }
 }

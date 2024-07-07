@@ -1,12 +1,12 @@
 import * as d3 from 'd3';
 import { Component, ElementRef, OnDestroy, OnInit } from '@angular/core';
-import { Frame, ILineData, Line, Text } from '../../../plot/v1/plot-types';
+import { Frame, ILineDataV1, LineV1, Text } from '../../../plot/v1/plot-types';
 import { PlotBaseV1Component } from '../../../plot/v1/plot-component/plot.component';
 import { Subject } from 'rxjs';
 import { PlotV1 } from '../../../plot';
 import { Point, Util } from '../../../plot/util';
 
-class Data implements ILineData {
+class Data implements ILineDataV1 {
 	points = [
 		{ x: 0, y: 0 },
 		{ x: 10, y: 0 },
@@ -30,7 +30,7 @@ class Data implements ILineData {
 }
 
 type SET = Point[];
-class JitterData implements ILineData {
+class JitterData implements ILineDataV1 {
     dataChanged = new Subject<void>;
 	private _sets: SET[] = []
 	points: (Point | null)[] = []
@@ -67,7 +67,7 @@ class JitterData implements ILineData {
 	}
 }
 
-class ManyLinesAndPoints implements ILineData {
+class ManyLinesAndPoints implements ILineDataV1 {
 	points: (Point | null)[] = []
 	constructor() {
 
@@ -90,7 +90,7 @@ class ManyLinesAndPoints implements ILineData {
 	}
 }
 
-class SinusData implements ILineData {
+class SinusData implements ILineDataV1 {
     dataChanged = new Subject<void>;
 
 	points: (Point | null)[] = []
@@ -189,15 +189,15 @@ export class LineComponent {
 				// render many lines set in the background, first layer
 				// new Line(this._manyLinesData, { cssClasses: ['line-3'], showPoint: false }),
 				// render discontinuous line jitter line at the same scale (using same domain)
-				new Line(this._lineData),
-				new Line(this._jitterData, {
+				new LineV1(this._lineData),
+				new LineV1(this._jitterData, {
 					cssClasses: ['line-2'],
 					showPoint: false,
 				})
 				.getDomain(() => [0, this._lineData.max]) // keep the 2 lines at the same x-scale
 				,
 				// render a noisy sinus slowly moving across the plot area
-				new Line(this._sinusData, {
+				new LineV1(this._sinusData, {
 					cssClasses: ['line-4'],
 					showPoint: false,
 				})
