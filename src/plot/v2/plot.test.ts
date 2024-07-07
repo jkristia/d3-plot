@@ -113,4 +113,16 @@ describe('plot areas', () => {
         expect(plot.right.plots).toEqual([])
         expect((plot.bottom.plots[0] as UnitItem).initcount).toBe(1)
     })
+    test('item initialize - size', () => {
+        let plot = new PlotV2({
+            // check the item is using the adjusted area rect, set by the callbacl
+            leftArea: { width: 300, plots: [new UnitItem().area(d => d.inflate(-1))] },
+            // this item will use the rect passed in update layout
+            plots: [new UnitItem()]
+        })
+        plot.attach(root);
+        plot.size({ width: 600, height: 400 })
+        expect((plot.left.plots[0] as UnitItem).r.toString()).toBe('[top: 1, left: 1, width: 298, height: 398]')
+        expect((plot.center.plots[0] as UnitItem).r.toString()).toBe('[top: 0, left: 300, width: 300, height: 400]')
+    })
 })
