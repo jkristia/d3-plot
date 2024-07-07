@@ -2,9 +2,9 @@ import { AreaFunc, D3Selection, Rect, Util, ValueFunc } from "../util";
 
 export class PlotItem {
 
-    protected _plotRoot: D3Selection | null = null;
-    public get plotRoot(): D3Selection | null {
-        return this._plotRoot;
+    protected _rootElm: D3Selection | null = null;
+    public get plotElement(): D3Selection | null {
+        return this._rootElm;
     }
 
     public initializeLayout() {

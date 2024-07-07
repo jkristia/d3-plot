@@ -1,5 +1,5 @@
 import { Component, ElementRef } from '@angular/core';
-import { PlotBaseComponent, PlotV2 } from '../../../plot';
+import { PlotBaseComponent, PlotV2, TitleItem } from '../../../plot';
 
 
 @Component({
@@ -14,11 +14,15 @@ import { PlotBaseComponent, PlotV2 } from '../../../plot';
 export class PlotAreaV2Component {
 	public plot: PlotV2
 	constructor() {
+		// goal is to duplicate this chart
+		// https://js.devexpress.com/Angular/Demos/WidgetsGallery/Demo/Charts/Spline/MaterialPurpleDark/
 		this.plot = new PlotV2({
-			titleArea: { height: 20, plots: [] },
-			leftArea: { width: 100, plots: [] },
-			rightArea: { width: 20, plots: [] },
-			footerArea: { height: 20, plots: [] },
+			cssClass: 'custom-1',
+			title: 'Architecture Share Over Time (Count)',
+			// titleArea: { height: 40, plots: [new TitleItem('Architecture Share Over Time (Count)')] },
+			// leftArea: { width: 100, plots: [] },
+			// rightArea: { width: 20, plots: [] },
+			// footerArea: { height: 20, plots: [] },
 			// plots: [
 			// 	// test frame for label area
 			// 	new Frame({ cssClasses: ['top-label'] })

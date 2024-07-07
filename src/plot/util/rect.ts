@@ -1,10 +1,22 @@
-import { Point } from "./interfaces";
+import { Margin, Point } from "./interfaces";
 
 export class Rect {
+    private _width: number = 0;
+    private _height: number = 0;
     left: number;
     top: number;
-    width: number;
-    height: number;
+    public get width(): number {
+        return Math.max(0, this._width);
+    }
+    public set width(value: number) {
+        this._width = value;
+    }
+    public get height(): number {
+        return Math.max(0, this._height);
+    }
+    public set height(value: number) {
+        this._height = value;
+    }
     public get right(): number {
         return this.left + this.width;
     }
@@ -60,6 +72,15 @@ export class Rect {
             width: this.width,
             height: this.height,
         });
+    }
+    public adjustMargin(margin: Margin): Rect {
+        return new Rect({
+            left: this.left + margin.left,
+            top: this.top + margin.top,
+            width: this.width - (margin.left + margin.right),
+            height: this.height - (margin.top + margin.bottom),
+        });
+
     }
     public toString(): string {
         if (this.isEmpty) {
