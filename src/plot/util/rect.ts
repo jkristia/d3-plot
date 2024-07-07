@@ -59,6 +59,9 @@ export class Rect {
         });
     }
     public toString(): string {
+        if (this.width === 0 && this.height === 0) {
+            return '[empty]'
+        }
         return `[top: ${this.top}, left: ${this.left}, width: ${this.width}, height: ${this.height}]`;
     }
 }
