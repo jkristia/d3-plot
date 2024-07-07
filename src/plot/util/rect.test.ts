@@ -61,3 +61,13 @@ test('rect set-right', () => {
 	expect(r.rect).toEqual({ left: 5, top: 6, right: 90, bottom: 206 })
 	expect(r.width).toBe(85)
 })
+test('isempty', () => {
+	let r = new Rect()
+	expect(r.isEmpty).toBe(true);
+	r.width = 1;
+	r.height = 0;
+	expect(r.isEmpty).toBe(false);
+	r.width = 0;
+	r.height = 1;
+	expect(r.isEmpty).toBe(false);
+})

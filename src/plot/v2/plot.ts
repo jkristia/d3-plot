@@ -7,7 +7,7 @@ class Area {
     public root?: D3Selection;
     public background: D3Selection;
     public rect: Rect = new Rect();
-    public plots?: PlotItem[];
+    public plots: PlotItem[] = [];
     constructor(root?: D3Selection) {
         this.root = root;
         this.background = d3.create('svg:rect')
@@ -31,6 +31,26 @@ class Area {
 
         return this.root!;
     }
+    public initializeLayout(parent: D3Selection) {
+        if (this.rect.isEmpty) {
+            return;
+        }
+        this.plots.forEach(p => {
+            p.initializeLayout()
+            if (p.plotRoot) {
+                parent.append(() => p.plotRoot!.node())
+            }
+        });
+    }
+    public updateLayout() {
+        if (this.rect.isEmpty) {
+            return;
+        }
+        (this.plots || []).forEach(p => {
+            p.updateLayout(this.rect)
+        });
+    }
+
 }
 
 export class PlotV2 {
@@ -83,6 +103,7 @@ export class PlotV2 {
         d3.select(rootElm).append(() => this.plot())
     }
     private plot(): SVGSVGElement {
+        this.calculateAreas()
         this.initializeLayout();
         this.updateLayout();
         return this._root.node();
@@ -104,17 +125,18 @@ export class PlotV2 {
     }
 
     protected initializeLayout() {
-        // this._plots.forEach(p => {
-        //     p.initializeLayout()
-        //     if (p.plotRoot) {
-        //         this._root.append(() => p.plotRoot!.node())
-        //     }
-        // });
+        this._topArea.initializeLayout(this._root);
+        this._leftArea.initializeLayout(this._root);
+        this._centerArea.initializeLayout(this._root);
+        this._rightArea.initializeLayout(this._root);
+        this._bottomArea.initializeLayout(this._root);
     }
     protected updateLayout() {
-        // this._plots.forEach(p => {
-        //     p.updateLayout()
-        // });
+        this._topArea.updateLayout();
+        this._leftArea.updateLayout();
+        this._centerArea.updateLayout();
+        this._rightArea.updateLayout();
+        this._bottomArea.updateLayout();
     }
     protected calculateAreas() {
         const top = this._topArea;

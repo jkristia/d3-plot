@@ -31,6 +31,9 @@ export class Rect {
             bottom: this.bottom
         }
     }
+    public get isEmpty(): boolean {
+        return (this.width === 0 && this.height === 0);
+    }
     constructor(r?: {
         left: number;
         top: number;
@@ -59,7 +62,7 @@ export class Rect {
         });
     }
     public toString(): string {
-        if (this.width === 0 && this.height === 0) {
+        if (this.isEmpty) {
             return '[empty]'
         }
         return `[top: ${this.top}, left: ${this.left}, width: ${this.width}, height: ${this.height}]`;
