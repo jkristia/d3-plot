@@ -29,7 +29,7 @@ export class PlotAreaV2Component {
 				xyScale,
 			],
 			plots: [
-				new AxisAndGrid({ points: dataSmp() }).setScale(xyScale),
+				new AxisAndGrid().setScale(xyScale),
 				new DataSeries({ points: dataSmp() }, { cssClasses: ['smp'], showPointMarkers: true }).setScale(xyScale),
 				new DataSeries({ points: dataMmp() }, { cssClasses: ['mmp'], showPointMarkers: true }).setScale(xyScale),
 				new DataSeries({ points: dataCnstl() }, { cssClasses: ['cnstl'], showPointMarkers: true }).setScale(xyScale),

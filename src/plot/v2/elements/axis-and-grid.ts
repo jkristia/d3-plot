@@ -1,14 +1,8 @@
 import * as d3 from 'd3';
-import { Subject } from "rxjs";
 import { D3Selection, Point, Rect } from "../../util";
 import { PlotItem } from "../plot.item";
 import { IPlotItemOptions } from "../plot.interface";
 import { Scale } from './scale';
-
-export interface ILineData {
-    points: (Point | null)[];   // null will break the line
-    dataChanged?: Subject<void>;
-}
 
 export interface IAxisAndGridOptions extends IPlotItemOptions {
 }
@@ -23,11 +17,8 @@ export class AxisAndGrid extends PlotItem {
     protected _xAxisBottom: d3.Axis<any> | null = null;
     protected _yAxisLeft: d3.Axis<any> | null = null;
 
-    constructor(protected _data: ILineData, options?: IAxisAndGridOptions) {
+    constructor(options?: IAxisAndGridOptions) {
         super(options)
-        if (_data.dataChanged) {
-            _data.dataChanged.subscribe(() => this.updateLayout(this._area))
-        }
     }
 
     public setScale(scale: Scale): AxisAndGrid {
@@ -43,21 +34,22 @@ export class AxisAndGrid extends PlotItem {
 
         this._xAxisElm = this._rootElm?.append('g')
             .classed('axis-container x-axis', true)
-        if (this._xAxisElm && this._xAxisBottom) {
-            this._xAxisElm.call(this._xAxisBottom);
-        }
+            .call(this._xAxisBottom!)
+
         this._yAxisElm = this._rootElm?.append('g')
             .classed('axis-container y-axis', true)
-        if (this._yAxisElm && this._yAxisLeft) {
-            this._yAxisElm.call(this._yAxisLeft);
-        }
+            .call(this._yAxisLeft!);
+
         this._gridElm = this._rootElm?.append('g')
             .classed('grid-container', true)
     }
     public override updateLayout(area: Rect): void {
         super.updateLayout(area);
         area = this._area;
-        this.updateScales(area);
+        this.renderGrid(area);
+        this.renderAxis(area);
+    }
+    protected renderGrid(area: Rect) {
         if (this._gridElm) {
             this._gridElm.selectAll('.v-line')
                 .data(this._scale.xScale.ticks())
@@ -79,9 +71,9 @@ export class AxisAndGrid extends PlotItem {
         }
     }
 
-    protected updateScales(area: Rect) {
+    protected renderAxis(area: Rect) {
         if (this._xAxisBottom) {
-            this._xAxisBottom.ticks(10).tickFormat( d => d.toString())
+            this._xAxisBottom.ticks(10).tickFormat(d => d.toString())
             this._xAxisElm?.call(this._xAxisBottom)
             this._xAxisElm?.attr('transform', `translate(0, ${area.height})`)
         }
@@ -91,11 +83,4 @@ export class AxisAndGrid extends PlotItem {
             this._yAxisElm?.attr('transform', `translate(${area.left}, ${0})`)
         }
     }
-    private yPoint(point: Point | null, area: Rect): number {
-        return this._scale.yScale(point?.y || 0);
-    }
-    private xPoint(point: Point | null, area: Rect): number {
-        return this._scale.xScale(point?.x || 0);
-    }
-
 }
