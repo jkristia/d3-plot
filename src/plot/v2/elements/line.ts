@@ -32,6 +32,7 @@ export class LineSeries extends PlotItem {
     private _pathElm?: D3Selection;
     private _xAxisElm?: D3Selection;
     private _yAxisElm?: D3Selection;
+    private _gridElm?: D3Selection;
     private _points?: D3Selection<Point | null>;
     protected showPointMarkers = false;
 
@@ -56,6 +57,9 @@ export class LineSeries extends PlotItem {
             this._yAxisElm = this._rootElm?.append('g')
                 .classed('axis-container y-axis', true)
                 .call(this._yAxisLeft)
+
+            this._gridElm = this._rootElm?.append('g')
+                .classed('grid-container', true)
         }
     }
     public override updateLayout(area: Rect): void {
@@ -79,6 +83,27 @@ export class LineSeries extends PlotItem {
                         .attr('cy', d => this.yPoint(d, area))
                     ,
                 )
+        }
+        if (this._gridElm) {
+            this._gridElm.selectAll('.v-line')
+                .data(this._xScale.ticks())
+                .join('line')
+                .classed('v-line grid-line', true)
+                .attr('x1', d => this._xScale(d))
+                .attr('x2', d => this._xScale(d))
+                .attr('y1', area.top)
+                .attr('y2', area.bottom)
+
+            this._gridElm.selectAll('.h-line')
+                .data(this._yScale.ticks(5).slice(1))
+                .join('line')
+                .classed('y-line grid-line', true)
+                .attr('x1', area.left)
+                .attr('x2', area.width)
+                .attr('y1', d => this._yScale(d) + 0.5)
+                .attr('y2', d => this._yScale(d) + 0.5)
+
+
         }
 
         // generate line
@@ -128,7 +153,10 @@ export class LineSeries extends PlotItem {
             .range(range)
 
         if ((this._options as ILineOptions)?.hackMoveThis) {
-            const xticks = this._xScale.ticks(2)
+            const xticks = this._xScale.ticks(10).slice(1)
+
+            console.log('x-tocks ', xticks)
+
             const yticks = this._yScale.ticks(5)
             // this._xAxisBottom.tickValues([1997, 1999, 2001, 2003, 2005, 2007])
             this._xAxisBottom.ticks(10)

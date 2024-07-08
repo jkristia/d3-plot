@@ -3,6 +3,7 @@ $color-title: rgb(245, 245, 245);
 $color-line-elm: rgb(126, 124, 173);
 $color-axis: gray;
 $color-axis-text: #a4a4a4;
+$color-gridline: rgba(128, 128, 128, 0.695);
 
 ::ng-deep .d3-container {
     font-family: sans-serif;
@@ -35,6 +36,11 @@ $color-axis-text: #a4a4a4;
             stroke: transparent;
             fill: $color-axis-text;
         }
-
+    }
+    .grid-container {
+        .grid-line {
+            stroke: $color-gridline;
+            stroke-width: 0.5;
+        }
     }
 }
