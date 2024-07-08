@@ -1,4 +1,5 @@
 import { Margin } from "../util";
+import { Scale } from "./elements";
 import { PlotItem } from "./plot.item";
 
 export interface IPlotOptions {
@@ -24,6 +25,7 @@ export interface IPlotOptions {
         plots?: PlotItem[];
     }
     plots?: PlotItem[];
+    scales?: Scale[]; // scale will be updated before plots
 }
 
 export interface IPlotItemOptions {

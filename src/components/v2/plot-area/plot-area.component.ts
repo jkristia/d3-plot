@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
-import { PlotBaseComponent, PlotV2 } from '../../../plot';
+import { LinearScale, PlotBaseComponent, PlotV2 } from '../../../plot';
 import { DataSeries, dataCluster, dataCnstl, dataMmp, dataSmp } from './demo-data';
+import { AxisAndGrid } from '../../../plot/v2/elements/axis-and-grid';
 
 @Component({
 	selector: 'plot-area-v2',
@@ -17,15 +18,22 @@ export class PlotAreaV2Component {
 		// goal is to duplicate this chart
 		// https://js.devexpress.com/Angular/Demos/WidgetsGallery/Demo/Charts/Spline/MaterialPurpleDark/
 
+		const xyScale = new LinearScale();
+		xyScale.margin = { top: 10, left: 30, right: 5, bottom: 30 };
+
 		this.plot = new PlotV2({
 			cssClass: 'custom-1',
 			title: 'Architecture Share Over Time (Count)',
 
+			scales: [
+				xyScale,
+			],
 			plots: [
-				new DataSeries({ points: dataSmp() }, { cssClasses: ['smp'], showPointMarkers: true, hackMoveThis: true }),
-				new DataSeries({ points: dataMmp() }, { cssClasses: ['mmp'], showPointMarkers: true }),
-				new DataSeries({ points: dataCnstl() }, { cssClasses: ['cnstl'], showPointMarkers: true }),
-				new DataSeries({ points: dataCluster() }, { cssClasses: ['cluster'], showPointMarkers: true }),
+				new AxisAndGrid({ points: dataSmp() }).setScale(xyScale),
+				new DataSeries({ points: dataSmp() }, { cssClasses: ['smp'], showPointMarkers: true }).setScale(xyScale),
+				new DataSeries({ points: dataMmp() }, { cssClasses: ['mmp'], showPointMarkers: true }).setScale(xyScale),
+				new DataSeries({ points: dataCnstl() }, { cssClasses: ['cnstl'], showPointMarkers: true }).setScale(xyScale),
+				new DataSeries({ points: dataCluster() }, { cssClasses: ['cluster'], showPointMarkers: true }).setScale(xyScale),
 			]
 		})
 	}

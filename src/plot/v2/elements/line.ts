@@ -3,7 +3,7 @@ import { Subject } from "rxjs";
 import { D3Selection, Point, Rect } from "../../util";
 import { PlotItem } from "../plot.item";
 import { IPlotItemOptions } from "../plot.interface";
-
+import { Scale } from './scale';
 
 export interface ILineData {
     points: (Point | null)[];   // null will break the line
@@ -12,29 +12,28 @@ export interface ILineData {
 
 export interface ILineOptions extends IPlotItemOptions {
     showPointMarkers?: boolean;
-    hackMoveThis?: boolean;
 }
 
 export class LineSeries extends PlotItem {
 
+    private _pathElm?: D3Selection;
+    private _points?: D3Selection<Point | null>;
+    private _scale: Scale = new Scale();
+    protected showPointMarkers = false;
+
     constructor(protected _data: ILineData, options?: ILineOptions) {
         super(options)
-        // this._margin.left = 30;
-        // this._margin.bottom = 40;
-        this._margin = { top: 5, left: 30, right: 0, bottom: 25};
-        // this._margin = { top: 5, left: 0, right: 0, bottom: 5};
         if (_data.dataChanged) {
             _data.dataChanged.subscribe(() => this.updateLayout(this._area))
         }
         this.showPointMarkers = options?.showPointMarkers || false;
     }
 
-    private _pathElm?: D3Selection;
-    private _xAxisElm?: D3Selection;
-    private _yAxisElm?: D3Selection;
-    private _gridElm?: D3Selection;
-    private _points?: D3Selection<Point | null>;
-    protected showPointMarkers = false;
+    public setScale(scale: Scale): LineSeries {
+        this._scale = scale;
+        this._margin = scale.margin;
+        return this;
+    }
 
     public override initializeLayout(): void {
         super.initializeLayout()
@@ -50,17 +49,6 @@ export class LineSeries extends PlotItem {
                 .data(this._data.points)
         }
 
-        if ((this._options as ILineOptions)?.hackMoveThis) {
-            this._xAxisElm = this._rootElm?.append('g')
-                .classed('axis-container x-axis', true)
-                .call(this._xAxisBottom)
-            this._yAxisElm = this._rootElm?.append('g')
-                .classed('axis-container y-axis', true)
-                .call(this._yAxisLeft)
-
-            this._gridElm = this._rootElm?.append('g')
-                .classed('grid-container', true)
-        }
     }
     public override updateLayout(area: Rect): void {
         super.updateLayout(area);
@@ -68,8 +56,6 @@ export class LineSeries extends PlotItem {
             return
         }
         area = this._area;
-        this.updateScales(area);
-
         if (this.showPointMarkers) {
             this._points = this._rootElm!
                 .selectAll('.point-marker')
@@ -84,28 +70,6 @@ export class LineSeries extends PlotItem {
                     ,
                 )
         }
-        if (this._gridElm) {
-            this._gridElm.selectAll('.v-line')
-                .data(this._xScale.ticks())
-                .join('line')
-                .classed('v-line grid-line', true)
-                .attr('x1', d => this._xScale(d))
-                .attr('x2', d => this._xScale(d))
-                .attr('y1', area.top)
-                .attr('y2', area.bottom)
-
-            this._gridElm.selectAll('.h-line')
-                .data(this._yScale.ticks(5).slice(1))
-                .join('line')
-                .classed('y-line grid-line', true)
-                .attr('x1', area.left)
-                .attr('x2', area.width)
-                .attr('y1', d => this._yScale(d) + 0.5)
-                .attr('y2', d => this._yScale(d) + 0.5)
-
-
-        }
-
         // generate line
         const line = d3.line<Point | null>()
             .x((d) => this.xPoint(d, area))
@@ -117,7 +81,6 @@ export class LineSeries extends PlotItem {
             ;
         this._pathElm
             .attr('d', line(this._data.points))
-
     }
 
     private appendPoint(points: D3Selection<Point | null>): D3Selection<Point | null> {
@@ -127,54 +90,11 @@ export class LineSeries extends PlotItem {
             .attr('cx', d => d?.x as any)
             .attr('cy', d => d?.y as any)
     }
-
-
-    protected _xScale = d3.scaleLinear()
-    protected _yScale = d3.scaleLinear()
-    // https://d3js.org/d3-axis
-    protected _xAxisBottom = d3.axisBottom(this._xScale)
-    protected _yAxisLeft = d3.axisLeft(this._yScale)
-
-    protected updateScales(area: Rect) {
-        const maxX = d3.max(this._data.points, d => d?.x) || 0;
-        const maxY = d3.max(this._data.points, d => d?.y) || 0;
-        // x range
-        let range = [area.left, area.width]
-        let domain = [1996.9, 2007.1]
-        this._xScale
-            .domain(domain)
-            .range(range)
-
-        // y range
-        range = [area.height, area.top] // upside down, got from bottom to top 
-        domain = [0, 500]
-        this._yScale
-            .domain(domain)
-            .range(range)
-
-        if ((this._options as ILineOptions)?.hackMoveThis) {
-            const xticks = this._xScale.ticks(10).slice(1)
-
-            console.log('x-tocks ', xticks)
-
-            const yticks = this._yScale.ticks(5)
-            // this._xAxisBottom.tickValues([1997, 1999, 2001, 2003, 2005, 2007])
-            this._xAxisBottom.ticks(10)
-            this._xAxisElm?.call(this._xAxisBottom)
-            this._xAxisElm?.attr('transform', `translate(0, ${area.height})`)
-
-            this._yAxisLeft.ticks(5)
-            this._yAxisElm?.call(this._yAxisLeft)
-            this._yAxisElm?.attr('transform', `translate(${area.left}, ${0})`)
-
-        }
-
-    }
     private yPoint(point: Point | null, area: Rect): number {
-        return this._yScale(point?.y || 0);
+        return this._scale.yScale(point?.y || 0);
     }
     private xPoint(point: Point | null, area: Rect): number {
-        return this._xScale(point?.x || 0);
+        return this._scale.xScale(point?.x || 0);
     }
 
 }

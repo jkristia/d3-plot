@@ -143,6 +143,8 @@ export class PlotV2 {
         this._bottomArea.initializeLayout();
     }
     protected updateLayout() {
+        const r = new Rect({ left: 0, top: 0, width: this._centerArea.rect.width, height: this._centerArea.rect.height });
+        this._options.scales?.forEach(s => s.updateScales(r));
         this._topArea.updateLayout();
         this._leftArea.updateLayout();
         this._centerArea.updateLayout();
