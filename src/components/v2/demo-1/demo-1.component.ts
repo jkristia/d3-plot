@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { LinearScale, PlotBaseComponent, PlotV2 } from '../../../plot';
 import { DataSeries, dataCluster, dataCnstl, dataMmp, dataSmp } from './demo-data';
 import { AxisAndGrid } from '../../../plot/v2/elements/axis-and-grid';
+import { Point } from '../../../plot/util';
 
 @Component({
 	selector: 'demo-1',
@@ -22,6 +23,16 @@ export class Demo1PlotComponent {
 		xyScale.margin = { top: 10, left: 40, right: 5, bottom: 30 };
 		xyScale.xDomain(d => { return { min: 1996.9, max: 2007.1 } })
 		xyScale.yDomain(d => { return { min: 0, max: 500 } })
+		// xyScale.xDomain(d => { return { min: 0, max: 10 } })
+		// xyScale.yDomain(d => { return { min: 0, max: 5 } })
+
+		// const tmp: Point[] = [
+		// 	{ x: 0, y: 0 },
+		// 	{ x: 0, y: 5 },
+		// 	{ x: 10, y: 5 },
+		// 	{ x: 10, y: 0 },
+		// 	{ x: 0, y: 0 },
+		// ]
 
 		this.plot = new PlotV2({
 			cssClass: 'custom-1',
@@ -32,6 +43,7 @@ export class Demo1PlotComponent {
 			],
 			plots: [
 				new AxisAndGrid().setScale(xyScale),
+				// new DataSeries({ points: tmp }, { cssClasses: ['smp'], showPointMarkers: true }).setScale(xyScale),
 				new DataSeries({ points: dataSmp() }, { cssClasses: ['smp'], showPointMarkers: true }).setScale(xyScale),
 				new DataSeries({ points: dataMmp() }, { cssClasses: ['mmp'], showPointMarkers: true }).setScale(xyScale),
 				new DataSeries({ points: dataCnstl() }, { cssClasses: ['cnstl'], showPointMarkers: true }).setScale(xyScale),

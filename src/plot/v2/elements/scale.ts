@@ -21,11 +21,11 @@ export class Scale {
     public get yScale() {
         return this._y_Scale;
     }
-    public xDomain(fn: DomainFunc): Scale {
+    public xDomain(fn: DomainFunc): this {
         this._fnXDomain = fn;
         return this;
     }
-    public yDomain(fn: DomainFunc): Scale {
+    public yDomain(fn: DomainFunc): this {
         this._fnYDomain = fn;
         return this;
     }
