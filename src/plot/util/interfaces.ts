@@ -7,6 +7,7 @@ export type ValueFunc<T> = () => T;
 export type ValueOrFunc = number | ValueFunc<number>;
 
 export type AreaFunc = (area: Rect) => Rect;
+export type DomainFunc = (area: Rect) => { min: number, max: number };
 
 export interface Point {
     x: number;

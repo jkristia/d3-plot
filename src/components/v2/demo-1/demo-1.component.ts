@@ -19,7 +19,9 @@ export class Demo1PlotComponent {
 		// https://js.devexpress.com/Angular/Demos/WidgetsGallery/Demo/Charts/Spline/MaterialPurpleDark/
 
 		const xyScale = new LinearScale();
-		xyScale.margin = { top: 10, left: 30, right: 5, bottom: 30 };
+		xyScale.margin = { top: 10, left: 40, right: 5, bottom: 30 };
+		xyScale.xDomain(d => { return { min: 1996.9, max: 2007.1 } })
+		xyScale.yDomain(d => { return { min: 0, max: 500 } })
 
 		this.plot = new PlotV2({
 			cssClass: 'custom-1',
