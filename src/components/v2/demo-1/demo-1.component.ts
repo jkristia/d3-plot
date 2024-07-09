@@ -4,15 +4,15 @@ import { DataSeries, dataCluster, dataCnstl, dataMmp, dataSmp } from './demo-dat
 import { AxisAndGrid } from '../../../plot/v2/elements/axis-and-grid';
 
 @Component({
-	selector: 'plot-area-v2',
+	selector: 'demo-1',
 	standalone: true,
 	imports: [
 		PlotBaseComponent
 	],
-	templateUrl: './plot-area.component.html',
-	styleUrl: './plot-area.component.scss'
+	templateUrl: './demo-1.component.html',
+	styleUrl: './demo-1.component.scss'
 })
-export class PlotAreaV2Component {
+export class Demo1PlotComponent {
 	public plot: PlotV2
 	constructor() {
 		// goal is to duplicate this chart
