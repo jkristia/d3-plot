@@ -1,78 +1,25 @@
 import * as d3 from 'd3';
 import { Rect, D3Selection, Size } from '../util';
 import { IPlotOptions } from './plot.interface';
-import { PlotItem } from './plot.item';
 import { TitleItem } from './elements';
-
-class Area {
-    public root?: D3Selection;
-    public background: D3Selection;
-    public rect: Rect = new Rect();
-    public plots: PlotItem[] = [];
-    // allow initialize even if rect is empty, this is for the center / main plot area
-    public forceInitialize = false;
-    constructor(root?: D3Selection) {
-        this.root = root;
-        this.background = d3.create('svg:rect')
-        if (root) {
-            root.append(() => this.background.node())
-                .classed('plot-background', true)
-        }
-    }
-    public applyRect(): D3Selection {
-        this.root!
-            .attr('x', this.rect.left)
-            .attr('y', this.rect.top)
-            .attr('width', this.rect.width)
-            .attr('height', this.rect.height)
-
-        this.background
-            .attr('x', 0)
-            .attr('y', 0)
-            .attr('width', this.rect.width)
-            .attr('height', this.rect.height)
-
-        return this.root!;
-    }
-    public initializeLayout() {
-        if (this.forceInitialize === false && this.rect.isEmpty) {
-            return;
-        }
-        this.plots.forEach(p => {
-            p.initializeLayout()
-            if (p.plotElement) {
-                this.root?.append(() => p.plotElement!.node())
-            }
-        });
-    }
-    public updateLayout() {
-        if (this.rect.isEmpty) {
-            return;
-        }
-        // area passed to plot is the area of canvas, meaning sarts at (0,0)
-        const r = new Rect({ left: 0, top: 0, width: this.rect.width, height: this.rect.height });
-        (this.plots || []).forEach(p => {
-            p.updateLayout(r)
-        });
-    }
-}
+import { PlotArea } from './plot.area';
 
 export class PlotV2 {
 
     private _size: Size = { width: 0, height: 0 };
     private _root!: D3Selection;
     private _rootElm?: HTMLElement | null = null;
-    private _topArea: Area = new Area();
-    private _leftArea: Area = new Area();
-    private _rightArea: Area = new Area();
-    private _bottomArea: Area = new Area();
-    private _centerArea: Area = new Area();
+    private _topArea: PlotArea = new PlotArea();
+    private _leftArea: PlotArea = new PlotArea();
+    private _rightArea: PlotArea = new PlotArea();
+    private _bottomArea: PlotArea = new PlotArea();
+    private _centerArea: PlotArea = new PlotArea();
 
-    public get top(): Area { return this._topArea; }
-    public get left(): Area { return this._leftArea; }
-    public get right(): Area { return this._rightArea; }
-    public get bottom(): Area { return this._bottomArea; }
-    public get center(): Area { return this._centerArea; }
+    public get top(): PlotArea { return this._topArea; }
+    public get left(): PlotArea { return this._leftArea; }
+    public get right(): PlotArea { return this._rightArea; }
+    public get bottom(): PlotArea { return this._bottomArea; }
+    public get center(): PlotArea { return this._centerArea; }
 
     constructor(
         private _options: IPlotOptions
@@ -86,22 +33,22 @@ export class PlotV2 {
             }
         }
         if (_options.titleArea?.height) {
-            this._topArea = new Area(this._root.append('svg:svg').classed('title-area', true));
+            this._topArea = new PlotArea(this._root.append('svg:svg').classed('title-area', true));
             this._topArea.plots = _options.titleArea.plots || [];
         }
         if (_options.leftArea?.width) {
-            this._leftArea = new Area(this._root.append('svg:svg').classed('left-area', true));
+            this._leftArea = new PlotArea(this._root.append('svg:svg').classed('left-area', true));
             this._leftArea.plots = _options.leftArea.plots || [];
         }
         if (_options.rightArea?.width) {
-            this._rightArea = new Area(this._root.append('svg:svg').classed('right-area', true));
+            this._rightArea = new PlotArea(this._root.append('svg:svg').classed('right-area', true));
             this._rightArea.plots = _options.rightArea.plots || [];
         }
         if (_options.footerArea?.height) {
-            this._bottomArea = new Area(this._root.append('svg:svg').classed('footer-area', true));
+            this._bottomArea = new PlotArea(this._root.append('svg:svg').classed('footer-area', true));
             this._bottomArea.plots = _options.footerArea.plots || [];
         }
-        this._centerArea = new Area(this._root.append('svg:svg').classed('plot-area', true));
+        this._centerArea = new PlotArea(this._root.append('svg:svg').classed('plot-area', true));
         this._centerArea.forceInitialize = true;
         this._centerArea.plots = _options.plots || [];
     }

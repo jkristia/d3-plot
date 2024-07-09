@@ -12,7 +12,6 @@ export class AxisAndGrid extends PlotItem {
     private _xAxisElm?: D3Selection;
     private _yAxisElm?: D3Selection;
     private _gridElm?: D3Selection;
-    private _scale: Scale = new Scale();
     // https://d3js.org/d3-axis
     protected _xAxisBottom: d3.Axis<any> | null = null;
     protected _yAxisLeft: d3.Axis<any> | null = null;
@@ -21,9 +20,8 @@ export class AxisAndGrid extends PlotItem {
         super(options)
     }
 
-    public setScale(scale: Scale): AxisAndGrid {
-        this._scale = scale;
-        this._margin = scale.margin;
+    public override setScale(scale: Scale): this {
+        super.setScale(scale);
         this._xAxisBottom = d3.axisBottom(this._scale.xScale);
         this._yAxisLeft = d3.axisLeft(this._scale.yScale);
         return this;

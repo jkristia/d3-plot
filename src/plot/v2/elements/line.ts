@@ -18,7 +18,6 @@ export class LineSeries extends PlotItem {
 
     private _pathElm?: D3Selection;
     private _points?: D3Selection<Point | null>;
-    private _scale: Scale = new Scale();
     protected showPointMarkers = false;
 
     constructor(protected _data: ILineData, options?: ILineOptions) {
@@ -27,12 +26,6 @@ export class LineSeries extends PlotItem {
             _data.dataChanged.subscribe(() => this.updateLayout(this._area))
         }
         this.showPointMarkers = options?.showPointMarkers || false;
-    }
-
-    public setScale(scale: Scale): LineSeries {
-        this._scale = scale;
-        this._margin = scale.margin;
-        return this;
     }
 
     public override initializeLayout(): void {
@@ -96,5 +89,4 @@ export class LineSeries extends PlotItem {
     private xPoint(point: Point | null, area: Rect): number {
         return this._scale.xScale(point?.x || 0);
     }
-
 }

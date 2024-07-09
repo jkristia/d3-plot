@@ -2,7 +2,7 @@ import * as d3 from 'd3';
 import { D3Selection, Rect } from '../util';
 import { PlotV2 } from './plot';
 import { PlotItem } from './plot.item';
-import { LineSeries, TitleItem } from './elements';
+import { LineSeries, Scale, TitleItem } from './elements';
 
 class UnitItem extends PlotItem {
     get r(): Rect {
@@ -157,15 +157,24 @@ describe('plot options', () => {
         expect(elm?.innerHTML).toBe('use default title')
         expect(p.top.rect.toString()).toEqual('[top: 0, left: 0, width: 0, height: 40]')
     })
+    test('scale update size', () => {
+        let scale = new Scale();
+        scale.margin = { top: 5, left: 5, right: 5, bottom: 5 };
+        expect(scale.area.toString()).toBe('[empty]')
+        let p = new PlotV2({ scales: [ scale ], })
+        .attach(root)
+        .size({ width: 100, height: 100 });
+        expect(scale.area.toString()).toBe('[top: 5, left: 5, width: 90, height: 90]')
+    })
     test('single line elm', () => {
+        let scale = new Scale();
         let p = new PlotV2({
+            scales: [ scale ],
             plots: [new LineSeries({ points: [{ x: 0, y: 0 }, { x: 10, y: 10 }] })]
         })
         .attach(root)
-        .size({ width: 600, height: 400 });
+        .size({ width: 100, height: 100 });
         let elm = root.querySelector('.line-series-elm');
-        // fix this when scale is moved out from lineseries
-        // expect(elm?.innerHTML).toBe('hey')
-
+        expect(elm?.innerHTML).toBe('<path fill="none" d="M0,0L10,10"></path>');
     })
 })

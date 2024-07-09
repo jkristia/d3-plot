@@ -1,6 +1,7 @@
 import * as d3 from 'd3'
 import { AreaFunc, D3Selection, Margin, Rect, Util, ValueFunc } from "../util";
 import { IPlotItemOptions } from "./plot.interface";
+import { Scale } from './elements';
 
 export class PlotItem {
 
@@ -8,11 +9,18 @@ export class PlotItem {
     protected _area: Rect = new Rect();
     private _areaFn?: AreaFunc;
     protected _rootElm: D3Selection | null = null;
+    protected _scale: Scale = new Scale();
 
     public get plotElement(): D3Selection | null {
         return this._rootElm;
     }
     constructor(protected _options?: IPlotItemOptions) {
+    }
+
+    public setScale(scale: Scale): this {
+        this._scale = scale;
+        this._margin = scale.margin;
+        return this;
     }
 
     public initializeLayout(): void {

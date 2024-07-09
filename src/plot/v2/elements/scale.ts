@@ -12,9 +12,14 @@ export class Scale {
     protected _y_Scale = d3.scaleLinear();
     protected _fnXDomain: DomainFunc | null = null;
     protected _fnYDomain: DomainFunc | null = null;
+    protected _area: Rect = new Rect();
 
     public margin: Margin = { top: 0, left: 0, right: 0, bottom: 0 };
 
+    public get area(): Rect {
+        return this._area;
+
+    }
     public get xScale() {
         return this._x_Scale;
     }
@@ -32,6 +37,7 @@ export class Scale {
 
     public updateScales(area: Rect) {
         area = area.adjustMargin(this.margin);
+        this._area = area;
         // x range
         let range = [area.left, area.right]
         let domain = [area.left, area.right];
