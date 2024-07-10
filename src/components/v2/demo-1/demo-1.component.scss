@@ -13,8 +13,8 @@ $color-line-elm-cnstl: rgb(123, 86, 133);
 
     ::ng-deep .plot-elm.line-series-elm {
         stroke-width: 2px;
-        &:hover {
-            stroke-width: 4px;
+        &.mouse-hover {
+            stroke-width: 6px;
             circle {
                 r: 6;
             }

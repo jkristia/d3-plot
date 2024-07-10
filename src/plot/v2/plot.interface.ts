@@ -29,6 +29,15 @@ export interface IPlotOptions {
 }
 
 export interface IPlotItemOptions {
+    id?: string;
     margin?: Margin;
     cssClasses?: string[];
+}
+
+export interface IPlotItem {
+    readonly id?: string;
+}
+export interface IPlotOwner {
+    setHoverItem(item: IPlotItem): void;
+    clearHoverItem(item: IPlotItem): void;
 }

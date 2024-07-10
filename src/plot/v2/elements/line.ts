@@ -41,7 +41,6 @@ export class LineSeries extends PlotItem {
                 .selectAll('.point-marker')
                 .data(this._data.points)
         }
-
     }
     public override updateLayout(area: Rect): void {
         super.updateLayout(area);
