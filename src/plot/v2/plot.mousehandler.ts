@@ -3,48 +3,48 @@ import { Rect, D3Selection } from '../util';
 import { PlotItem } from './plot.item';
 import { IPlotItem, IPlotOwner } from './plot.interface';
 import { Scale } from './elements';
+import { CrossCursor, ICursor } from './plot.cross-cursor';
+
 
 export class PlotMouseHandler implements IPlotOwner {
 
-	private _cursor?: D3Selection;
-	private _cursorText?: D3Selection;
+	private _container?: D3Selection;
 	private _rootElm?: D3Selection;
+	private _cursor?: ICursor;
 	protected _scale: Scale = new Scale();
 
 	public setScale(scale: Scale): this {
 		this._scale = scale;
 		return this;
 	}
+	public setCursor(cursor: ICursor): this {
+		this._cursor = cursor;
+		return this;
+	}
 	public initializeLayout(rootElm: D3Selection) {
 		// ---
 		this._rootElm = rootElm;
-		this._cursor = this._rootElm?.append('g').classed('cursor', true)
-		this._cursorText = this._cursor.append('text').classed('cursor-text', true)
+		this._container = this._rootElm?.append('g').classed('cursor', true)
+		this._cursor?.initialize(this._container);
 		this._rootElm?.call(this.d3zoom)
 			.on('mouseenter', e => this.showCursor())
 			.on('mouseleave', e => this.hideCursor())
 			.on('mousemove', e => this.handleMouseMove(e))
 	}
-    public updateLayout(area: Rect): void {
-    }
+	public updateLayout(area: Rect): void {
+	}
 	public setHoverItem(item: IPlotItem): void {
 		console.log(`set hover id-${item.id}`);
 	}
 	public clearHoverItem(item: IPlotItem): void {
 		console.log(`clear hover id-${item.id}`);
 	}
-
-
 	private hideCursor() {
-		this._cursor?.classed('hidden', true);
-		// this.cursorIndicator.classed('hidden', true);
-		// this.cursorIndicator.attr('transform', 'translate(-100, 0)');
+		this._container?.classed('hidden', true);
 	}
 	private showCursor() {
-		this._cursor?.classed('hidden', false)
-		// this.cursorIndicator.classed('hidden', false)
+		this._container?.classed('hidden', false)
 	}
-
 
 	private currentMousePosition(anyEvent: any): [number, number] {
 		const elm = this._rootElm!;
@@ -85,28 +85,12 @@ export class PlotMouseHandler implements IPlotOwner {
 		}
 	}
 
-
 	private handleMouseMove(e: any) {
-		const elm = this._rootElm;
-		const txt = this._cursorText;
-		if (!txt) {
-			return;
-		}
 		const coordinates = this.currentMousePosition(e)
 		const xPos = coordinates[0];
 		const yPos = coordinates[1];
-		const xValue = this._scale.xScale.invert(xPos)
-		const yValue = this._scale.yScale.invert(yPos)
-		txt
-			.attr('x', xPos)
-			.attr('y', yPos - 2)
-			.text(d => `(${xValue.toFixed(0)}, ${yValue.toFixed()}}`)
-		// this.cursorIndicator
-		// 	.attr('transform', `translate(${xPos}, 0)`);
-		// this.updateTooltipPosition(e)
+		this._cursor?.updatePosition(this._scale, xPos, yPos, this._scale.area);
 	}
-
-
 
 	private zoomHandleWheelPan = (e: WheelEvent) => {
 		const direction = e.deltaY > 0 ? -1 : 1
@@ -168,29 +152,29 @@ export class PlotMouseHandler implements IPlotOwner {
 		.on('zoom', this.zoomHandleWheel)
 
 
-		// private setHover(e: any, elm: SVGElement/*, data: CompactedWorkloadNode*/) {
-		//     // console.log('set hover')
-		//     d3.select(elm).transition()
-		//         .duration(50)
-		//         .attr('opacity', '.70');
-		//     // if (!this.tooltip) {
-		//     //     this.tooltip = this.root.append('div')
-		//     //         .classed('tooltip', true)
-		//     // }
-	
-		//     // this.tooltip.style('opacity', 1)
-		//     // this.tooltip.text(`Duration: ${data.durationMicros} us`)
-		//     // this.updateTooltipPosition(e)
-		// }
-		// private clearHover(elm: SVGElement) {
-		//     // console.log('clear hover')
-		//     d3.select(elm).transition()
-		//         .duration(50)
-		//         .attr('opacity', '1');
-		//     // this.tooltip?.style('opacity', 0)
-	
-		//     // this.tooltip = null;
-		//     // this.root.select('.tooltip').remove()
-		// }
+	// private setHover(e: any, elm: SVGElement/*, data: CompactedWorkloadNode*/) {
+	//     // console.log('set hover')
+	//     d3.select(elm).transition()
+	//         .duration(50)
+	//         .attr('opacity', '.70');
+	//     // if (!this.tooltip) {
+	//     //     this.tooltip = this.root.append('div')
+	//     //         .classed('tooltip', true)
+	//     // }
+
+	//     // this.tooltip.style('opacity', 1)
+	//     // this.tooltip.text(`Duration: ${data.durationMicros} us`)
+	//     // this.updateTooltipPosition(e)
+	// }
+	// private clearHover(elm: SVGElement) {
+	//     // console.log('clear hover')
+	//     d3.select(elm).transition()
+	//         .duration(50)
+	//         .attr('opacity', '1');
+	//     // this.tooltip?.style('opacity', 0)
+
+	//     // this.tooltip = null;
+	//     // this.root.select('.tooltip').remove()
+	// }
 
 }

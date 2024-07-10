@@ -44,6 +44,7 @@ export class PlotArea implements IPlotOwner {
 		if (this.forceInitialize === false && this.rect.isEmpty) {
 			return;
 		}
+		// this._mouseHandler?.initializeLayout(this.rootElm!);
 		this.plots.forEach(p => {
 			p.setOwner(this);
 			p.initializeLayout();

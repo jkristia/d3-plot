@@ -5,6 +5,9 @@ $color-axis: gray;
 $color-axis-text: #a4a4a4;
 $color-gridline: rgba(128, 128, 128, 0.695);
 
+$color-cursor: #95959580;
+$color-cursor-text: #b4b4b4;
+
 ::ng-deep .d3-container {
     font-family: sans-serif;
     background-color: $color-background;
@@ -44,16 +47,20 @@ $color-gridline: rgba(128, 128, 128, 0.695);
         }
     }
     .cursor {
+        pointer-events: none;
         &.hidden {
             opacity: 0;
         }
         .cursor-text {
             pointer-events: none;
             stroke: transparent;
-            // fill: $color-axis-text;
-            fill: orange;
+            fill: $color-cursor-text;
             text-anchor: middle;
             font-size: 10px;
+        }
+        .cross-hair {
+            stroke: $color-cursor;
+            stroke-dasharray: 4;
         }
     }
 }

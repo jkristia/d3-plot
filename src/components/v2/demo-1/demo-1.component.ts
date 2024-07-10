@@ -4,6 +4,7 @@ import { DataSeries, dataCluster, dataCnstl, dataMmp, dataSmp } from './demo-dat
 import { AxisAndGrid } from '../../../plot/v2/elements/axis-and-grid';
 import { Point } from '../../../plot/util';
 import { PlotMouseHandler } from '../../../plot/v2/plot.mousehandler';
+import { CrossCursor } from '../../../plot/v2/plot.cross-cursor';
 
 @Component({
 	selector: 'demo-1',
@@ -34,7 +35,7 @@ export class Demo1PlotComponent {
 		// 	{ x: 10, y: 0 },
 		// 	{ x: 0, y: 0 },
 		// ]
-		const mouseHandler = new PlotMouseHandler();
+		const mouseHandler = new PlotMouseHandler().setCursor(new CrossCursor());
 
 		this.plot = new PlotV2({
 			cssClass: 'custom-1',
