@@ -43,15 +43,17 @@ $color-gridline: rgba(128, 128, 128, 0.695);
             stroke-width: 0.5;
         }
     }
-    .cursor-text {
+    .cursor {
         &.hidden {
             opacity: 0;
         }
-        pointer-events: none;
-        stroke: transparent;
-        // fill: $color-axis-text;
-        fill: orange;
-        text-anchor: middle;
-        font-size: 10px;
+        .cursor-text {
+            pointer-events: none;
+            stroke: transparent;
+            // fill: $color-axis-text;
+            fill: orange;
+            text-anchor: middle;
+            font-size: 10px;
+        }
     }
 }

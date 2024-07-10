@@ -3,6 +3,7 @@ import { LinearScale, PlotBaseComponent, PlotV2 } from '../../../plot';
 import { DataSeries, dataCluster, dataCnstl, dataMmp, dataSmp } from './demo-data';
 import { AxisAndGrid } from '../../../plot/v2/elements/axis-and-grid';
 import { Point } from '../../../plot/util';
+import { PlotMouseHandler } from '../../../plot/v2/plot.mousehandler';
 
 @Component({
 	selector: 'demo-1',
@@ -33,6 +34,7 @@ export class Demo1PlotComponent {
 		// 	{ x: 10, y: 0 },
 		// 	{ x: 0, y: 0 },
 		// ]
+		const mouseHandler = new PlotMouseHandler();
 
 		this.plot = new PlotV2({
 			cssClass: 'custom-1',
@@ -50,6 +52,6 @@ export class Demo1PlotComponent {
 				new DataSeries({ points: dataCluster() }, { cssClasses: ['cluster'], id: '#4', showPointMarkers: true }).setScale(xyScale),
 			]
 		})
-		this.plot.center.setScale(xyScale);
+		this.plot.center.setScale(xyScale).setMouseHandler(mouseHandler);
 	}
 }
