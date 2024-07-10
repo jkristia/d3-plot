@@ -37,7 +37,7 @@ export class CrossCursor implements ICursor {
 		const xValue = scale.xScale.invert(xPos);
 		const yValue = scale.yScale.invert(yPos);
 		this._cursorText!
-			.attr('x', adjust(xPos + 32))
+			.attr('x', adjust(xPos + 5))
 			.attr('y', adjust(yPos - 8))
 			.text(d => `(${xValue.toFixed(2)}, ${yValue.toFixed(2)}}`);
 	}

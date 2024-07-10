@@ -55,7 +55,7 @@ $color-cursor-text: #b4b4b4;
             pointer-events: none;
             stroke: transparent;
             fill: $color-cursor-text;
-            text-anchor: middle;
+            text-anchor: start;
             font-size: 10px;
         }
         .cross-hair {
