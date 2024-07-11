@@ -49,7 +49,11 @@ export class PlotV1 implements IPlotV1 {
         private _rootElm?: HTMLElement | null,
         private _options?: IPlotOptionsV1
     ) {
-        this._root = d3.create('svg:svg');
+        this._root = d3.create('svg:svg')
+            // https://stackoverflow.com/questions/34229483/why-is-my-svg-line-blurry-or-2px-in-height-when-i-specified-1px?newreg=4c09f0fa159d4550a88d8f189870e6e3
+            .attr('transform', 'translate(-0.5 -0.5)')
+            // .attr('shape-rendering', 'crispEdges')
+            ;
         this._plots = _options?.plots || [];
         this._plots.forEach(p => p.setPlot(this));
         this.size({

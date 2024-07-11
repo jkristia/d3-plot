@@ -24,7 +24,10 @@ export class PlotV2 {
     constructor(
         private _options: IPlotOptions
     ) {
-        this._root = d3.create('svg:svg').classed(`d3-plot ${_options.cssClass || ''}`, true);
+        this._root = d3.create('svg:svg')
+            // https://stackoverflow.com/questions/34229483/why-is-my-svg-line-blurry-or-2px-in-height-when-i-specified-1px?newreg=4c09f0fa159d4550a88d8f189870e6e3
+            .attr('transform', 'translate(-0.5 -0.5)')
+            .classed(`d3-plot ${_options.cssClass || ''}`, true);
         // use default title if not set
         if (_options.title && !_options.titleArea?.height) {
             _options.titleArea = {

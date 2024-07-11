@@ -65,7 +65,7 @@ export class Rect {
             height: this.height + amount * 2,
         });
     }
-    public offset(amount: number = 0.5): Rect {
+    public offset(amount: number = 0): Rect {
         return new Rect({
             left: this.left + amount,
             top: this.top - amount,

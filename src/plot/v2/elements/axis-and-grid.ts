@@ -64,8 +64,8 @@ export class AxisAndGrid extends PlotItem {
                 .classed('y-line grid-line', true)
                 .attr('x1', area.left)
                 .attr('x2', area.right)
-                .attr('y1', d => this._scale.yScale(d) + 0.5)
-                .attr('y2', d => this._scale.yScale(d) + 0.5)
+                .attr('y1', d => this._scale.yScale(d))
+                .attr('y2', d => this._scale.yScale(d))
         }
     }
 
