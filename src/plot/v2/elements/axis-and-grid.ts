@@ -73,12 +73,12 @@ export class AxisAndGrid extends PlotItem {
         if (this._xAxisBottom) {
             this._xAxisBottom.ticks(10).tickFormat(d => d.toString())
             this._xAxisElm?.call(this._xAxisBottom)
-            this._xAxisElm?.attr('transform', `translate(0, ${area.height})`)
+            this._xAxisElm?.attr('transform', `translate(-0.5, ${area.height + 0.5})`)
         }
         if (this._yAxisLeft) {
             this._yAxisLeft.ticks(5)
             this._yAxisElm?.call(this._yAxisLeft)
-            this._yAxisElm?.attr('transform', `translate(${area.left}, ${0})`)
+            this._yAxisElm?.attr('transform', `translate(${area.left - 0.5}, ${-0.5})`)
         }
     }
 }
