@@ -13,6 +13,9 @@ export class PlotMouseHandler implements IPlotOwner {
 	private _cursor?: ICursor;
 	protected _scale: Scale = new Scale();
 
+    public get scale(): Scale {
+        return this._scale;
+    }
 	public setScale(scale: Scale): this {
 		this._scale = scale;
 		return this;

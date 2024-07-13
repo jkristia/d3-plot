@@ -5,11 +5,10 @@ import { Scale } from './elements';
 
 export class PlotItem implements IPlotItem {
 
-    protected _margin: Margin = { left: 5, top: 5, right: 5, bottom: 5 };
     protected _area: Rect = new Rect();
     private _areaFn?: AreaFunc;
     protected _rootElm: D3Selection | null = null;
-    protected _scale: Scale = new Scale();
+    protected _scale_?: Scale;
     protected _owner?: IPlotOwner;
 
     public get id(): string | undefined {
@@ -18,14 +17,19 @@ export class PlotItem implements IPlotItem {
     public get plotElement(): D3Selection | null {
         return this._rootElm;
     }
+    public get scale(): Scale {
+        return this._scale_ || this._owner?.scale || new Scale()
+    }
+    public get margin(): Margin {
+        return this.scale?.margin || { left: 5, top: 5, right: 5, bottom: 5 }
+    }
     constructor(protected _options?: IPlotItemOptions) {
     }
     public setOwner(owner: IPlotOwner) {
         this._owner = owner;
     }
     public setScale(scale: Scale): this {
-        this._scale = scale;
-        this._margin = scale.margin;
+        this._scale_ = scale;
         return this;
     }
     public initializeLayout(): void {
@@ -48,7 +52,7 @@ export class PlotItem implements IPlotItem {
             })
     }
     public updateLayout(area: Rect): void {
-        this._area = area.adjustMargin(this._margin);
+        this._area = area.adjustMargin(this.margin);
     }
 
     public area(v: AreaFunc): PlotItem {

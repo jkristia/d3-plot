@@ -83,9 +83,9 @@ export class LineSeries extends PlotItem {
             .attr('cy', d => d?.y as any)
     }
     private yPoint(point: Point | null, area: Rect): number {
-        return this._scale.yScale(point?.y || 0);
+        return this.scale.yScale(point?.y || 0);
     }
     private xPoint(point: Point | null, area: Rect): number {
-        return this._scale.xScale(point?.x || 0);
+        return this.scale.xScale(point?.x || 0);
     }
 }

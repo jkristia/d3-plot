@@ -34,6 +34,10 @@ export class Scale {
         this._fnYDomain = fn;
         return this;
     }
+    public setMargin(margin: Margin): this {
+        this.margin = margin;
+        return this;
+    }
 
     public updateScales(area: Rect) {
         area = area.adjustMargin(this.margin);

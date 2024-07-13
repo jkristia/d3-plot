@@ -113,16 +113,24 @@ describe('plot areas', () => {
         expect((plot.bottom.plots[0] as UnitItem).initcount).toBe(1)
     })
     test('item initialize - size', () => {
+        const scale = new Scale().setMargin({ top: 5, left: 5, right: 5, bottom: 5 }) 
         let plot = new PlotV2({
             // check the item is using the adjusted area rect, set by the callbacl
             leftArea: { width: 300, plots: [new UnitItem().area(d => d.inflate(-1))] },
             // this item will use the rect passed in update layout
-            plots: [new UnitItem()]
+            scales: [scale],
+            plots: [
+                new UnitItem(), // item uses owner scale
+                new UnitItem().setScale(new Scale().setMargin({ left: 2, top: 2, right: 2, bottom: 2})), // item uses own scale
+            ]
         })
+        plot.left.setScale(scale)
+        plot.center.setScale(scale)
         plot.attach(root);
         plot.size({ width: 600, height: 400 })
         expect((plot.left.plots[0] as UnitItem).r.toString()).toBe('[top: 6, left: 6, width: 288, height: 388]')
         expect((plot.center.plots[0] as UnitItem).r.toString()).toBe('[top: 5, left: 5, width: 290, height: 390]')
+        expect((plot.center.plots[1] as UnitItem).r.toString()).toBe('[top: 2, left: 2, width: 296, height: 396]')
     })
 })
 

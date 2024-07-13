@@ -22,13 +22,15 @@ export class AxisAndGrid extends PlotItem {
 
     public override setScale(scale: Scale): this {
         super.setScale(scale);
-        this._xAxisBottom = d3.axisBottom(this._scale.xScale);
-        this._yAxisLeft = d3.axisLeft(this._scale.yScale);
+        this._xAxisBottom = d3.axisBottom(scale.xScale);
+        this._yAxisLeft = d3.axisLeft(scale.yScale);
         return this;
     }
 
     public override initializeLayout(): void {
         super.initializeLayout()
+        this._xAxisBottom = d3.axisBottom(this.scale.xScale);
+        this._yAxisLeft = d3.axisLeft(this.scale.yScale);
 
         this._xAxisElm = this._rootElm?.append('g')
             .classed('axis-container x-axis', true)
@@ -50,22 +52,22 @@ export class AxisAndGrid extends PlotItem {
     protected renderGrid(area: Rect) {
         if (this._gridElm) {
             this._gridElm.selectAll('.v-line')
-                .data(this._scale.xScale.ticks())
+                .data(this.scale.xScale.ticks())
                 .join('line')
                 .classed('v-line grid-line', true)
-                .attr('x1', d => this._scale.xScale(d))
-                .attr('x2', d => this._scale.xScale(d))
+                .attr('x1', d => this.scale.xScale(d))
+                .attr('x2', d => this.scale.xScale(d))
                 .attr('y1', area.top)
                 .attr('y2', area.height)
 
             this._gridElm.selectAll('.h-line')
-                .data(this._scale.yScale.ticks(5).slice(1))
+                .data(this.scale.yScale.ticks(5).slice(1))
                 .join('line')
                 .classed('y-line grid-line', true)
                 .attr('x1', area.left)
                 .attr('x2', area.right)
-                .attr('y1', d => this._scale.yScale(d))
-                .attr('y2', d => this._scale.yScale(d))
+                .attr('y1', d => this.scale.yScale(d))
+                .attr('y2', d => this.scale.yScale(d))
         }
     }
 

@@ -45,12 +45,12 @@ export class Demo1PlotComponent {
 				xyScale,
 			],
 			plots: [
-				new AxisAndGrid().setScale(xyScale),
+				new AxisAndGrid(),
 				// new DataSeries({ points: tmp }, { cssClasses: ['smp'], showPointMarkers: true }).setScale(xyScale),
-				new DataSeries({ points: dataSmp() }, { cssClasses: ['smp'], id: '#1', showPointMarkers: true }).setScale(xyScale),
-				new DataSeries({ points: dataMmp() }, { cssClasses: ['mmp'], id: '#2', showPointMarkers: true }).setScale(xyScale),
-				new DataSeries({ points: dataCnstl() }, { cssClasses: ['cnstl'], id: '#3', showPointMarkers: true }).setScale(xyScale),
-				new DataSeries({ points: dataCluster() }, { cssClasses: ['cluster'], id: '#4', showPointMarkers: true }).setScale(xyScale),
+				new DataSeries({ points: dataSmp() }, { cssClasses: ['smp'], id: '#1', showPointMarkers: true }),
+				new DataSeries({ points: dataMmp() }, { cssClasses: ['mmp'], id: '#2', showPointMarkers: true }),
+				new DataSeries({ points: dataCnstl() }, { cssClasses: ['cnstl'], id: '#3', showPointMarkers: true }),
+				new DataSeries({ points: dataCluster() }, { cssClasses: ['cluster'], id: '#4', showPointMarkers: true }),
 			]
 		})
 		this.plot.center.setScale(xyScale).setMouseHandler(mouseHandler);

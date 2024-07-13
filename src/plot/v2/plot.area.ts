@@ -17,6 +17,9 @@ export class PlotArea implements IPlotOwner {
 	public plots: PlotItem[] = [];
 	// allow initialize even if rect is empty, this is for the center / main plot area
 	public forceInitialize = false;
+	public get scale(): Scale {
+		return this._scale;
+	}
 	constructor(root?: D3Selection) {
 		this.rootElm = root;
 		this.background = d3.create('svg:rect')

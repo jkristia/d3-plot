@@ -15,7 +15,7 @@ export class TitleItem extends PlotItem {
             .attr('text-anchor', 'start')
     }
     public override updateLayout(area: Rect) {
-        const r = area.adjustMargin(this._margin)
+        const r = area.adjustMargin(this.margin)
         this._rootElm?.attr('transform', `translate(${r.left}, ${r.center.y})`)
     }
 }

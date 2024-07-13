@@ -38,6 +38,7 @@ export interface IPlotItem {
     readonly id?: string;
 }
 export interface IPlotOwner {
+    scale: Scale;
     setHoverItem(item: IPlotItem): void;
     clearHoverItem(item: IPlotItem): void;
 }
