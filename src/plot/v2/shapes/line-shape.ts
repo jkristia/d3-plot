@@ -25,8 +25,6 @@ export class LineShape extends Shape {
 		this._parentElm = parentElm;
 		this._elm = this._parentElm.append('path')
 		this.setOptionsToElm(this._elm);
-
-
 		return this;
 	}
 	public override updateLayout(area: Rect): this {

@@ -34,55 +34,66 @@ export class DemoShapePlotComponent {
 				scale,
 			],
 			plots: [
-				// new LineSeries({ points: tmp }, { cssClasses: ['smp'], showPointMarkers: 'always' }),
+				new LineSeries({ points: tmp }, { cssClasses: ['smp'], showPointMarkers: 'always' }),
 				new ShapePlot([
-					// new GroupShape([
-					// 	new LineShape(
-					// 		[{ x: 100, y: 100 }, { x: 200, y: 100 }, { x: 150, y: 50 },],
-					// 		{ id: 'l1', cssClasses: ['red-line'] }
-					// 	),
-					// 	new LineShape(
-					// 		[{ x: 150, y: 50 }, { x: 150, y: 110 },],
-					// 		{ id: 'l2', cssClasses: ['blue-line'] }
-					// 	),
-					// 	new LineShape(
-					// 		[
-					// 			{ x: 50, y: 200 },
-					// 			{ x: 80, y: 200 },
-					// 			{ x: 100, y: 180 },
-					// 			{ x: 100, y: 100 },
-					// 		],
-					// 		{ id: 'l1', cssClasses: ['green-line'] }
-					// 	),
-						
-					// ], { id: 'g1', cssClasses: ['a-group', 'foo'] }),
 					new GroupShape([
 						new LineShape(
-							[
-								{ x: 10, y: 10 },
-								{ x: 180, y: 180 },
-								{ x: 220, y: 180 },
-								{ x: 200, y: 200 },
-							], { id: 'l1', cssClasses: ['green-line'] }
+							[{ x: 100, y: 100 }, { x: 200, y: 100 }, { x: 150, y: 50 },],
+							{ id: 'l1', cssClasses: ['red-line'] }
 						),
+						new LineShape(
+							[{ x: 150, y: 50 }, { x: 150, y: 110 },],
+							{ id: 'l2', cssClasses: ['blue-line'] }
+						),
+						new LineShape(
+							[
+								{ x: 50, y: 200 },
+								{ x: 80, y: 200 },
+								{ x: 100, y: 180 },
+								{ x: 100, y: 100 },
+							],
+							{ id: 'l1', cssClasses: ['green-line'] }
+						),
+
+					], { id: 'g1', cssClasses: ['a-group', 'foo'] }),
+					new GroupShape([
+						new LineShape([
+							{ x: 10, y: 10 },
+							{ x: 180, y: 180 },
+							{ x: 220, y: 180 },
+							{ x: 200, y: 200 },
+						], { id: 'l1', cssClasses: ['green-line'] }),
 						new CircleShape([
-							{ pos: { x: 10, y: 10 }, radius: 10},
-							{ pos: { x: 180, y: 180 }, radius: 6},
-							{ pos: { x: 200, y: 200 }, radius: 6},
-							{ pos: { x: 220, y: 180 }, radius: 6},
-						], { cssClasses: [ 'small-circle ']}),
+							{ pos: { x: 10, y: 10 }, radius: 10 },
+							{ pos: { x: 180, y: 180 }, radius: 6 },
+							{ pos: { x: 200, y: 200 }, radius: 6 },
+							{ pos: { x: 220, y: 180 }, radius: 6 },
+						], { cssClasses: ['small-circle '] }),
 						new TextShape([
-							{ pos: { x: 10, y: 10 }, text: 'text-1', alignment: 'center'},
-							{ pos: { x: 180, y: 180 }, text: 'text-2', alignment: 'center'},
-							{ pos: { x: 200, y: 200 }, text: '(200, 200)', alignment: 'center'},
-						], { cssClasses: [ 'small-text '], offset: { x: 0, y: 10}}),
+							{ pos: { x: 10, y: 10 }, text: 'text-1', alignment: 'center' },
+							{ pos: { x: 180, y: 180 }, text: 'text-2', alignment: 'center' },
+							{ pos: { x: 200, y: 200 }, text: '(200, 200)', alignment: 'center' },
+						], { cssClasses: ['small-text '], offset: { x: 0, y: 10 } }),
+
+						new LineShape([
+							{ x: 10, y: 10 },
+							{ x: 180, y: 180 },
+							{ x: 220, y: 180 },
+							{ x: 200, y: 200 },
+						], { cssClasses: ['blue-line'], offset: { x: 300, y: 0 } }),
+						new CircleShape([
+							{ pos: { x: 10, y: 10 }, radius: 10 },
+							{ pos: { x: 180, y: 180 }, radius: 6 },
+							{ pos: { x: 200, y: 200 }, radius: 6 },
+							{ pos: { x: 220, y: 180 }, radius: 6 },
+						], { cssClasses: ['small-circle blue '], offset: { x: 300, y: 0 } }),
 						new TextShape([
-							{ pos: { x: 10, y: 10 }, text: 'text-1', alignment: 'center'},
-							{ pos: { x: 180, y: 180 }, text: 'text-2', alignment: 'center'},
-							{ pos: { x: 200, y: 200 }, text: '(200, 200)', alignment: 'center'},
-						], { cssClasses: [ 'small-text blue'], offset: { x: 100, y: 100}})
-					], { id: 'g2', cssClasses: ['a-circle-group'], offset: { x: 300, y: 0} }),
-	
+							{ pos: { x: 10, y: 10 }, text: 'text-1', alignment: 'center' },
+							{ pos: { x: 180, y: 180 }, text: 'text-2', alignment: 'center' },
+							{ pos: { x: 200, y: 200 }, text: '(200, 200)', alignment: 'center' },
+						], { cssClasses: ['small-text blue'], offset: { x: 300, y: 15 } })
+					], { id: 'g2', cssClasses: ['a-circle-group'], offset: { x: 300, y: 0 } }),
+
 				]),
 			]
 		})
