@@ -46,6 +46,9 @@ $color-cursor-text: #b4b4b4;
             stroke-width: 0.5;
         }
     }
+    .point-container.hidden {
+        opacity: 0;
+    }
     .cursor {
         pointer-events: none;
         &.hidden {

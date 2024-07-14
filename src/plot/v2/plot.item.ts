@@ -44,10 +44,12 @@ export class PlotItem implements IPlotItem {
         this._rootElm
             .on('mouseover', (e: MouseEvent) => {
                 this._rootElm?.classed('mouse-hover', true);
+                this.onMouseHover(true);
                 this._owner?.setHoverItem(this);
             })
             .on('mouseout', (e: MouseEvent) => {
                 this._rootElm?.classed('mouse-hover', false);
+                this.onMouseHover(false);
                 this._owner?.clearHoverItem(this)
             })
     }
@@ -64,5 +66,7 @@ export class PlotItem implements IPlotItem {
             return this._areaFn(this._area);
         }
         return this._area;
+    }
+    protected onMouseHover(hover: boolean) {
     }
 }

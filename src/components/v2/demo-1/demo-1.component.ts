@@ -47,10 +47,10 @@ export class Demo1PlotComponent {
 			plots: [
 				new AxisAndGrid(),
 				// new DataSeries({ points: tmp }, { cssClasses: ['smp'], showPointMarkers: true }).setScale(xyScale),
-				new DataSeries({ points: dataSmp() }, { cssClasses: ['smp'], id: '#1', showPointMarkers: true }),
-				new DataSeries({ points: dataMmp() }, { cssClasses: ['mmp'], id: '#2', showPointMarkers: true }),
-				new DataSeries({ points: dataCnstl() }, { cssClasses: ['cnstl'], id: '#3', showPointMarkers: true }),
-				new DataSeries({ points: dataCluster() }, { cssClasses: ['cluster'], id: '#4', showPointMarkers: true }),
+				new DataSeries({ points: dataSmp() }, { cssClasses: ['smp'], id: '#1', showPointMarkers: 'always', curveType: 'smooth' }),
+				new DataSeries({ points: dataMmp() }, { cssClasses: ['mmp'], id: '#2', showPointMarkers: 'onhover', curveType: 'smooth' }),
+				new DataSeries({ points: dataCnstl() }, { cssClasses: ['cnstl'], id: '#3', showPointMarkers: 'onhover', curveType: 'smooth' }),
+				new DataSeries({ points: dataCluster() }, { cssClasses: ['cluster'], id: '#4', curveType: 'smooth' }),
 			]
 		})
 		this.plot.center.setScale(xyScale).setMouseHandler(mouseHandler);
