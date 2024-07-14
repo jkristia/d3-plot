@@ -16,15 +16,8 @@ import { Point } from '../../../plot/util';
 export class DemoShapePlotComponent {
 	public plot: PlotV2
 	constructor() {
-		// goal is to duplicate this chart
-		// https://js.devexpress.com/Angular/Demos/WidgetsGallery/Demo/Charts/Spline/MaterialPurpleDark/
-
 		const scale = new LinearScale();
-		// scale.margin = { top: 5, left: 5, right: 5, bottom: 5 };
-		// scale.xDomain(d => { return { min: d.left, max: d.right } })
-		// scale.yDomain(d => { return { min: d.top, max: d.bottom } })
-		// xyScale.xDomain(d => { return { min: 0, max: 10 } })
-		// xyScale.yDomain(d => { return { min: 0, max: 5 } })
+		scale.margin = { top: 5, left: 5, right: 5, bottom: 5 };
 
 		const tmp: Point[] = [
 			{ x: 0, y: 0 },
@@ -37,7 +30,7 @@ export class DemoShapePlotComponent {
 
 		this.plot = new PlotV2({
 			cssClass: 'custom-2',
-			// title: 'Shape Demo',
+			title: 'Shape Demo',
 
 			scales: [
 				scale,
@@ -65,7 +58,7 @@ export class DemoShapePlotComponent {
 						),
 						
 					], {
-						id: 'g1', cssClasses: ['a-group', 'foo'], offset: { x: 10, y: 10 }
+						id: 'g1', cssClasses: ['a-group', 'foo']
 					})
 				]),
 			]
