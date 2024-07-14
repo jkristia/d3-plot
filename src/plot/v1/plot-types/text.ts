@@ -10,7 +10,7 @@ export interface TextOptions extends IPlotTypeOptionsV1 {
     offset?: Point;
 
 }
-export class Text extends PlotTypeBase {
+export class TextV1 extends PlotTypeBase {
 
     private _text?: D3Selection;
     private _textOptions?: TextOptions;
