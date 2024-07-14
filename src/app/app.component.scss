@@ -11,10 +11,36 @@
 }
 .content {
     width: 100%;
-    // height: 100%;
+    height: 100%;
     display: flex;
     flex-direction: column;
+
+    background: red;
+    padding: 5px;
     // overflow: auto;
+    .plot-demo-shape {
+        min-height: 100px;
+        max-height: 500px;
+        // height: 400px;
+        width: 100%;
+        flex: 1;
+        padding: 5px;
+        background-color: green;
+        overflow: hidden;
+        // display: flex;
+        // .hack {
+        //     height: 100%;
+        //     width: 100%;
+        //     background-color: blue;
+        //     padding: 5px;
+        // }
+    }
+    .dummy-fill {
+        flex: 1;
+        background-color: orange;
+    }
+
+
     .plot-demo-1 {
         height: 380px;
         width: 100%;

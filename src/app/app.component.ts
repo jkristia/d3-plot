@@ -4,6 +4,7 @@ import { TransitionLineComponent } from '../components/v1/transition-line/transi
 import { LineComponent } from '../components/v1/line/line.component';
 import { PlotAreaComponent } from '../components/v1/plot-area/plot-area.component';
 import { Demo1PlotComponent } from '../components/v2/demo-1/demo-1.component';
+import { DemoShapePlotComponent } from '../components/v2/demo-shape/demo-shape.component';
 
 @Component({
   selector: 'app-root',
@@ -14,6 +15,7 @@ import { Demo1PlotComponent } from '../components/v2/demo-1/demo-1.component';
     LineComponent,
     PlotAreaComponent,
     Demo1PlotComponent,
+    DemoShapePlotComponent,
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
