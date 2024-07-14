@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { GroupShape, LinearScale, LineSeries, LineShape, PlotBaseComponent, PlotV2, ShapePlot } from '../../../plot';
+import { CircleShape, GroupShape, LinearScale, LineSeries, LineShape, PlotBaseComponent, PlotV2, ShapePlot } from '../../../plot';
 import { PlotMouseHandler } from '../../../plot/v2/plot.mousehandler';
 import { CrossCursor } from '../../../plot/v2/plot.cross-cursor';
 import { Point } from '../../../plot/util';
@@ -57,9 +57,19 @@ export class DemoShapePlotComponent {
 							{ id: 'l1', cssClasses: ['green-line'] }
 						),
 						
-					], {
-						id: 'g1', cssClasses: ['a-group', 'foo']
-					})
+					], { id: 'g1', cssClasses: ['a-group', 'foo'] }),
+					new GroupShape([
+						new LineShape(
+							[{ x: 10, y: 10 }, { x: 180, y: 180 } ], { id: 'l1', cssClasses: ['green-line'] }
+						),
+						new CircleShape([
+							{ pos: { x: 10, y: 10 }, radius: 10},
+							{ pos: { x: 180, y: 180 }, radius: 6},
+							{ pos: { x: 200, y: 200 }, radius: 6},
+							{ pos: { x: 220, y: 180 }, radius: 6},
+						], { cssClasses: [ 'small-circle ']})
+					], { id: 'g2', cssClasses: ['a-circle-group'], offset: { x: 300, y: 0} }),
+	
 				]),
 			]
 		})

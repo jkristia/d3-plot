@@ -12,7 +12,17 @@
             stroke: rgb(84, 94, 233);
         }
         .green-line {
-            stroke: rgb(102, 184, 55);
+            stroke: rgb(127, 196, 87);
+        }
+    }
+    ::ng-deep g.a-circle-group {
+        .green-line {
+            stroke: rgb(127, 196, 87);
+        }
+
+        .small-circle {
+            stroke: none;
+            fill: rgb(126, 126, 33)
         }
     }
 }

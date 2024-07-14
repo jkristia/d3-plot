@@ -83,15 +83,15 @@ export interface LineShapeOptions extends ShapeOptions {}
 export class LineShape extends Shape {
 	protected _points: (Point | null)[];
 
-    private get lineType(): d3.CurveFactory {
+	private get lineType(): d3.CurveFactory {
 		return d3.curveCatmullRom.alpha(0)
 		// return d3.curveMonotoneX
 
-        // if (this.options?.curveType === 'smooth') {
-        //     return d3.curveMonotoneX
-        // }
-        // return d3.curveLinear;
-    }
+		// if (this.options?.curveType === 'smooth') {
+		//     return d3.curveMonotoneX
+		// }
+		// return d3.curveLinear;
+	}
 
 
 	constructor(points: (Point | null)[], options?: LineShapeOptions) {
@@ -113,14 +113,74 @@ export class LineShape extends Shape {
 			.y((d) => this.yPoint(d))
 			// https://d3js.org/d3-shape/line#line_defined
 			.defined(d => d !== null) // allow for discontinuous line
-            // https://d3js.org/d3-shape/curve
-            .curve(this.lineType)
+			// https://d3js.org/d3-shape/curve
+			.curve(this.lineType)
 			;
 		this._elm!
 			.attr('d', line(this._points))
 
 		return this;
 	}
+
+	private yPoint(point: Point | null): number {
+		return this.scale?.yScale(point?.y || 0) || 0;
+	}
+	private xPoint(point: Point | null): number {
+		return this.scale?.xScale(point?.x || 0) || 0;
+	}
+
+}
+
+export interface CircleShapeOptions extends ShapeOptions {}
+export interface Circle {
+	pos: Point;
+	radius: number
+}
+
+export class CircleShape extends Shape {
+	protected _circles: (Circle | null)[];
+	constructor(circles: (Circle | null)[], options?: CircleShapeOptions) {
+		super(options)
+		this._circles = circles
+	}
+	public initialize(parentElm: D3Selection): this {
+		this._parentElm = parentElm;
+		// this._elm = this._parentElm.append('circle')
+		// this.setOptionsToElm(this._elm);
+
+
+		return this;
+	}
+	public override updateLayout(area: Rect): this {
+
+		if (!this._elm) {
+			this._elm = this._parentElm!
+				.selectAll('.xyz')
+				.data(this._circles)
+				.join(
+					// add new sample points
+					enter => this.appendPoint(enter),
+					// update remaining points
+					update => update
+						.attr('cx', d => this.xPoint(d?.pos || null))
+						.attr('cy', d => this.yPoint(d?.pos || null))
+					,
+				)
+			this.setOptionsToElm(this._elm);
+
+		}
+
+		return this;
+	}
+
+	private appendPoint(points: D3Selection<Circle | null>): D3Selection<Circle | null> {
+		const circle = points.append('circle')
+			.attr('r', d=> d?.radius || 1)
+			.attr('cx', d => this.xPoint(d?.pos || null))
+			.attr('cy', d => this.yPoint(d?.pos || null))
+		return circle;
+	}
+
 
 	private yPoint(point: Point | null): number {
 		return this.scale?.yScale(point?.y || 0) || 0;
