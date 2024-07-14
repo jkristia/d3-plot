@@ -40,11 +40,13 @@ export class Scale {
     }
 
     public updateScales(area: Rect) {
+        const displayArea = area;
         area = area.adjustMargin(this.margin);
         this._area = area;
         // x range
         let range = [area.left, area.right]
-        let domain = [area.left, area.right];
+        // let domain = [area.left, area.right];
+        let domain = [0, displayArea.right];
         if (this._fnXDomain) {
             const d = this._fnXDomain(area);
             domain = [d.min, d.max];
