@@ -36,4 +36,14 @@
             fill: rgb(103, 124, 216)
         }
     }
+    ::ng-deep g.a-rect-group {
+        .circle {
+            fill: orange;
+        }
+        .rect {
+            fill: rgba(255, 166, 0, 0.616);
+            stroke: orange;
+
+        }
+    }
 }

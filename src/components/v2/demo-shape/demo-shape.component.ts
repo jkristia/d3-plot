@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { CircleShape, GroupShape, LinearScale, LineSeries, LineShape, PlotBaseComponent, PlotV2, ShapePlot, TextShape } from '../../../plot';
+import { CircleShape, GroupShape, LinearScale, LineSeries, LineShape, PlotBaseComponent, PlotV2, RectShape, ShapePlot, TextShape } from '../../../plot';
 import { PlotMouseHandler } from '../../../plot/v2/plot.mousehandler';
 import { CrossCursor } from '../../../plot/v2/plot.cross-cursor';
 import { Point } from '../../../plot/util';
@@ -93,7 +93,19 @@ export class DemoShapePlotComponent {
 							{ pos: { x: 200, y: 200 }, text: '(200, 200)', alignment: 'center' },
 						], { cssClasses: ['small-text blue'], offset: { x: 300, y: 15 } })
 					], { id: 'g2', cssClasses: ['a-circle-group'], offset: { x: 300, y: 0 } }),
-
+					new GroupShape([
+						new CircleShape([
+							{ pos: { x: 100, y: 100 }, radius: 4 },
+							// { pos: { x: 200, y: 180 }, radius: 4 },
+							// { pos: { x: 100, y: 180 }, radius: 4 },
+							// { pos: { x: 200, y: 100 }, radius: 4 },
+						], { cssClasses: ['circle '] }),
+						new RectShape([
+							{ x: 100, y: 100, width: 100, height: 80, rx: 5 },
+							{ x: 110, y: 110, width: 100, height: 80, rx: 5 },
+							{ x: 120, y: 120, width: 100, height: 80, rx: 5 },
+						], { cssClasses: ['rect'] }),
+					], { id: 'g3', cssClasses: ['a-rect-group'], offset: { x: 50, y: 50 } }),
 				]),
 			]
 		})

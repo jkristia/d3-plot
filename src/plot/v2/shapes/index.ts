@@ -4,3 +4,4 @@ export * from './line-shape';
 export * from './circle-shape';
 export * from './group-shape';
 export * from './text-shape';
+export * from './rect-shape';
