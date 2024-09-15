@@ -35,6 +35,7 @@ export class PlotMouseHandler implements IPlotOwner {
 		// https://stackoverflow.com/questions/33106742/d3-add-more-than-one-functions-to-an-eventlistener
 		// add name space to listener, allows for multiple listeners on the same event
 		owner.rootElm
+			.on('pointerleave.mousehandler', e => this.handleMouseLeave(e))
 			.on('pointermove.mousehandler', e => this.handleMouseMove(e))
 	}
 	public updateLayout(area: Rect): void {
@@ -49,6 +50,11 @@ export class PlotMouseHandler implements IPlotOwner {
 		const elm = this._rootElm!;
 		const coordinates = d3.pointer(event, elm.node())
 		return { x: coordinates[0], y: coordinates[1] };
+	}
+	private handleMouseLeave(e: any) {
+		const point = this.currentMousePosition(e)
+		const visible = this._owner?.contentAreaRect.inRect(point.x, point.y);
+		this._container?.classed('hidden', !visible);
 	}
 	private handleMouseMove(e: any) {
 		const point = this.currentMousePosition(e)
