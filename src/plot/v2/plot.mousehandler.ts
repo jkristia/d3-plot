@@ -1,5 +1,5 @@
 import * as d3 from 'd3';
-import { Rect, D3Selection } from '../util';
+import { Rect, D3Selection, Point } from '../util';
 import { IPlotItem, IPlotOwner } from './plot.interface';
 import { Scale } from './elements';
 import { ICursor } from './plot.cross-cursor';
@@ -11,6 +11,7 @@ export class PlotMouseHandler implements IPlotOwner {
 	private _container?: D3Selection;
 	private _rootElm?: D3Selection;
 	private _cursor?: ICursor;
+	private _owner?: IPlotArea;
 	protected _scale: Scale = new Scale();
 
     public get scale(): Scale {
@@ -26,15 +27,14 @@ export class PlotMouseHandler implements IPlotOwner {
 	}
 	public initializeLayout(owner: IPlotArea) {
 		// ---
+		this._owner = owner;
 		this._rootElm = owner.rootElm;
 		this._container = this._rootElm?.append('g').classed('cursor', true)
 		this._cursor?.initialize(this._container);
 		// this._container!
 		// https://stackoverflow.com/questions/33106742/d3-add-more-than-one-functions-to-an-eventlistener
 		// add name space to listener, allows for multiple listeners on the same event
-		owner.contentAreaElm
-			.on('pointerenter.mousehandler', e => this.showCursor())
-			.on('pointerleave.mousehandler', e => this.hideCursor())
+		owner.rootElm
 			.on('pointermove.mousehandler', e => this.handleMouseMove(e))
 	}
 	public updateLayout(area: Rect): void {
@@ -45,22 +45,15 @@ export class PlotMouseHandler implements IPlotOwner {
 	public clearHoverItem(item: IPlotItem): void {
 		// console.log(`clear hover id-${item.id}`);
 	}
-	private hideCursor() {
-		this._container?.classed('hidden', true);
-	}
-	private showCursor() {
-		this._container?.classed('hidden', false)
-	}
-
-	private currentMousePosition(anyEvent: any): [number, number] {
+    private currentMousePosition(event: Event): Point {
 		const elm = this._rootElm!;
-		const coordinates = d3.pointer(anyEvent, elm.node())
-		return coordinates;
+		const coordinates = d3.pointer(event, elm.node())
+		return { x: coordinates[0], y: coordinates[1] };
 	}
 	private handleMouseMove(e: any) {
-		const coordinates = this.currentMousePosition(e)
-		const xPos = coordinates[0];
-		const yPos = coordinates[1];
-		this._cursor?.updatePosition(this._scale, xPos, yPos, this._scale.area);
+		const point = this.currentMousePosition(e)
+		const visible = this._owner?.contentAreaRect.inRect(point.x, point.y);
+		this._container?.classed('hidden', !visible);
+		this._cursor?.updatePosition(this._scale, point.x, point.y, this._scale.area);
 	}
 }

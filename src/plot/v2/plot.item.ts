@@ -1,5 +1,5 @@
 import * as d3 from 'd3'
-import { AreaFunc, D3Selection, Margin, Rect, Util, ValueFunc } from "../util";
+import { AreaFunc, D3Selection, Margin, Point, Rect, Util, ValueFunc } from "../util";
 import { IPlotItem, IPlotItemOptions } from "./plot.interface";
 import { Scale } from './elements';
 import { IPlotArea } from './plot.area';
@@ -62,6 +62,11 @@ export class PlotItem implements IPlotItem {
         this._areaFn = v;
         return this;
     }
+    public currentMousePosition(event: Event): Point {
+		const elm = this._rootElm!;
+		const coordinates = d3.pointer(event, elm.node())
+		return { x: coordinates[0], y: coordinates[1] };
+	}
     protected getPlotArea(): Rect {
         if (this._areaFn) {
             return this._areaFn(this._area);

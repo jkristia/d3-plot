@@ -10,13 +10,13 @@ export class PlotAreaSelection extends PlotItem {
         super.initializeLayout();
 		// https://stackoverflow.com/questions/33106742/d3-add-more-than-one-functions-to-an-eventlistener
 		// add name space to listener, allows for multiple listeners on the same event
-		this._owner?.contentAreaElm
+		this._owner?.rootElm
 			.on('pointerdown.selection', e => this.onPointerDown(e))
 			.on('pointerup.selection', e => this.onPointerUp(e))
 			.on('pointermove.selection', e => this.onPointerMove(e))
     }
     private onPointerDown(e: PointerEvent) {
-        this.cleanup();
+        this.cleanUp();
         const root = this._owner?.rootElm!;
         const child = this._owner?.contentAreaElm!;
         (child.node() as SVGElement).setPointerCapture(e.pointerId);
@@ -29,7 +29,7 @@ export class PlotAreaSelection extends PlotItem {
         this._endRange = null;
         const child = this._owner?.contentAreaElm!;
         (child.node() as SVGElement).releasePointerCapture(e.pointerId);
-        this.cleanup();
+        this.cleanUp();
     }
     private onPointerMove(e: PointerEvent) {
         if (this._endRange) {
@@ -59,12 +59,7 @@ export class PlotAreaSelection extends PlotItem {
                 .attr('height', r.height)
         }
     }
-    private currentMousePosition(anyEvent: any): Point {
-		const elm = this._rootElm!;
-		const coordinates = d3.pointer(anyEvent, elm.node())
-		return { x: coordinates[0], y: coordinates[1] };
-	}
-    private cleanup() {
+    private cleanUp() {
         if (this._rangeElm) {
             this._rangeElm.remove()
         }

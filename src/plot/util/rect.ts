@@ -57,6 +57,14 @@ export class Rect {
         this.width = r?.width || 0;
         this.height = r?.height || 0;
     }
+    public inRect(x: number, y: number): boolean {
+        return x >= this.left && 
+                x <= this.right &&
+                y >= this.top &&
+                y <= this.bottom
+                ;
+
+    }
     public inflate(amount: number): Rect {
         return new Rect({
             left: this.left - amount,
