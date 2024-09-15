@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { LinearScale, PlotBaseComponent, PlotV2 } from '../../../plot';
+import { LinearScale, PlotAreaSelection, PlotBaseComponent, PlotV2 } from '../../../plot';
 import { DataSeries, dataCluster, dataCnstl, dataMmp, dataSmp } from './demo-data';
 import { AxisAndGrid } from '../../../plot/v2/elements/axis-and-grid';
 import { Point } from '../../../plot/util';
@@ -46,6 +46,7 @@ export class Demo1PlotComponent {
 			],
 			plots: [
 				new AxisAndGrid(),
+				new PlotAreaSelection(),
 				// new DataSeries({ points: tmp }, { cssClasses: ['smp'], showPointMarkers: true }).setScale(xyScale),
 				new DataSeries({ points: dataSmp() }, { cssClasses: ['smp'], id: '#1', showPointMarkers: 'always', curveType: 'smooth' }),
 				new DataSeries({ points: dataMmp() }, { cssClasses: ['mmp'], id: '#2', showPointMarkers: 'onhover', curveType: 'smooth' }),

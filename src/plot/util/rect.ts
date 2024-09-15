@@ -82,6 +82,14 @@ export class Rect {
         });
 
     }
+    public clamp(left: number, top: number, right: number, bottom: number): Rect {
+        const r = new Rect();
+        r.left = Math.max(this.left, left);
+        r.top = Math.max(this.top, top);
+        r.right = Math.min(this.right, right);
+        r.bottom = Math.min(this.bottom, bottom);
+        return r;
+    }
     public toString(): string {
         if (this.isEmpty) {
             return '[empty]'

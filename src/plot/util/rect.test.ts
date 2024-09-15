@@ -43,7 +43,7 @@ test('rect inflate', () => {
 })
 test('rect offset', () => {
 	let original = new Rect({ top: 6, left: 5, width: 100, height: 200 });
-	let r = original.offset()
+	let r = original.offset(0.5)
 	expect(original.left).toBe(5);
 	expect(r.left).toBe(5.5);
 	expect(r.width).toBe(100);
@@ -72,8 +72,16 @@ test('isempty', () => {
 	expect(r.isEmpty).toBe(false);
 })
 test('adjust margin', () => {
-	let r = new Rect({left: 0, top: 0, width: 100, height: 100})
-	let r2 = r.adjustMargin({ left: 5, top: 6, right: 7, bottom: 8})
-	expect(r2.toString()).toEqual('[top: 6, left: 5, width: 88, height: 86]')
-
+	let r = new Rect({left: 0, top: 0, width: 100, height: 100});
+	let r2 = r.adjustMargin({ left: 5, top: 6, right: 7, bottom: 8});
+	expect(r2.toString()).toEqual('[top: 6, left: 5, width: 88, height: 86]');
 })
+
+test('clamp', () => {
+	// clamp r2 to the area of r1
+	let r1 = new Rect({left: 100, top: 100, width: 300, height: 200});
+	let r2 = new Rect({left: 0, top: 0, width: 300, height: 200});
+	expect(r1.clamp(r2.left, r2.top, r2.right, r2.bottom).toString()).toEqual('[top: 100, left: 100, width: 200, height: 100]');
+	r2 = new Rect({left: 0, top: 0, width: 450, height: 450});
+	expect(r1.clamp(r2.left, r2.top, r2.right, r2.bottom).toString()).toEqual('[top: 100, left: 100, width: 300, height: 200]');
+})	

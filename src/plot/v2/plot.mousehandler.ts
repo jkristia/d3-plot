@@ -30,10 +30,12 @@ export class PlotMouseHandler implements IPlotOwner {
 		this._container = this._rootElm?.append('g').classed('cursor', true)
 		this._cursor?.initialize(this._container);
 		// this._container!
+		// https://stackoverflow.com/questions/33106742/d3-add-more-than-one-functions-to-an-eventlistener
+		// add name space to listener, allows for multiple listeners on the same event
 		owner.contentAreaElm
-			.on('pointerenter', e => this.showCursor())
-			.on('pointerleave', e => this.hideCursor())
-			.on('pointermove', e => this.handleMouseMove(e))
+			.on('pointerenter.mousehandler', e => this.showCursor())
+			.on('pointerleave.mousehandler', e => this.hideCursor())
+			.on('pointermove.mousehandler', e => this.handleMouseMove(e))
 	}
 	public updateLayout(area: Rect): void {
 	}

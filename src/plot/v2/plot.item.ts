@@ -1,7 +1,8 @@
 import * as d3 from 'd3'
 import { AreaFunc, D3Selection, Margin, Rect, Util, ValueFunc } from "../util";
-import { IPlotItem, IPlotItemOptions, IPlotOwner } from "./plot.interface";
+import { IPlotItem, IPlotItemOptions } from "./plot.interface";
 import { Scale } from './elements';
+import { IPlotArea } from './plot.area';
 
 export class PlotItem implements IPlotItem {
 
@@ -9,7 +10,7 @@ export class PlotItem implements IPlotItem {
     private _areaFn?: AreaFunc;
     protected _rootElm: D3Selection | null = null;
     protected _scale_?: Scale;
-    protected _owner?: IPlotOwner;
+    protected _owner?: IPlotArea;
 
     public get id(): string | undefined {
         return this._options?.id;
@@ -25,7 +26,7 @@ export class PlotItem implements IPlotItem {
     }
     constructor(protected _options?: IPlotItemOptions) {
     }
-    public setOwner(owner: IPlotOwner) {
+    public setOwner(owner: IPlotArea) {
         this._owner = owner;
     }
     public setScale(scale: Scale): this {
