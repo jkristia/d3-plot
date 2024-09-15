@@ -63,7 +63,7 @@ export class AxisAndGrid extends PlotItem {
             this._gridElm.selectAll('.h-line')
                 .data(this.scale.yScale.ticks(5).slice(1))
                 .join('line')
-                .classed('y-line grid-line', true)
+                .classed('h-line grid-line', true)
                 .attr('x1', area.left)
                 .attr('x2', area.right)
                 .attr('y1', d => this.scale.yScale(d))

@@ -5,14 +5,28 @@ import { IPlotItem, IPlotOwner } from './plot.interface';
 import { Scale } from './elements';
 import { PlotMouseHandler } from './plot.mousehandler';
 
+export interface IPlotArea extends IPlotOwner {
+	readonly rootElm: D3Selection;
+	readonly contentAreaElm: D3Selection;
+	readonly contentAreaRect: Rect;
+}
 
 export class PlotArea implements IPlotOwner {
 
 	protected _mouseHandler?: PlotMouseHandler;
 	protected _scale: Scale = new Scale();
 
-	public rootElm?: D3Selection;
-	public background: D3Selection;
+	private _rootElm?: D3Selection;
+	private _background: D3Selection;
+	private _contentArea: D3Selection;
+
+	public get rootElm(): D3Selection {
+		return this._rootElm!;
+	}
+	public get contentAreaElm(): D3Selection {
+		return this._contentArea!;
+	}
+
 	public rect: Rect = new Rect();
 	public plots: PlotItem[] = [];
 	// allow initialize even if rect is empty, this is for the center / main plot area
@@ -20,28 +34,47 @@ export class PlotArea implements IPlotOwner {
 	public get scale(): Scale {
 		return this._scale;
 	}
+	public get contentAreaRect(): Rect {
+		return new Rect({
+			left: this.scale.margin.left,
+			top: this.scale.margin.top,
+			width: this.rect.width - this.scale.margin.left - this.scale.margin.right,
+			height: this.rect.height - this.scale.margin.top - this.scale.margin.bottom,
+		});
+
+
+	}
 	constructor(root?: D3Selection) {
-		this.rootElm = root;
-		this.background = d3.create('svg:rect')
+		this._rootElm = root;
+		this._background = d3.create('svg:rect')
+		this._contentArea = d3.create('svg:rect')
 		if (root) {
-			root.append(() => this.background.node())
+			root.append(() => this._background.node())
 				.classed('plot-background', true)
+			root.append(() => this._contentArea.node())
+				.classed('plot-content-area', true)
 		}
 	}
 	public applyRect(): D3Selection {
-		this.rootElm!
+		this._rootElm!
 			.attr('x', this.rect.left)
 			.attr('y', this.rect.top)
 			.attr('width', this.rect.width)
 			.attr('height', this.rect.height)
 
-		this.background
+		this._background
 			.attr('x', 0)
 			.attr('y', 0)
 			.attr('width', this.rect.width)
 			.attr('height', this.rect.height)
 
-		return this.rootElm!;
+		const r = this.contentAreaRect;
+		this._contentArea
+			.attr('x', r.left)
+			.attr('y', r.top)
+			.attr('width', r.width)
+			.attr('height', r.height)
+		return this._rootElm!;
 	}
 	public initializeLayout() {
 		if (this.forceInitialize === false && this.rect.isEmpty) {
@@ -52,10 +85,10 @@ export class PlotArea implements IPlotOwner {
 			p.setOwner(this);
 			p.initializeLayout();
 			if (p.plotElement) {
-				this.rootElm?.append(() => p.plotElement!.node())
+				this._rootElm?.append(() => p.plotElement!.node())
 			}
 		});
-		this._mouseHandler?.initializeLayout(this.rootElm!);
+		this._mouseHandler?.initializeLayout(this);
 	}
 
 	public updateLayout() {
