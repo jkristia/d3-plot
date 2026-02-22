@@ -129,7 +129,15 @@ export class BarChartComponent {
 					yTickFormat: (value) => Math.round(value).toString(),
 					xLabelRotateDeg: -20,
 				}),
-				new BarPlotItem({ points: monthlySales }, { cssClasses: ['monthly-sales'], barWidthRatio: 0.7 }),
+				new BarPlotItem(
+					{ points: monthlySales },
+					{
+						cssClasses: ['monthly-sales'],
+						barWidthRatio: 0.7,
+						xLabelFormatter: monthFromValue,
+						yValueFormatter: (value) => `${Math.round(value)}k`,
+					},
+				),
 			],
 		});
 		plot.center.setScale(axisScale);

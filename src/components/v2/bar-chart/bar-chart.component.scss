@@ -35,6 +35,22 @@
 		stroke: #3f51b5;
 	}
 
+	::ng-deep .plot-elm.bar-plot-elm .bar-tooltip {
+		&.hidden {
+			display: none;
+		}
+
+		rect {
+			fill: rgba(47, 47, 54, 0.92);
+			stroke: rgba(105, 105, 112, 0.95);
+		}
+
+		text {
+			fill: #f2f2f4;
+			font-size: 12px;
+		}
+	}
+
 	::ng-deep .title-elm text {
 		font-size: 16px;
 		font-weight: 600;
