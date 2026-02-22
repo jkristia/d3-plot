@@ -8,76 +8,71 @@ $color-gridline: rgba(128, 128, 128, 0.695);
 $color-cursor: #95959580;
 $color-cursor-text: #b4b4b4;
 
-:host {
-    /* TODO: Refactor away from ::ng-deep once plot styles expose a dedicated theming API. */
-    ::ng-deep {
-        .d3-container {
-            font-family: sans-serif;
-            background-color: $color-background;
-            .d3-plot {
-                fill: transparent;
-            }
-            .title-elm {
-                font-size: 20px;
-                stroke: transparent;
-                fill: $color-title;
-            }
-            .plot-elm.line-series-elm {
-                stroke: $color-line-elm;
-                circle {
-                    fill: $color-line-elm;
-                }
-            }
-            .plot-elm.bar-legend-item {
-                text {
-                    fill: #5f5f66;
-                    font-size: 13px;
-                }
-            }
-            .axis-container {
-                stroke: $color-axis;
-                path {
-                    stroke: $color-axis;
-                    stroke-width: 0.5;
-                }
-                g.tick line {
-                    stroke: $color-axis;
-                    stroke-width: 0.5;
-                }
-                g.tick text {
-                    stroke: transparent;
-                    fill: $color-axis-text;
-                }
-            }
-            .grid-container {
-                .grid-line {
-                    stroke: $color-gridline;
-                    stroke-width: 0.5;
-                }
-            }
-            .point-container.hidden {
-                opacity: 0;
-            }
-            .cursor {
-                pointer-events: none;
-                &.hidden {
-                    opacity: 0;
-                }
-                .cursor-text {
-                    pointer-events: none;
-                    stroke: transparent;
-                    fill: $color-cursor-text;
-                    text-anchor: start;
-                    font-size: 10px;
-                }
-                .cross-hair {
-                    stroke: $color-cursor;
-                    stroke-dasharray: 4;
-                }
-            }
-            .range-selection {
-                fill: green;
-            }
+.plot-d3-container {
+    font-family: sans-serif;
+    background-color: $color-background;
+    .d3-plot {
+        fill: transparent;
+    }
+    .title-elm {
+        font-size: 20px;
+        stroke: transparent;
+        fill: $color-title;
+    }
+    .plot-elm.line-series-elm {
+        stroke: $color-line-elm;
+        circle {
+            fill: $color-line-elm;
         }
+    }
+    .plot-elm.bar-legend-item {
+        text {
+            fill: #5f5f66;
+            font-size: 13px;
+        }
+    }
+    .axis-container {
+        stroke: $color-axis;
+        path {
+            stroke: $color-axis;
+            stroke-width: 0.5;
+        }
+        g.tick line {
+            stroke: $color-axis;
+            stroke-width: 0.5;
+        }
+        g.tick text {
+            stroke: transparent;
+            fill: $color-axis-text;
+        }
+    }
+    .grid-container {
+        .grid-line {
+            stroke: $color-gridline;
+            stroke-width: 0.5;
+        }
+    }
+    .point-container.hidden {
+        opacity: 0;
+    }
+    .cursor {
+        pointer-events: none;
+        &.hidden {
+            opacity: 0;
+        }
+        .cursor-text {
+            pointer-events: none;
+            stroke: transparent;
+            fill: $color-cursor-text;
+            text-anchor: start;
+            font-size: 10px;
+        }
+        .cross-hair {
+            stroke: $color-cursor;
+            stroke-dasharray: 4;
+        }
+    }
+    .range-selection {
+        fill: green;
     }
 }

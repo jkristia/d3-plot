@@ -4,38 +4,34 @@ $left-area-frame-color: rgb(141, 141, 219);
 $right-area-frame-color: rgb(209, 183, 65);
 $area-label-text-color: rgb(170, 170, 82);
 
-:host {
-	/* TODO: Refactor away from ::ng-deep once plot styles expose a dedicated theming API. */
-	::ng-deep {
-		.d3-container .d3-plot.plot-area {
-			.plot-elm.area-frame {
-				rect {
-					fill: transparent;
-				}
 
-				&.top-label rect {
-					stroke: $top-area-frame-color;
-				}
+.plot-d3-container .d3-plot.plot-area {
+	.plot-elm.area-frame {
+		rect {
+			fill: transparent;
+		}
 
-				&.bottom-label rect {
-					stroke: $bottom-area-frame-color;
-				}
+		&.top-label rect {
+			stroke: $top-area-frame-color;
+		}
 
-				&.left-label rect {
-					stroke: $left-area-frame-color;
-				}
+		&.bottom-label rect {
+			stroke: $bottom-area-frame-color;
+		}
 
-				&.right-label rect {
-					stroke: $right-area-frame-color;
-				}
-			}
+		&.left-label rect {
+			stroke: $left-area-frame-color;
+		}
 
-			.plot-elm.area-label {
-				text {
-					stroke: transparent;
-					fill: $area-label-text-color;
-				}
-			}
+		&.right-label rect {
+			stroke: $right-area-frame-color;
+		}
+	}
+
+	.plot-elm.area-label {
+		text {
+			stroke: transparent;
+			fill: $area-label-text-color;
 		}
 	}
 }

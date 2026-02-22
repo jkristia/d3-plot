@@ -1,0 +1,7 @@
+// Component-specific plot overrides loaded globally through src/styles.scss.
+// ::ng-deep is deprecated and should not be used for this styling.
+@use './bar-chart/bar-chart.plot-styles';
+@use './demo-1/demo-1.plot-styles';
+@use './line/line.plot-styles';
+@use './plot-area/plot-area.plot-styles';
+@use './transition-line/transition-line.plot-styles';

@@ -9,7 +9,7 @@ import { Plot } from '../plot';
 	standalone: true,
 	imports: [],
 	templateUrl: './plot.component.html',
-	styleUrls: ['./plot.component.scss', '../plot-styles.scss']
+	styleUrls: ['./plot.component.scss']
 })
 export class PlotBaseComponent implements OnInit, OnDestroy {
 
@@ -22,7 +22,7 @@ export class PlotBaseComponent implements OnInit, OnDestroy {
 	) { }
 	public ngOnInit(): void {
 		const elm = this._elm.nativeElement as HTMLElement;
-		this._plotAnchorElm = elm.querySelector('.d3-container') as HTMLElement
+		this._plotAnchorElm = elm.querySelector('.plot-d3-container') as HTMLElement
 		if (this.plot()) {
 			this.plot()!.attach(this._plotAnchorElm);
 		}

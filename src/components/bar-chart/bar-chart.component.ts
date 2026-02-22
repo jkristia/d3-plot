@@ -38,7 +38,7 @@ class AxisLabelItem extends PlotItem {
 		PlotBaseComponent,
 	],
 	templateUrl: './bar-chart.component.html',
-	styleUrls: ['./bar-chart.component.scss', './bar-chart.plot-styles.scss'],
+	styleUrls: ['./bar-chart.component.scss'],
 })
 export class BarChartComponent {
 	public readonly plot = signal<Plot | null>(null);

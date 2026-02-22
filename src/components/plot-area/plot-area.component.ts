@@ -58,7 +58,7 @@ class AreaLabel extends PlotItem {
 		PlotBaseComponent,
 	],
 	templateUrl: './plot-area.component.html',
-	styleUrls: ['./plot-area.component.scss', './plot-area.plot-styles.scss'],
+	styleUrls: ['./plot-area.component.scss'],
 })
 export class PlotAreaComponent {
 	public readonly plot = signal<Plot | null>(null);

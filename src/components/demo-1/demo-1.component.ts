@@ -13,7 +13,7 @@ import { CrossCursor } from '../../plot/plot.cross-cursor';
 		PlotBaseComponent
 	],
 	templateUrl: './demo-1.component.html',
-	styleUrls: ['./demo-1.component.scss', './demo-1.plot-styles.scss']
+	styleUrls: ['./demo-1.component.scss']
 })
 export class Demo1PlotComponent {
 	public readonly plot = signal<Plot | null>(null);
