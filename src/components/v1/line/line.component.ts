@@ -1,10 +1,10 @@
 import * as d3 from 'd3';
-import { Component, ElementRef, OnDestroy, OnInit } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { Frame, ILineDataV1, LineV1, Text } from '../../../plot/v1/plot-types';
 import { PlotBaseV1Component } from '../../../plot/v1/plot-component/plot.component';
 import { Subject } from 'rxjs';
 import { PlotV1 } from '../../../plot';
-import { Point, Util } from '../../../plot/util';
+import { Point, Rect, Util } from '../../../plot/util';
 
 class Data implements ILineDataV1 {
 	points = [
@@ -156,15 +156,13 @@ class SinusData implements ILineDataV1 {
 	styleUrl: './line.component.scss'
 })
 export class LineComponent {
-	public plot: PlotV1
+	readonly plot = signal<PlotV1 | null>(null);
 	_lineData = new Data();
 	_jitterData = new JitterData();
 	_manyLinesData = new ManyLinesAndPoints();
 	_sinusData = new SinusData();
-	constructor(
-		private _elm: ElementRef
-	) {
-		this.plot = new PlotV1(null, {
+	constructor() {
+		this.plot.set(new PlotV1(null, {
 			areas: {
 				topHeight: 20,
 				leftWidth: 30,
@@ -173,19 +171,19 @@ export class LineComponent {
 			},
 			plots: [
 				// title
-				new Text({ text: 'Multiple Lines', cssClasses: ['title'] }).area(() => this.plot?.topArea),
+				new Text({ text: 'Multiple Lines', cssClasses: ['title'] }).area(() => this.plot()?.topArea ?? new Rect()),
 				// left label
-				new Text({ text: 'Random Noise', rotate: -90, cssClasses: ['left-label'] }).area(() => this.plot?.leftArea),
+				new Text({ text: 'Random Noise', rotate: -90, cssClasses: ['left-label'] }).area(() => this.plot()?.leftArea ?? new Rect()),
 				// bottom label
 				new Text({
 					text: '**footnote',
 					position: 'right',
 					offset: { x: -10, y: 4},
 					cssClasses: ['footnote']
-				}).area(() => this.plot?.bottomArea),
+				}).area(() => this.plot()?.bottomArea ?? new Rect()),
 
 				// plots
-				new Frame().area(() => this.plot?.plotArea),
+				new Frame().area(() => this.plot()?.plotArea ?? new Rect()),
 				// render many lines set in the background, first layer
 				// new Line(this._manyLinesData, { cssClasses: ['line-3'], showPoint: false }),
 				// render discontinuous line jitter line at the same scale (using same domain)
@@ -203,6 +201,6 @@ export class LineComponent {
 				})
 				.getDomain(() => [0, this._sinusData.noOfSamples]) // set domain to full width
 			]
-		})
+		}))
 	}
 }

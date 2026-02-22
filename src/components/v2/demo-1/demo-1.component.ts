@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { LinearScale, PlotAreaSelection, PlotBaseComponent, PlotV2 } from '../../../plot';
 import { DataSeries, dataCluster, dataCnstl, dataMmp, dataSmp } from './demo-data';
 import { AxisAndGrid } from '../../../plot/v2/elements/axis-and-grid';
@@ -16,7 +16,7 @@ import { CrossCursor } from '../../../plot/v2/plot.cross-cursor';
 	styleUrl: './demo-1.component.scss'
 })
 export class Demo1PlotComponent {
-	public plot: PlotV2
+	readonly plot = signal<PlotV2 | null>(null);
 	constructor() {
 		// goal is to duplicate this chart
 		// https://js.devexpress.com/Angular/Demos/WidgetsGallery/Demo/Charts/Spline/MaterialPurpleDark/
@@ -37,7 +37,7 @@ export class Demo1PlotComponent {
 		// ]
 		const mouseHandler = new PlotMouseHandler().setCursor(new CrossCursor());
 
-		this.plot = new PlotV2({
+		const plot = new PlotV2({
 			cssClass: 'custom-1',
 			title: 'Architecture Share Over Time (Count)',
 
@@ -54,6 +54,7 @@ export class Demo1PlotComponent {
 				new DataSeries({ points: dataCluster() }, { cssClasses: ['cluster'], id: '#4', curveType: 'smooth' }),
 			]
 		})
-		this.plot.center.setScale(xyScale).setMouseHandler(mouseHandler);
+		plot.center.setScale(xyScale).setMouseHandler(mouseHandler);
+		this.plot.set(plot);
 	}
 }

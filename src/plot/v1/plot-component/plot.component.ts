@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, input } from '@angular/core';
 import { PlotV1 } from '../plotv1';
 
 /*
@@ -13,7 +13,7 @@ import { PlotV1 } from '../plotv1';
 })
 export class PlotBaseV1Component implements OnInit, OnDestroy {
 
-	@Input() plot: PlotV1 | null = null;
+	plot = input<PlotV1 | null>(null);
 
 	protected _plotAnchorElm!: HTMLElement;
 
@@ -23,8 +23,8 @@ export class PlotBaseV1Component implements OnInit, OnDestroy {
 	ngOnInit(): void {
 		const elm = this._elm.nativeElement as HTMLElement;
 		this._plotAnchorElm = elm.querySelector('.d3-container') as HTMLElement
-		if (this.plot) {
-			this.plot.attach(this._plotAnchorElm);
+		if (this.plot()) {
+			this.plot()!.attach(this._plotAnchorElm);
 		}
 		window.addEventListener('resize', this.onResize);
 		this.onResize(null)
@@ -37,7 +37,7 @@ export class PlotBaseV1Component implements OnInit, OnDestroy {
 	}
 	private onResize = (e: any) => {
 		const size = this._plotAnchorElm.getBoundingClientRect();
-		this.plot?.size({
+		this.plot()?.size({
 			width: size.width,
 			height: size.height,
 		})
