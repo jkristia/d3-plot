@@ -1,8 +1,8 @@
-$top-area-frame-color: rgb(44, 139, 44);
-$bottom-area-frame-color: lightgreen;
-$left-area-frame-color: rgb(141, 141, 219);
-$right-area-frame-color: rgb(209, 183, 65);
-$area-label-text-color: rgb(170, 170, 82);
+$plot-area-color-top-area-frame: rgb(44, 139, 44);
+$plot-area-color-bottom-area-frame: lightgreen;
+$plot-area-color-left-area-frame: rgb(141, 141, 219);
+$plot-area-color-right-area-frame: rgb(209, 183, 65);
+$plot-area-color-area-label-text: rgb(170, 170, 82);
 
 
 .plot-d3-container .d3-plot.plot-area {
@@ -12,26 +12,26 @@ $area-label-text-color: rgb(170, 170, 82);
 		}
 
 		&.top-label rect {
-			stroke: $top-area-frame-color;
+			stroke: $plot-area-color-top-area-frame;
 		}
 
 		&.bottom-label rect {
-			stroke: $bottom-area-frame-color;
+			stroke: $plot-area-color-bottom-area-frame;
 		}
 
 		&.left-label rect {
-			stroke: $left-area-frame-color;
+			stroke: $plot-area-color-left-area-frame;
 		}
 
 		&.right-label rect {
-			stroke: $right-area-frame-color;
+			stroke: $plot-area-color-right-area-frame;
 		}
 	}
 
 	.plot-elm.area-label {
 		text {
 			stroke: transparent;
-			fill: $area-label-text-color;
+			fill: $plot-area-color-area-label-text;
 		}
 	}
 }

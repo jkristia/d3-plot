@@ -1,54 +1,55 @@
-$color-background: #363640;
-$color-title: rgb(245, 245, 245);
-$color-line-elm: rgb(126, 124, 173);
-$color-axis: gray;
-$color-axis-text: #a4a4a4;
-$color-gridline: rgba(128, 128, 128, 0.695);
-
-$color-cursor: #95959580;
-$color-cursor-text: #b4b4b4;
+$plot-color-background: #363640;
+$plot-color-title: rgb(245, 245, 245);
+$plot-color-line-elm: rgb(126, 124, 173);
+$plot-color-axis: gray;
+$plot-color-axis-text: #a4a4a4;
+$plot-color-gridline: rgba(128, 128, 128, 0.695);
+$plot-color-cursor: #95959580;
+$plot-color-cursor-text: #b4b4b4;
+$plot-color-bar-legend-text: #5f5f66;
+$plot-color-range-selection: green;
 
 .plot-d3-container {
     font-family: sans-serif;
-    background-color: $color-background;
+    background-color: $plot-color-background;
     .d3-plot {
         fill: transparent;
     }
     .title-elm {
         font-size: 20px;
         stroke: transparent;
-        fill: $color-title;
+        fill: $plot-color-title;
     }
     .plot-elm.line-series-elm {
-        stroke: $color-line-elm;
+        stroke: $plot-color-line-elm;
         circle {
-            fill: $color-line-elm;
+            fill: $plot-color-line-elm;
         }
     }
     .plot-elm.bar-legend-item {
         text {
-            fill: #5f5f66;
+            fill: $plot-color-bar-legend-text;
             font-size: 13px;
         }
     }
     .axis-container {
-        stroke: $color-axis;
+        stroke: $plot-color-axis;
         path {
-            stroke: $color-axis;
+            stroke: $plot-color-axis;
             stroke-width: 0.5;
         }
         g.tick line {
-            stroke: $color-axis;
+            stroke: $plot-color-axis;
             stroke-width: 0.5;
         }
         g.tick text {
             stroke: transparent;
-            fill: $color-axis-text;
+            fill: $plot-color-axis-text;
         }
     }
     .grid-container {
         .grid-line {
-            stroke: $color-gridline;
+            stroke: $plot-color-gridline;
             stroke-width: 0.5;
         }
     }
@@ -63,16 +64,16 @@ $color-cursor-text: #b4b4b4;
         .cursor-text {
             pointer-events: none;
             stroke: transparent;
-            fill: $color-cursor-text;
+            fill: $plot-color-cursor-text;
             text-anchor: start;
             font-size: 10px;
         }
         .cross-hair {
-            stroke: $color-cursor;
+            stroke: $plot-color-cursor;
             stroke-dasharray: 4;
         }
     }
     .range-selection {
-        fill: green;
+        fill: $plot-color-range-selection;
     }
 }

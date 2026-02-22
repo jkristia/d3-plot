@@ -1,16 +1,16 @@
-$transition-line-color: rgb(189, 189, 70);
+$transition-line-color-line: rgb(189, 189, 70);
 
 
 .plot-d3-container .d3-plot.transition-line {
 	.plot-elm.line-series-elm.custom-transition {
 		path {
-			stroke: $transition-line-color;
+			stroke: $transition-line-color-line;
 			fill: none;
 		}
 
 		.point-marker {
-			stroke: $transition-line-color;
-			fill: $transition-line-color;
+			stroke: $transition-line-color-line;
+			fill: $transition-line-color-line;
 		}
 	}
 }

@@ -1,7 +1,7 @@
-$color-line-elm-smp: rgb(209, 161, 209);
-$color-line-elm-mmp: rgb(238, 172, 197);
-$color-line-elm-cluster: rgb(126, 124, 173);
-$color-line-elm-cnstl: rgb(123, 86, 133);
+$demo1-color-line-elm-smp: rgb(209, 161, 209);
+$demo1-color-line-elm-mmp: rgb(238, 172, 197);
+$demo1-color-line-elm-cluster: rgb(126, 124, 173);
+$demo1-color-line-elm-cnstl: rgb(123, 86, 133);
 
 .plot-d3-container .d3-plot.custom-1 {
 	.plot-elm.line-series-elm {
@@ -16,34 +16,34 @@ $color-line-elm-cnstl: rgb(123, 86, 133);
 		}
 
 		&.smp {
-			stroke: $color-line-elm-smp;
+			stroke: $demo1-color-line-elm-smp;
 
 			.point-marker {
-				fill: $color-line-elm-smp;
+				fill: $demo1-color-line-elm-smp;
 			}
 		}
 
 		&.mmp {
-			stroke: $color-line-elm-mmp;
+			stroke: $demo1-color-line-elm-mmp;
 
 			.point-marker {
-				fill: $color-line-elm-mmp;
+				fill: $demo1-color-line-elm-mmp;
 			}
 		}
 
 		&.cluster {
-			stroke: $color-line-elm-cluster;
+			stroke: $demo1-color-line-elm-cluster;
 
 			.point-marker {
-				fill: $color-line-elm-cluster;
+				fill: $demo1-color-line-elm-cluster;
 			}
 		}
 
 		&.cnstl {
-			stroke: $color-line-elm-cnstl;
+			stroke: $demo1-color-line-elm-cnstl;
 
 			.point-marker {
-				fill: $color-line-elm-cnstl;
+				fill: $demo1-color-line-elm-cnstl;
 			}
 		}
 	}
