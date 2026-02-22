@@ -3,8 +3,8 @@ import { Margin, Point } from "./interfaces";
 export class Rect {
     private _width: number = 0;
     private _height: number = 0;
-    left: number;
-    top: number;
+    public left: number;
+    public top: number;
     public get width(): number {
         return Math.max(0, this._width);
     }
@@ -46,7 +46,7 @@ export class Rect {
     public get isEmpty(): boolean {
         return (this.width === 0 && this.height === 0);
     }
-    constructor(r?: {
+    public constructor(r?: {
         left: number;
         top: number;
         width: number;

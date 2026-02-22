@@ -16,5 +16,5 @@ import { CHART_TABS } from './chart-tabs';
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
-	readonly tabs = CHART_TABS;
+	public readonly tabs = CHART_TABS;
 }
