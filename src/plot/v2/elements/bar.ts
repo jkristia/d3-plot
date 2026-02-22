@@ -4,17 +4,45 @@ import { Point, Rect } from '../../util';
 import { PlotItem } from '../plot.item';
 import { IPlotItemOptions } from '../plot.interface';
 
-export interface IBarData {
+/**
+ * Input payload for a bar chart.
+ */
+export interface IBarChartData {
+	series: IBarChartSeries[];
+	dataChanged?: Subject<void>;
+}
+
+/**
+ * One logical bar series in a grouped bar chart (e.g. "2025", "2026").
+ */
+export interface IBarChartSeries {
+	id?: string;
+	label?: string;
+	cssClass?: string;
 	points: Point[];
 	dataChanged?: Subject<void>;
 }
 
+/**
+ * Visual/behavior options for bar rendering.
+ */
 export interface IBarOptions extends IPlotItemOptions {
 	barWidthRatio?: number;
 	minBarWidth?: number;
 	maxBarWidth?: number;
+	seriesGapRatio?: number;
 	xLabelFormatter?: (x: number) => string;
 	yValueFormatter?: (y: number) => string;
+}
+
+/**
+ * Internal per-bar data container used during layout and hover handling.
+ */
+interface BarSeriesDataItem {
+	point: Point;
+	seriesIndex: number;
+	seriesLabel: string;
+	seriesCssClass?: string;
 }
 
 export class BarPlotItem extends PlotItem {
@@ -26,11 +54,14 @@ export class BarPlotItem extends PlotItem {
 		return this._options as IBarOptions;
 	}
 
-	constructor(private _data: IBarData, options?: IBarOptions) {
+	constructor(private _data: IBarChartData, options?: IBarOptions) {
 		super(options);
 		if (_data.dataChanged) {
 			_data.dataChanged.subscribe(() => this.updateLayout(this._area));
 		}
+		(_data.series || []).forEach((series) => {
+			series.dataChanged?.subscribe(() => this.updateLayout(this._area));
+		});
 	}
 
 	public override initializeLayout(): void {
@@ -49,8 +80,9 @@ export class BarPlotItem extends PlotItem {
 	public override updateLayout(area: Rect): void {
 		super.updateLayout(area);
 		const plotArea = this.getPlotArea();
-		const points = this._data.points;
-		if (!this._rootElm || points.length === 0) {
+		const series = this.getSeries();
+		const points = series.flatMap((s) => s.points);
+		if (!this._rootElm || points.length === 0 || series.length === 0) {
 			return;
 		}
 
@@ -66,50 +98,94 @@ export class BarPlotItem extends PlotItem {
 		const ratio = this.options?.barWidthRatio ?? 0.7;
 		const minBarWidth = this.options?.minBarWidth ?? 6;
 		const maxBarWidth = this.options?.maxBarWidth ?? 120;
+		const seriesGapRatio = this.options?.seriesGapRatio ?? 0.12;
 		const fallbackWidth = plotArea.width / Math.max(points.length * 1.8, 1);
 		const computedWidth = Number.isFinite(minDelta)
 			? Math.abs(this.scale.xScale(minDelta) - this.scale.xScale(0)) * ratio
 			: fallbackWidth;
-		const barWidth = Math.max(minBarWidth, Math.min(maxBarWidth, computedWidth));
+		const groupWidth = Math.max(minBarWidth, Math.min(maxBarWidth, computedWidth));
+		const slotWidth = groupWidth / series.length;
+		const barWidth = Math.max(minBarWidth, slotWidth * (1 - seriesGapRatio));
+		const slotPadding = (slotWidth - barWidth) / 2;
+
+		const renderData: BarSeriesDataItem[] = [];
+		series.forEach((serie, seriesIndex) => {
+			serie.points.forEach((point) => {
+				renderData.push({
+					point,
+					seriesIndex,
+					seriesLabel: serie.label,
+					seriesCssClass: serie.cssClass,
+				});
+			});
+		});
 
 		const y0 = this.scale.yScale(0);
 		this._rootElm
 			.selectAll('.bar-item')
-			.data(points)
+			.data(renderData, (d: any) => `${d.seriesIndex}-${d.point.x}`)
 			.join('rect')
-			.classed('bar-item', true)
-			.attr('x', (d) => this.scale.xScale(d.x) - barWidth / 2)
-			.attr('y', (d) => Math.min(y0, this.scale.yScale(d.y)))
+			.attr('class', (d) => {
+				const classes = ['bar-item', `series-${d.seriesIndex}`];
+				if (d.seriesCssClass) {
+					classes.push(d.seriesCssClass);
+				}
+				return classes.join(' ');
+			})
+			.attr('x', (d) => {
+				const xCenter = this.scale.xScale(d.point.x);
+				const groupStart = xCenter - groupWidth / 2;
+				return groupStart + d.seriesIndex * slotWidth + slotPadding;
+			})
+			.attr('y', (d) => Math.min(y0, this.scale.yScale(d.point.y)))
 			.attr('width', barWidth)
-			.attr('height', (d) => Math.abs(this.scale.yScale(d.y) - y0))
-			.on('mouseenter', (event: MouseEvent, d: Point) => this.showTooltip(event, d))
-			.on('mousemove', (event: MouseEvent, d: Point) => this.showTooltip(event, d))
+			.attr('height', (d) => Math.abs(this.scale.yScale(d.point.y) - y0))
+			.on('mouseenter', (event: MouseEvent, d: BarSeriesDataItem) => this.showTooltip(event, d))
+			.on('mousemove', (event: MouseEvent, d: BarSeriesDataItem) => this.showTooltip(event, d))
 			.on('mouseleave', () => this.hideTooltip());
 	}
 
-	private formatLabel(point: Point): string {
-		const xLabel = this.options?.xLabelFormatter
-			? this.options.xLabelFormatter(point.x)
-			: point.x.toString();
-		const yLabel = this.options?.yValueFormatter
-			? this.options.yValueFormatter(point.y)
-			: point.y.toString();
-		return `${xLabel}, ${yLabel}`;
+	private getSeries(): Array<{ points: Point[]; label: string; cssClass?: string }> {
+		return this._data.series.map((s, i) => ({
+			points: s.points,
+			label: s.label || s.id || `Series ${i + 1}`,
+			cssClass: s.cssClass,
+		}));
 	}
 
-	private showTooltip(event: MouseEvent, point: Point) {
+	private formatLines(datum: BarSeriesDataItem): [string, string] {
+		const xLabel = this.options?.xLabelFormatter
+			? this.options.xLabelFormatter(datum.point.x)
+			: datum.point.x.toString();
+		const yLabel = this.options?.yValueFormatter
+			? this.options.yValueFormatter(datum.point.y)
+			: datum.point.y.toString();
+		return [xLabel, `${datum.seriesLabel}: ${yLabel}`];
+	}
+
+	private showTooltip(event: MouseEvent, point: BarSeriesDataItem) {
 		if (!this.tooltipElm || !this.tooltipRect || !this.tooltipText) {
 			return;
 		}
 		this.tooltipElm.raise();
-		const label = this.formatLabel(point);
-		this.tooltipText.text(label);
+		const lines = this.formatLines(point);
+		this.tooltipText
+			.selectAll('tspan')
+			.data(lines)
+			.join('tspan')
+			.attr('x', 0)
+			.attr('dy', (_d, i) => (i === 0 ? '0.9em' : '1.2em'))
+			.text((d) => d);
+		this.tooltipText.attr('x', 0).attr('y', 0);
 		const bbox = this.tooltipText.node()?.getBBox();
 		const width = (bbox?.width || 0) + 12;
 		const height = (bbox?.height || 0) + 8;
 		this.tooltipText
 			.attr('x', width / 2)
-			.attr('y', height / 2 + 0.5);
+			.attr('y', 3);
+		this.tooltipText
+			.selectAll('tspan')
+			.attr('x', width / 2);
 		this.tooltipRect
 			.attr('width', width)
 			.attr('height', height)
