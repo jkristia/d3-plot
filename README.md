@@ -4,6 +4,12 @@ An Angular playground for building reusable D3 chart primitives and interactive 
 
 This workspace uses the Plot V2 architecture for all active chart development.
 
+### Examples
+
+![alt text](images/image-2.png)
+![alt text](images/image-1.png)
+![alt text](images/image.png)
+
 ## Plot V2 architecture
 
 - Explicit area model (`PlotArea`): top, left, right, bottom, center each own rect, scale, and child items.
