@@ -1,0 +1,91 @@
+$series-2025-color: #3f51b5;
+$series-2026-color: #5fa85c;
+$chart-surface-color: #dedee3;
+$axis-stroke-color: #9a9aa1;
+$axis-line-color: #a8a8af;
+$axis-text-color: #5f5f66;
+$grid-line-color: #b8b8bf;
+$tooltip-bg-color: rgba(47, 47, 54, 0.92);
+$tooltip-border-color: rgba(105, 105, 112, 0.95);
+$tooltip-text-color: #f2f2f4;
+
+:host {
+	/* TODO: Refactor away from ::ng-deep once plot styles expose a dedicated theming API. */
+	::ng-deep {
+		.d3-container .d3-plot.bar-chart-demo {
+			background-color: $chart-surface-color;
+			fill: transparent;
+
+			.axis-container {
+				stroke: $axis-stroke-color;
+				path,
+				g.tick line {
+					stroke: $axis-line-color;
+					stroke-width: 0.7;
+				}
+
+				g.tick text {
+					stroke: transparent;
+					fill: $axis-text-color;
+					font-size: 12px;
+				}
+			}
+
+			.grid-container .grid-line {
+				stroke: $grid-line-color;
+				stroke-width: 0.6;
+			}
+
+			.plot-elm.bar-plot-elm.monthly-sales {
+				.bar-item.series-2025 {
+					fill: $series-2025-color;
+					stroke: $series-2025-color;
+				}
+
+				.bar-item.series-2026 {
+					fill: $series-2026-color;
+					stroke: $series-2026-color;
+				}
+			}
+
+			.plot-elm.bar-plot-elm .bar-tooltip {
+				&.hidden {
+					display: none;
+				}
+
+				rect {
+					fill: $tooltip-bg-color;
+					stroke: $tooltip-border-color;
+				}
+
+				text {
+					fill: $tooltip-text-color;
+					font-size: 12px;
+				}
+			}
+
+			.title-elm text {
+				font-size: 16px;
+				font-weight: 600;
+				fill: $axis-text-color;
+			}
+
+			.plot-elm.bar-legend-item {
+				&.legend-2025 rect {
+					fill: $series-2025-color;
+					stroke: $series-2025-color;
+				}
+
+				&.legend-2026 rect {
+					fill: $series-2026-color;
+					stroke: $series-2026-color;
+				}
+			}
+
+			.plot-elm.axis-label-item text {
+				fill: $axis-text-color;
+				font-size: 13px;
+			}
+		}
+	}
+}

@@ -1,6 +1,6 @@
 import * as d3 from 'd3';
 import { Component, signal } from '@angular/core';
-import { AxisAndGrid, BarPlotItem, LinearScale, PlotItem, PlotBaseComponent, Plot, TitleItem } from '../../plot';
+import { AxisAndGrid, BarLegendItem, BarPlotItem, LinearScale, PlotItem, PlotBaseComponent, Plot, TitleItem } from '../../plot';
 import { Rect } from '../../plot/util';
 import { BarChartStore } from './bar-chart.store';
 
@@ -31,49 +31,6 @@ class AxisLabelItem extends PlotItem {
 	}
 }
 
-class LegendItem extends PlotItem {
-	private marker?: d3.Selection<SVGRectElement, unknown, null, undefined>;
-	private label?: d3.Selection<SVGTextElement, unknown, null, undefined>;
-
-	public constructor(
-		private legendText: string,
-		private markerCssClass: string,
-		private slot: number,
-		private total: number,
-	) {
-		super();
-	}
-
-	public override initializeLayout(): void {
-		super.initializeLayout();
-		this._rootElm?.classed('bar-legend-item', true).classed(this.markerCssClass, true);
-		this.marker = this._rootElm?.append('rect') as any;
-		this.label = this._rootElm
-			?.append('text')
-			.text(this.legendText)
-			.attr('dominant-baseline', 'middle') as any;
-	}
-
-	public override updateLayout(area: Rect): void {
-		super.updateLayout(area);
-		const markerWidth = 34;
-		const markerHeight = 12;
-		const itemWidth = 140;
-		const startX = area.center.x - (this.total * itemWidth) / 2;
-		const markerX = startX + this.slot * itemWidth;
-		const markerY = area.center.y + 10;
-		this.marker
-			?.attr('x', markerX)
-			.attr('y', markerY)
-			.attr('width', markerWidth)
-			.attr('height', markerHeight);
-		this.label
-			?.attr('x', markerX + markerWidth + 6)
-			.attr('y', markerY + markerHeight / 2 + 0.5)
-			.attr('font-weight', 600);
-	}
-}
-
 @Component({
 	selector: 'bar-chart-demo',
 	standalone: true,
@@ -81,7 +38,7 @@ class LegendItem extends PlotItem {
 		PlotBaseComponent,
 	],
 	templateUrl: './bar-chart.component.html',
-	styleUrl: './bar-chart.component.scss',
+	styleUrls: ['./bar-chart.component.scss', './bar-chart.plot-styles.scss'],
 })
 export class BarChartComponent {
 	public readonly plot = signal<Plot | null>(null);
@@ -99,8 +56,8 @@ export class BarChartComponent {
 				height: 64,
 				plots: [
 					new TitleItem('Monthly Sales'),
-					new LegendItem('Sales 2025', 'legend-2025', 0, 2),
-					new LegendItem('Sales 2026', 'legend-2026', 1, 2),
+					new BarLegendItem('Sales 2025', 'legend-2025', 0, 2),
+					new BarLegendItem('Sales 2026', 'legend-2026', 1, 2),
 				],
 			},
 			leftArea: {

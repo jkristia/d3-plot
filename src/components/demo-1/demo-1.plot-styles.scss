@@ -1,0 +1,55 @@
+$color-line-elm-smp: rgb(209, 161, 209);
+$color-line-elm-mmp: rgb(238, 172, 197);
+$color-line-elm-cluster: rgb(126, 124, 173);
+$color-line-elm-cnstl: rgb(123, 86, 133);
+
+:host {
+	/* TODO: Refactor away from ::ng-deep once plot styles expose a dedicated theming API. */
+	::ng-deep {
+		.d3-container .d3-plot.custom-1 {
+			.plot-elm.line-series-elm {
+				stroke-width: 2px;
+
+				&.mouse-hover {
+					stroke-width: 6px;
+
+					circle {
+						r: 4;
+					}
+				}
+
+				&.smp {
+					stroke: $color-line-elm-smp;
+
+					.point-marker {
+						fill: $color-line-elm-smp;
+					}
+				}
+
+				&.mmp {
+					stroke: $color-line-elm-mmp;
+
+					.point-marker {
+						fill: $color-line-elm-mmp;
+					}
+				}
+
+				&.cluster {
+					stroke: $color-line-elm-cluster;
+
+					.point-marker {
+						fill: $color-line-elm-cluster;
+					}
+				}
+
+				&.cnstl {
+					stroke: $color-line-elm-cnstl;
+
+					.point-marker {
+						fill: $color-line-elm-cnstl;
+					}
+				}
+			}
+		}
+	}
+}

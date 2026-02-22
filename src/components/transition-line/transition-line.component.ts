@@ -64,7 +64,7 @@ class TransitionLineData {
 		PlotBaseComponent
 	],
 	templateUrl: './transition-line.component.html',
-	styleUrl: './transition-line.component.scss'
+	styleUrls: ['./transition-line.component.scss', './transition-line.plot-styles.scss']
 })
 export class TransitionLineComponent implements OnDestroy {
 	public readonly plot = signal<Plot | null>(null);

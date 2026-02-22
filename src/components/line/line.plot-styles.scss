@@ -1,0 +1,35 @@
+$primary-line-color: rgba(26, 173, 241, 0.947);
+$secondary-line-color: rgb(36, 189, 56);
+
+:host {
+	/* TODO: Refactor away from ::ng-deep once plot styles expose a dedicated theming API. */
+	::ng-deep {
+		.d3-container .d3-plot.line-demo {
+			.plot-elm.line-series-elm {
+				&.line-2 {
+					path {
+						stroke: $secondary-line-color;
+						fill: none;
+					}
+
+					.point-marker {
+						stroke: $secondary-line-color;
+						fill: $secondary-line-color;
+					}
+				}
+
+				&.line-4 {
+					path {
+						stroke: $primary-line-color;
+						fill: none;
+					}
+
+					.point-marker {
+						stroke: $primary-line-color;
+						fill: $primary-line-color;
+					}
+				}
+			}
+		}
+	}
+}

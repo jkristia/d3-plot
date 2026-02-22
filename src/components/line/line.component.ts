@@ -122,7 +122,7 @@ class SinusData implements ILineData {
 		PlotBaseComponent,
 	],
 	templateUrl: './line.component.html',
-	styleUrl: './line.component.scss',
+	styleUrls: ['./line.component.scss', './line.plot-styles.scss'],
 })
 export class LineComponent implements OnDestroy {
 	public readonly plot = signal<Plot | null>(null);
