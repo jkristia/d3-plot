@@ -11,13 +11,15 @@ export interface ILineData {
 
 export interface ILineOptions extends IPlotItemOptions {
     showPointMarkers?: 'always' | 'onhover';
-    curveType?: 'linear' | 'smooth'
+    curveType?: 'linear' | 'smooth';
+    transitionDurationMs?: number;
 }
 
 export class LineSeries extends PlotItem {
 
     private _pathElm?: D3Selection;
     private _pointContainer?: D3Selection
+    private _hasRendered = false;
     private get options(): ILineOptions | undefined {
         return this._options as ILineOptions;
     }
@@ -29,6 +31,9 @@ export class LineSeries extends PlotItem {
             return d3.curveMonotoneX
         }
         return d3.curveLinear;
+    }
+    private get transitionDurationMs(): number {
+        return this.options?.transitionDurationMs || 0;
     }
 
     constructor(protected _data: ILineData, options?: ILineOptions) {
@@ -50,6 +55,7 @@ export class LineSeries extends PlotItem {
             return
         }
         area = this._area;
+        const animate = this.transitionDurationMs > 0 && this._hasRendered;
         if (this.createPointMarkers) {
             if (!this._pointContainer) {
                 this._pointContainer = this._rootElm!.append('g')
@@ -64,11 +70,20 @@ export class LineSeries extends PlotItem {
                 .data(this._data.points)
                 .join(
                     // add new sample points
-                    enter => this.appendPoint(enter),
+                    enter => this.appendPoint(enter, area),
                     // update remaining points
-                    update => update
-                        .attr('cx', d => this.xPoint(d, area))
-                        .attr('cy', d => this.yPoint(d, area))
+                    update => {
+                        if (animate) {
+                            return update
+                                .transition()
+                                .duration(this.transitionDurationMs)
+                                .attr('cx', d => this.xPoint(d, area))
+                                .attr('cy', d => this.yPoint(d, area));
+                        }
+                        return update
+                            .attr('cx', d => this.xPoint(d, area))
+                            .attr('cy', d => this.yPoint(d, area));
+                    }
                     ,
                 )
         }
@@ -81,16 +96,25 @@ export class LineSeries extends PlotItem {
             // https://d3js.org/d3-shape/curve
             .curve(this.lineType)
             ;
+        if (animate) {
+            this._pathElm
+                .transition()
+                .duration(this.transitionDurationMs)
+                .attr('d', line(this._data.points))
+            this._hasRendered = true;
+            return;
+        }
         this._pathElm
             .attr('d', line(this._data.points))
+        this._hasRendered = true;
     }
 
-    private appendPoint(points: D3Selection<Point | null>): D3Selection<Point | null> {
+    private appendPoint(points: D3Selection<Point | null>, area: Rect): D3Selection<Point | null> {
         return points.append('circle')
             .classed('point-marker', true)
             .attr('r', 4)
-            .attr('cx', d => d?.x as any)
-            .attr('cy', d => d?.y as any)
+            .attr('cx', d => this.xPoint(d, area))
+            .attr('cy', d => this.yPoint(d, area))
     }
     private yPoint(point: Point | null, area: Rect): number {
         return this.scale.yScale(point?.y || 0);

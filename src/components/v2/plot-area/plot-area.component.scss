@@ -1,0 +1,33 @@
+.container {
+	width: 100%;
+	height: 100%;
+
+	::ng-deep .plot-elm.area-frame {
+		rect {
+			fill: transparent;
+		}
+
+		&.top-label rect {
+			stroke: rgb(44, 139, 44);
+		}
+
+		&.bottom-label rect {
+			stroke: lightgreen;
+		}
+
+		&.left-label rect {
+			stroke: rgb(141, 141, 219);
+		}
+
+		&.right-label rect {
+			stroke: rgb(209, 183, 65);
+		}
+	}
+
+	::ng-deep .plot-elm.area-label {
+		text {
+			stroke: transparent;
+			fill: rgb(170, 170, 82);
+		}
+	}
+}

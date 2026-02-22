@@ -1,8 +1,8 @@
 import { Type } from '@angular/core';
 import { Demo1PlotComponent } from '../components/v2/demo-1/demo-1.component';
-import { TransitionLineComponent } from '../components/v1/transition-line/transition-line.component';
-import { PlotAreaComponent } from '../components/v1/plot-area/plot-area.component';
-import { LineComponent } from '../components/v1/line/line.component';
+import { TransitionLineComponent } from '../components/v2/transition-line/transition-line.component';
+import { LineComponent } from '../components/v2/line/line.component';
+import { PlotAreaComponent } from '../components/v2/plot-area/plot-area.component';
 
 export interface ChartTab {
 	id: string;

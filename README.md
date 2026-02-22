@@ -2,32 +2,19 @@
 
 An Angular playground for building reusable D3 chart primitives and interactive plot demos.
 
-This workspace contains two generations of a custom plotting API:
+This workspace uses the Plot V2 architecture for all active chart development.
 
-- **Plot V1**: early, chainable D3 plot objects and demo components.
-- **Plot V2**: a cleaner, area-based architecture with dedicated plot elements (axis/grid, line series, title, selection, cursor).
-
-## V1 vs V2 (summary)
-
-### Plot V1
-
-- Single plot container with computed label/plot rectangles (`topArea`, `leftArea`, `plotArea`, etc).
-- Plot elements are `PlotTypeBase` descendants and commonly rely on callback-based area selection.
-- More implicit wiring between components and plot areas (flexible, but easier to couple tightly to component state).
-- Useful for early experiments and legacy demos.
-
-### Plot V2
+## Plot V2 architecture
 
 - Explicit area model (`PlotArea`): top, left, right, bottom, center each own rect, scale, and child items.
-- Composition is item-based (`PlotItem`) with clearer ownership and lifecycle (`initializeLayout` / `updateLayout`).
-- Better separation of concerns: scales, mouse handlers, hover state, and chart items are modular.
-- Cleaner extension path for interactive features (cross cursor, area selection, per-area plots, custom items).
+- Composition is item-based (`PlotItem`) with clear lifecycle (`initializeLayout` / `updateLayout`).
+- Modular interaction model (scale handling, mouse handlers, cursor and selection behaviors).
+- Reusable chart elements (axis/grid, line series, title) with configurable options.
 
-### Decision going forward
+## Direction
 
-- **New chart development should use V2 only.**
-- V1 remains in the repo for reference and existing demos, but is considered legacy.
-- If a chart currently exists in V1 and needs active enhancement, prefer migrating it to V2 instead of adding new V1 features.
+- **Use Plot V2 only for new work.**
+- Active demos in the app route/tab shell target v2 components.
 
 ## Tech stack
 
@@ -38,10 +25,8 @@ This workspace contains two generations of a custom plotting API:
 
 ## Project layout
 
-- `src/components/v1/*`: Angular demo components for the V1 plot API.
-- `src/components/v2/demo-1/*`: Angular demo using the V2 plot API.
-- `src/plot/v1/*`: V1 plotting engine, plot types, and V1 base component.
-- `src/plot/v2/*`: V2 plotting engine, areas, elements, scaling, mouse handling, and V2 base component.
+- `src/components/v2/*`: Angular demo components using Plot V2.
+- `src/plot/v2/*`: Plot V2 engine, areas, elements, scaling, and mouse handling.
 - `src/plot/util/*`: shared geometry/util helpers and tests.
 - `src/app/*`: application shell that hosts demos.
 
