@@ -5,6 +5,11 @@ import { IPlotItemOptions } from "../plot.interface";
 import { Scale } from './scale';
 
 export interface IAxisAndGridOptions extends IPlotItemOptions {
+    xTicks?: number;
+    yTicks?: number;
+    xTickFormat?: (value: number) => string;
+    yTickFormat?: (value: number) => string;
+    xLabelRotateDeg?: number;
 }
 
 export class AxisAndGrid extends PlotItem {
@@ -15,6 +20,9 @@ export class AxisAndGrid extends PlotItem {
     // https://d3js.org/d3-axis
     protected _xAxisBottom: d3.Axis<any> | null = null;
     protected _yAxisLeft: d3.Axis<any> | null = null;
+    private get options(): IAxisAndGridOptions | undefined {
+        return this._options as IAxisAndGridOptions;
+    }
 
     constructor(options?: IAxisAndGridOptions) {
         super(options)
@@ -50,9 +58,11 @@ export class AxisAndGrid extends PlotItem {
         this.renderAxis(area);
     }
     protected renderGrid(area: Rect) {
+        const xTicks = this.options?.xTicks ?? 10;
+        const yTicks = this.options?.yTicks ?? 5;
         if (this._gridElm) {
             this._gridElm.selectAll('.v-line')
-                .data(this.scale.xScale.ticks())
+                .data(this.scale.xScale.ticks(xTicks))
                 .join('line')
                 .classed('v-line grid-line', true)
                 .attr('x1', d => this.scale.xScale(d))
@@ -61,7 +71,7 @@ export class AxisAndGrid extends PlotItem {
                 .attr('y2', area.height)
 
             this._gridElm.selectAll('.h-line')
-                .data(this.scale.yScale.ticks(5).slice(1))
+                .data(this.scale.yScale.ticks(yTicks).slice(1))
                 .join('line')
                 .classed('h-line grid-line', true)
                 .attr('x1', area.left)
@@ -72,13 +82,31 @@ export class AxisAndGrid extends PlotItem {
     }
 
     protected renderAxis(area: Rect) {
+        const xTicks = this.options?.xTicks ?? 10;
+        const yTicks = this.options?.yTicks ?? 5;
         if (this._xAxisBottom) {
-            this._xAxisBottom.ticks(10).tickFormat(d => d.toString())
+            const xFormat = this.options?.xTickFormat;
+            this._xAxisBottom.ticks(xTicks)
+            if (xFormat) {
+                this._xAxisBottom.tickFormat(d => xFormat(Number(d)) as any)
+            } else {
+                this._xAxisBottom.tickFormat(d => d.toString())
+            }
             this._xAxisElm?.call(this._xAxisBottom)
             this._xAxisElm?.attr('transform', `translate(-0.5, ${area.height + 0.5})`)
+            const rotate = this.options?.xLabelRotateDeg ?? 0;
+            this._xAxisElm?.selectAll('text')
+                .attr('transform', rotate === 0 ? null : `rotate(${rotate})`)
+                .style('text-anchor', rotate === 0 ? 'middle' : 'end')
+                .attr('dx', rotate === 0 ? 0 : '-0.35em')
+                .attr('dy', rotate === 0 ? '0.71em' : '0.55em');
         }
         if (this._yAxisLeft) {
-            this._yAxisLeft.ticks(5)
+            const yFormat = this.options?.yTickFormat;
+            this._yAxisLeft.ticks(yTicks)
+            if (yFormat) {
+                this._yAxisLeft.tickFormat(d => yFormat(Number(d)) as any)
+            }
             this._yAxisElm?.call(this._yAxisLeft)
             this._yAxisElm?.attr('transform', `translate(${area.left - 0.5}, ${-0.5})`)
         }

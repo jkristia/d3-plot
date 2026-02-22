@@ -1,5 +1,6 @@
 import { Type } from '@angular/core';
 import { Demo1PlotComponent } from '../components/v2/demo-1/demo-1.component';
+import { BarChartComponent } from '../components/v2/bar-chart/bar-chart.component';
 import { TransitionLineComponent } from '../components/v2/transition-line/transition-line.component';
 import { LineComponent } from '../components/v2/line/line.component';
 import { PlotAreaComponent } from '../components/v2/plot-area/plot-area.component';
@@ -30,6 +31,11 @@ export const CHART_TABS: ChartTab[] = [
 		id: 'demo-1',
 		label: 'Demo 1',
 		component: Demo1PlotComponent,
+	},
+	{
+		id: 'bar-chart',
+		label: 'Bar Chart',
+		component: BarChartComponent,
 	},
 ];
 
