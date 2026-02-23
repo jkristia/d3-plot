@@ -1,0 +1,81 @@
+$histogram-color-bars: #1f77b4;
+$histogram-color-surface: #dedee3;
+$histogram-color-axis-stroke: #9a9aa1;
+$histogram-color-axis-line: #a8a8af;
+$histogram-color-axis-text: #5f5f66;
+$histogram-color-grid-line: #b8b8bf;
+$histogram-color-tooltip-bg: rgba(47, 47, 54, 0.92);
+$histogram-color-tooltip-border: rgba(105, 105, 112, 0.95);
+$histogram-color-tooltip-text: #f2f2f4;
+
+
+.plot-d3-container .d3-plot.histogram-chart-demo {
+    background-color: $histogram-color-surface;
+    fill: transparent;
+
+    .axis-container {
+        stroke: $histogram-color-axis-stroke;
+
+        path,
+        g.tick line {
+            stroke: $histogram-color-axis-line;
+            stroke-width: 0.7;
+        }
+
+        g.tick text {
+            stroke: transparent;
+            fill: $histogram-color-axis-text;
+            font-size: 11px;
+            font-family: Arial, sans-serif;
+        }
+    }
+
+    .grid-container .grid-line {
+        stroke: $histogram-color-grid-line;
+        stroke-width: 0.6;
+    }
+
+    .plot-elm.bar-plot-elm.age-histogram {
+        .bar-item.series-age-count {
+            fill: $histogram-color-bars;
+            stroke: $histogram-color-bars;
+            stroke-width: 0.5;
+        }
+    }
+
+    .plot-elm.bar-plot-elm .bar-tooltip {
+        &.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        rect {
+            fill: $histogram-color-tooltip-bg;
+            stroke: $histogram-color-tooltip-border;
+            stroke-width: 1;
+        }
+
+        text {
+            fill: $histogram-color-tooltip-text;
+            stroke: none;
+            font-size: 12px;
+            font-weight: 500;
+
+            &.tooltip-label {
+                font-weight: 600;
+            }
+        }
+    }
+
+    .title-elm text {
+        font-size: 16px;
+        font-weight: 600;
+        fill: $histogram-color-axis-text;
+    }
+
+    .plot-elm.axis-label-item text {
+        font-size: 13px;
+        font-weight: 500;
+        fill: $histogram-color-axis-text;
+    }
+}

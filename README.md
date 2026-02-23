@@ -44,6 +44,22 @@ Install dependencies:
 npm install
 ```
 
+### Generate age histogram data
+
+The project includes a Python script to generate age distribution samples for the histogram chart:
+
+```bash
+# Create and activate Python virtual environment
+python3 -m venv .venv
+source .venv/bin/activate  # On Windows: .venv\Scripts\activate
+
+# Install Python dependencies
+pip install -r requirements.txt
+
+# Generate age histogram data (outputs to age_data_bins.ts)
+python3 src/python/age_histogram.py
+```
+
 Run the app locally:
 
 ```bash
