@@ -5,7 +5,7 @@ import { Subject } from 'rxjs';
 import { Point, Util } from '../../plot/util';
 
 class Data implements ILineData {
-	public readonly points: Point[] = [
+	public readonly points: (Point | null)[] = [
 		{ x: 0, y: 0 },
 		{ x: 10, y: 0 },
 		{ x: 20, y: 2 },
@@ -15,6 +15,7 @@ class Data implements ILineData {
 		{ x: 115, y: 90 },
 		{ x: 115, y: 140 },
 		{ x: 120, y: 190 },
+		null, // break line, null = gap
 		{ x: 140, y: 190 },
 		{ x: 210, y: 10 },
 		{ x: 250, y: 50 },
@@ -23,7 +24,7 @@ class Data implements ILineData {
 	];
 
 	public get max(): number {
-		return d3.max(this.points, (d) => d.x) || 0;
+		return d3.max(this.points, (d) => d?.x) || 0;
 	}
 }
 
