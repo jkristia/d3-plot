@@ -9,6 +9,7 @@ This workspace uses the Plot architecture for all active chart development.
 ![alt text](images/image-2.png)
 ![alt text](images/image-1.png)
 ![alt text](images/image.png)
+![alt text](images/image_hist.png)
 
 ## Plot architecture
 
