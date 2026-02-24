@@ -45,6 +45,7 @@ export class HistogramChartComponent {
                     xTickFormat: (value) => this.store.ageLabelFromValue(value),
                     yTickFormat: (value) => Math.round(value).toString(),
                     xLabelRotateDeg: -45,
+                    showXGrid: false,
                 }),
                 new BarPlotItem(
                     {

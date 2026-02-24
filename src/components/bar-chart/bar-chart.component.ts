@@ -47,6 +47,7 @@ export class BarChartComponent {
 					xTickFormat: (value) => this.store.monthFromValue(value),
 					yTickFormat: (value) => Math.round(value).toString(),
 					xLabelRotateDeg: -20,
+					showXGrid: false,
 				}),
 				new BarPlotItem(
 					{
