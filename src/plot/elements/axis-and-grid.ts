@@ -10,6 +10,8 @@ export interface IAxisAndGridOptions extends IPlotItemOptions {
     xTickFormat?: (value: number) => string;
     yTickFormat?: (value: number) => string;
     xLabelRotateDeg?: number;
+    showXGrid?: boolean;
+    showYGrid?: boolean;
 }
 
 export class AxisAndGrid extends PlotItem {
@@ -60,9 +62,11 @@ export class AxisAndGrid extends PlotItem {
     protected renderGrid(area: Rect) {
         const xTicks = this.options?.xTicks ?? 10;
         const yTicks = this.options?.yTicks ?? 5;
+        const showXGrid = this.options?.showXGrid !== false;
+        const showYGrid = this.options?.showYGrid !== false;
         if (this._gridElm) {
             this._gridElm.selectAll('.v-line')
-                .data(this.scale.xScale.ticks(xTicks))
+                .data(showXGrid ? this.scale.xScale.ticks(xTicks) : [])
                 .join('line')
                 .classed('v-line grid-line', true)
                 .attr('x1', d => this.scale.xScale(d))
@@ -71,7 +75,7 @@ export class AxisAndGrid extends PlotItem {
                 .attr('y2', area.height)
 
             this._gridElm.selectAll('.h-line')
-                .data(this.scale.yScale.ticks(yTicks).slice(1))
+                .data(showYGrid ? this.scale.yScale.ticks(yTicks).slice(1) : [])
                 .join('line')
                 .classed('h-line grid-line', true)
                 .attr('x1', area.left)
