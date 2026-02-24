@@ -35,6 +35,9 @@ export class PlotBaseComponent implements OnInit, OnDestroy {
 	public ngOnDestroy(): void {
 		window.removeEventListener('resize', this.onResize);
 	}
+	public updateSize() {
+		this.onResize(null);
+	}	
 	private onResize = (e: any) => {
 		const size = this._plotAnchorElm.getBoundingClientRect();
 		this.plot()?.size({

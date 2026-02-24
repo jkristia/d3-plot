@@ -11,6 +11,7 @@ export interface IAxisAndGridOptions extends IPlotItemOptions {
     yTickFormat?: (value: number) => string;
     xLabelRotateDeg?: number;
     showXGrid?: boolean;
+    showXAxis?: boolean;
     showYGrid?: boolean;
 }
 
@@ -25,6 +26,9 @@ export class AxisAndGrid extends PlotItem {
     private get options(): IAxisAndGridOptions | undefined {
         return this._options as IAxisAndGridOptions;
     }
+    private get showXAxis(): boolean {
+        return this.options?.showXAxis !== false;
+    }
 
     public constructor(options?: IAxisAndGridOptions) {
         super(options)
@@ -32,20 +36,22 @@ export class AxisAndGrid extends PlotItem {
 
     public override setScale(scale: Scale): this {
         super.setScale(scale);
-        this._xAxisBottom = d3.axisBottom(scale.xScale);
+        if (this.showXAxis) {
+            this._xAxisBottom = d3.axisBottom(scale.xScale);
+        }
         this._yAxisLeft = d3.axisLeft(scale.yScale);
         return this;
     }
 
     public override initializeLayout(): void {
         super.initializeLayout()
-        this._xAxisBottom = d3.axisBottom(this.scale.xScale);
+        if (this.showXAxis) {
+            this._xAxisBottom = d3.axisBottom(this.scale.xScale);
+            this._xAxisElm = this._rootElm?.append('g')
+                .classed('axis-container x-axis', true)
+                .call(this._xAxisBottom!)
+        }
         this._yAxisLeft = d3.axisLeft(this.scale.yScale);
-
-        this._xAxisElm = this._rootElm?.append('g')
-            .classed('axis-container x-axis', true)
-            .call(this._xAxisBottom!)
-
         this._yAxisElm = this._rootElm?.append('g')
             .classed('axis-container y-axis', true)
             .call(this._yAxisLeft!);

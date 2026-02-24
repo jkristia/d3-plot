@@ -90,6 +90,23 @@ export class PlotArea implements IPlotOwner {
 		});
 		this._mouseHandler?.initializeLayout(this);
 	}
+	public setPlots(plots: PlotItem[]): PlotArea {
+		// cleanup
+		this.plots.forEach(p => {
+			p.destroy()
+		})
+		// add and initialize new plots
+		this.plots = plots;
+		this.plots.forEach(p => {
+			p.setOwner(this);
+			p.initializeLayout();
+			if (p.plotElement) {
+				this.rootElm?.append(() => p.plotElement!.node())
+			}
+		});
+		this.updateLayout();
+		return this;
+	}	
 
 	public updateLayout() {
 		if (this.rect.isEmpty) {

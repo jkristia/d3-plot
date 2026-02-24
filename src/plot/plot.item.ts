@@ -26,6 +26,10 @@ export class PlotItem implements IPlotItem {
     }
     public constructor(protected _options?: IPlotItemOptions) {
     }
+    public destroy() {
+        this._rootElm?.remove();
+        this._rootElm = null;
+    }
     public setOwner(owner: IPlotArea) {
         this._owner = owner;
     }
@@ -75,4 +79,10 @@ export class PlotItem implements IPlotItem {
     }
     protected onMouseHover(hover: boolean) {
     }
+    protected y(value: number): number {
+        return this.scale.yScale(value);
+    }
+    protected x(value: number): number {
+        return this.scale.xScale(value);
+    }    
 }
