@@ -26,7 +26,7 @@ export class HistogramChartComponent {
             titleArea: {
                 height: 64,
                 plots: [
-                    new TitleItem('Age Distribution (100k samples)'),
+                    new TitleItem('Age Distribution (100k samples)', { align: 'middle' }),
                 ],
             },
             leftArea: {
