@@ -12,55 +12,75 @@ $plot-color-range-selection: green;
 .plot-d3-container {
     font-family: sans-serif;
     background-color: $plot-color-background;
+
     .d3-plot {
         fill: transparent;
     }
+
     .title-elm {
         font-size: 20px;
         stroke: transparent;
         fill: $plot-color-title;
     }
+
     .plot-elm.line-series-elm {
         stroke: $plot-color-line-elm;
+
         circle {
             fill: $plot-color-line-elm;
         }
     }
+
     .plot-elm.bar-legend-item {
         text {
             fill: $plot-color-bar-legend-text;
             font-size: 13px;
         }
     }
+
     .axis-container {
         stroke: $plot-color-axis;
+
         path {
             stroke: $plot-color-axis;
             stroke-width: 0.5;
         }
+
         g.tick line {
             stroke: $plot-color-axis;
             stroke-width: 0.5;
         }
+
         g.tick text {
             stroke: transparent;
             fill: $plot-color-axis-text;
         }
     }
+
     .grid-container {
         .grid-line {
             stroke: $plot-color-gridline;
             stroke-width: 0.5;
         }
     }
+
+    .plot-elm.axis-label-item text {
+        fill: $plot-color-axis-text;
+        font-size: 13px;
+        font-weight: 500;
+    }
+
     .point-container.hidden {
         opacity: 0;
     }
+
     .cursor {
         pointer-events: none;
+
         &.hidden {
             opacity: 0;
         }
+
         .cursor-text {
             pointer-events: none;
             stroke: transparent;
@@ -68,11 +88,13 @@ $plot-color-range-selection: green;
             text-anchor: start;
             font-size: 10px;
         }
+
         .cross-hair {
             stroke: $plot-color-cursor;
             stroke-dasharray: 4;
         }
     }
+
     .range-selection {
         fill: $plot-color-range-selection;
     }

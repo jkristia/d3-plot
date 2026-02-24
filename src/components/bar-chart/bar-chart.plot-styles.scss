@@ -16,6 +16,7 @@ $bar-chart-color-tooltip-text: #f2f2f4;
 
 	.axis-container {
 		stroke: $bar-chart-color-axis-stroke;
+
 		path,
 		g.tick line {
 			stroke: $bar-chart-color-axis-line;
@@ -80,8 +81,4 @@ $bar-chart-color-tooltip-text: #f2f2f4;
 		}
 	}
 
-	.plot-elm.axis-label-item text {
-		fill: $bar-chart-color-axis-text;
-		font-size: 13px;
-	}
 }
