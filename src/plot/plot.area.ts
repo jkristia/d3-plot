@@ -95,16 +95,23 @@ export class PlotArea implements IPlotOwner {
 		this.plots.forEach(p => {
 			p.destroy()
 		})
-		// add and initialize new plots
+		// add and store new plots
 		this.plots = plots;
-		this.plots.forEach(p => {
-			p.setOwner(this);
-			p.initializeLayout();
-			if (p.plotElement) {
-				this.rootElm?.append(() => p.plotElement!.node())
-			}
-		});
-		this.updateLayout();
+
+		// Only initialize and append plots when the area has a non-empty rect
+		// or when initialization is explicitly forced. This mirrors the guard
+		// used in initializeLayout() to avoid partially initialized plots when
+		// sizing is not yet known.
+		if (this.forceInitialize || !this.rect.isEmpty) {
+			this.plots.forEach(p => {
+				p.setOwner(this);
+				p.initializeLayout();
+				if (p.plotElement) {
+					this.rootElm?.append(() => p.plotElement!.node())
+				}
+			});
+			this.updateLayout();
+		}
 		return this;
 	}	
 
