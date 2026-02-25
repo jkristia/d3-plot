@@ -32,8 +32,10 @@ export interface IBarOptions extends IPlotItemOptions {
 	minBarWidth?: number;
 	maxBarWidth?: number;
 	seriesGapRatio?: number;
-	xLabelFormatter?: (x: number) => string;
-	yValueFormatter?: (y: number) => string;
+	xTooltipFormatter?: (x: number) => string;
+	xTickFormatter?: (x: number) => string;
+	yTooltipFormatter?: (y: number) => string;
+	yTickFormatter?: (y: number) => string;
 	tooltip?: ITooltip<BarTooltipData>;
 }
 
@@ -176,8 +178,10 @@ export class BarPlotItem extends PlotItem {
 		const tooltipData: BarTooltipData = {
 			point: datum.point,
 			seriesLabel: datum.seriesLabel,
-			xLabelFormatter: this.options?.xLabelFormatter,
-			yValueFormatter: this.options?.yValueFormatter,
+			xTooltipFormatter: this.options?.xTooltipFormatter,
+			xTickFormatter: this.options?.xTickFormatter,
+			yTooltipFormatter: this.options?.yTooltipFormatter,
+			yTickFormatter: this.options?.yTickFormatter,
 		};
 		this.tooltip.show(event, tooltipData, this._area);
 	}

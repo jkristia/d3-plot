@@ -21,6 +21,9 @@ export class HistogramChartComponent implements OnDestroy {
         axisScale.xDomain(() => ({ min: 0.5, max: this.store.ageData.length + 0.5 }));
         axisScale.yDomain(() => ({ min: 0, max: 14000 }));
 
+        const xTickFormat = (value: number) => this.store.ageLabelFromValue(value);
+        const yTickFormat = (value: number) => Math.round(value).toString();
+
         const barTooltip = new BarTooltip();
 
         const plot = new Plot({
@@ -44,8 +47,8 @@ export class HistogramChartComponent implements OnDestroy {
                 new AxisAndGrid({
                     xTicks: this.store.ageData.length,
                     yTicks: 10,
-                    xTickFormat: (value) => this.store.ageLabelFromValue(value),
-                    yTickFormat: (value) => Math.round(value).toString(),
+                    xTickFormat: xTickFormat,
+                    yTickFormat: yTickFormat,
                     xLabelRotateDeg: -45,
                     showXGrid: false,
                 }),
@@ -59,8 +62,8 @@ export class HistogramChartComponent implements OnDestroy {
                         cssClasses: ['age-histogram'],
                         barWidthRatio: 0.75,
                         seriesGapRatio: 0,
-                        xLabelFormatter: (value) => this.store.ageLabelFromValue(value),
-                        yValueFormatter: (value) => `${Math.round(value).toLocaleString()}`,
+                        xTickFormatter: xTickFormat,
+                        yTickFormatter: yTickFormat,
                         tooltip: barTooltip,
                     },
                 ),

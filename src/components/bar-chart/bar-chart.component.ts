@@ -21,6 +21,9 @@ export class BarChartComponent implements OnDestroy {
 		axisScale.xDomain(() => ({ min: 0.5, max: 12.5 }));
 		axisScale.yDomain(() => ({ min: 0, max: 95 }));
 
+		const xTickFormat = (value: number) => this.store.monthFromValue(value);
+		const yTickFormat = (value: number) => `${Math.round(value).toString()}k`;
+
 		const barTooltip = new BarTooltip();
 
 		const plot = new Plot({
@@ -46,8 +49,8 @@ export class BarChartComponent implements OnDestroy {
 				new AxisAndGrid({
 					xTicks: 12,
 					yTicks: 10,
-					xTickFormat: (value) => this.store.monthFromValue(value),
-					yTickFormat: (value) => Math.round(value).toString(),
+					xTickFormat: xTickFormat,
+					yTickFormat: yTickFormat,
 					xLabelRotateDeg: -20,
 					showXGrid: false,
 				}),
@@ -62,8 +65,8 @@ export class BarChartComponent implements OnDestroy {
 						cssClasses: ['monthly-sales'],
 						barWidthRatio: 0.82,
 						seriesGapRatio: 0.05,
-						xLabelFormatter: (value) => this.store.monthFromValue(value),
-						yValueFormatter: (value) => `${Math.round(value)}k`,
+						xTickFormatter: xTickFormat,
+						yTickFormatter: yTickFormat,
 						tooltip: barTooltip,
 					},
 				),

@@ -8,8 +8,10 @@ import * as d3 from 'd3';
 export interface BarTooltipData {
     point: Point;
     seriesLabel: string;
-    xLabelFormatter?: (x: number) => string;
-    yValueFormatter?: (y: number) => string;
+    xTooltipFormatter?: (x: number) => string;
+    xTickFormatter?: (x: number) => string;
+    yTooltipFormatter?: (y: number) => string;
+    yTickFormatter?: (y: number) => string;
 }
 
 /**
@@ -17,12 +19,11 @@ export interface BarTooltipData {
  */
 export class BarTooltip extends TooltipBase<BarTooltipData> {
     protected override formatData(data: BarTooltipData): string[] {
-        const xLabel = data.xLabelFormatter
-            ? data.xLabelFormatter(data.point.x)
-            : data.point.x.toString();
-        const yLabel = data.yValueFormatter
-            ? data.yValueFormatter(data.point.y)
-            : data.point.y.toString();
+        const xFormatter = data.xTooltipFormatter ?? data.xTickFormatter;
+        const xLabel = xFormatter ? xFormatter(data.point.x) : data.point.x.toString();
+
+        const yFormatter = data.yTooltipFormatter ?? data.yTickFormatter;
+        const yLabel = yFormatter ? yFormatter(data.point.y) : data.point.y.toString();
         return [xLabel, `${data.seriesLabel}: ${yLabel}`];
     }
 
