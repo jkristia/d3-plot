@@ -113,7 +113,7 @@ export class PlotArea implements IPlotOwner {
 			this.updateLayout();
 		}
 		return this;
-	}	
+	}
 
 	public updateLayout() {
 		if (this.rect.isEmpty) {
