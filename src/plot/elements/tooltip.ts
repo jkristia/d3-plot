@@ -53,7 +53,6 @@ export abstract class TooltipBase<TData = any> implements ITooltip<TData> {
             return;
         }
 
-        console.log('Tooltip show', bounds);
         this.tooltipElm.raise();
         const lines = this.formatData(data);
 
@@ -67,8 +66,8 @@ export abstract class TooltipBase<TData = any> implements ITooltip<TData> {
 
         this.tooltipText.attr('x', 0).attr('y', 0);
         const bbox = this.tooltipText.node()?.getBBox();
-        const width = (bbox?.width || 0) + 12;
-        const height = (bbox?.height || 0) + 8;
+        const width = (bbox?.width || 0) + 14;
+        const height = (bbox?.height || 0) + 12;
 
         this.tooltipText
             .attr('x', width / 2)

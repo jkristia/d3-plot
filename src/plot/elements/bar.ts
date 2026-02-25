@@ -187,7 +187,6 @@ export class BarPlotItem extends PlotItem {
 	}
 
 	private hideTooltip() {
-		console.log('hidetooltip')
 		this.tooltip?.hide();
 	}
 }
