@@ -14,6 +14,7 @@ import { BarChartStore } from './bar-chart.store';
 export class BarChartComponent implements OnDestroy {
 	public readonly plot = signal<Plot | null>(null);
 	private readonly store = new BarChartStore();
+	private updateIntervalId?: ReturnType<typeof setInterval>;
 
 	public constructor() {
 		const axisScale = new LinearScale();
@@ -58,7 +59,8 @@ export class BarChartComponent implements OnDestroy {
 					{
 						series: [
 							{ id: '2025', label: '2025', cssClass: 'series-2025', points: this.store.monthlySales25 },
-							{ id: '2026', label: '2026', cssClass: 'series-2026', points: this.store.monthlySales26 },
+							// { id: '2026', label: '2026', cssClass: 'series-2026', points: this.store.monthlySales26 },
+							{ id: '2026', label: '2026', cssClass: 'series-2026', points: this.store.monthlySales26, dataChanged: this.store.sales26Changed },
 						],
 					},
 					{
@@ -67,16 +69,24 @@ export class BarChartComponent implements OnDestroy {
 						seriesGapRatio: 0.05,
 						xTickFormatter: xTickFormat,
 						yTickFormatter: yTickFormat,
-						tooltip: barTooltip,
+						// tooltip: barTooltip, // tooltip does not work for dynamic updated data, todo at later point
 					},
 				),
 			],
 		});
 		plot.center.setScale(axisScale);
 		this.plot.set(plot);
+
+		// Update the 2026 data several times per second
+		this.updateIntervalId = setInterval(() => {
+			this.store.updateSales26WithRandomVariation(5);
+		}, 50);
 	}
 
 	public ngOnDestroy(): void {
+		if (this.updateIntervalId) {
+			clearInterval(this.updateIntervalId);
+		}
 		this.plot()?.destroy();
 		this.plot.set(null);
 	}
