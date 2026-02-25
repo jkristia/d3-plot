@@ -1,5 +1,5 @@
 import * as d3 from 'd3';
-import { Subject } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
 import { Point, Rect } from '../util';
 import { PlotItem } from '../plot.item';
 import { IPlotItemOptions } from '../plot.interface';
@@ -49,6 +49,7 @@ export class BarPlotItem extends PlotItem {
 	private tooltipElm?: d3.Selection<SVGGElement, unknown, null, undefined>;
 	private tooltipRect?: d3.Selection<SVGRectElement, unknown, null, undefined>;
 	private tooltipText?: d3.Selection<SVGTextElement, unknown, null, undefined>;
+	private subscriptions: Subscription[] = [];
 
 	private get options(): IBarOptions | undefined {
 		return this._options as IBarOptions;
@@ -57,11 +58,27 @@ export class BarPlotItem extends PlotItem {
 	public constructor(private _data: IBarChartData, options?: IBarOptions) {
 		super(options);
 		if (_data.dataChanged) {
-			_data.dataChanged.subscribe(() => this.updateLayout(this._area));
+			this.subscriptions.push(
+				_data.dataChanged.subscribe(() => this.updateLayout(this._area))
+			);
 		}
 		(_data.series || []).forEach((series) => {
-			series.dataChanged?.subscribe(() => this.updateLayout(this._area));
+			if (series.dataChanged) {
+				this.subscriptions.push(
+					series.dataChanged.subscribe(() => this.updateLayout(this._area))
+				);
+			}
 		});
+	}
+
+	protected override onDestroy(): void {
+		// Unsubscribe from all data change subscriptions to prevent memory leaks
+		this.subscriptions.forEach(sub => sub.unsubscribe());
+		this.subscriptions = [];
+		// Clean up tooltip elements
+		this.tooltipElm?.remove();
+		this.tooltipRect?.remove();
+		this.tooltipText?.remove();
 	}
 
 	public override initializeLayout(): void {

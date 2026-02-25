@@ -55,6 +55,18 @@ export class PlotArea implements IPlotOwner {
 				.classed('plot-content-area', true)
 		}
 	}
+	public destroy(): void {
+		// Destroy all plot items
+		this.plots.forEach(p => {
+			p.destroy();
+		});
+		this.plots = [];
+		// Destroy mouse handler
+		this._mouseHandler?.destroy();
+		// Remove background and content area elements
+		this._background?.remove();
+		this._contentArea?.remove();
+	}
 	public applyRect(): D3Selection {
 		this._rootElm!
 			.attr('x', this.rect.left)

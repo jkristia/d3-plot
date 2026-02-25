@@ -56,6 +56,18 @@ export class Plot {
         this._centerArea.plots = _options.plots || [];
     }
 
+    public destroy(): void {
+        // Recursively destroy all areas and their plot items
+        this._topArea.destroy();
+        this._leftArea.destroy();
+        this._centerArea.destroy();
+        this._rightArea.destroy();
+        this._bottomArea.destroy();
+        // Remove the root SVG element from DOM
+        this._root?.remove();
+        this._rootElm = null;
+    }
+
     public attach(rootElm: HTMLElement): Plot {
         // remove any existing nodes
         rootElm.innerHTML = ''

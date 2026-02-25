@@ -28,6 +28,10 @@ export class PlotItem implements IPlotItem {
     }
     public destroy() {
         this.onDestroy();
+        // Remove event listeners to prevent memory leaks
+        this._rootElm?.on('mouseover', null);
+        this._rootElm?.on('mouseout', null);
+        // Remove DOM element
         this._rootElm?.remove();
         this._rootElm = null;
     }

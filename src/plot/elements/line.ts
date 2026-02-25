@@ -1,5 +1,5 @@
 import * as d3 from 'd3';
-import { Subject } from "rxjs";
+import { Subject, Subscription } from "rxjs";
 import { D3Selection, Point, Rect } from "../util";
 import { PlotItem } from "../plot.item";
 import { IPlotItemOptions } from "../plot.interface";
@@ -20,6 +20,8 @@ export class LineSeries extends PlotItem {
     private _pathElm?: D3Selection;
     private _pointContainer?: D3Selection
     private _hasRendered = false;
+    private subscriptions: Subscription[] = [];
+
     private get options(): ILineOptions | undefined {
         return this._options as ILineOptions;
     }
@@ -39,8 +41,19 @@ export class LineSeries extends PlotItem {
     public constructor(protected _data: ILineData, options?: ILineOptions) {
         super(options)
         if (_data.dataChanged) {
-            _data.dataChanged.subscribe(() => this.updateLayout(this._area))
+            this.subscriptions.push(
+                _data.dataChanged.subscribe(() => this.updateLayout(this._area))
+            );
         }
+    }
+
+    protected override onDestroy(): void {
+        // Unsubscribe from all data change subscriptions to prevent memory leaks
+        this.subscriptions.forEach(sub => sub.unsubscribe());
+        this.subscriptions = [];
+        // Clean up path and point marker elements
+        this._pathElm?.remove();
+        this._pointContainer?.remove();
     }
 
     public override initializeLayout(): void {
@@ -65,7 +78,7 @@ export class LineSeries extends PlotItem {
                 }
             }
             this._pointContainer
-            // this._points = this._rootElm!
+                // this._points = this._rootElm!
                 .selectAll('.point-marker')
                 .data(this._data.points)
                 .join(
@@ -126,6 +139,5 @@ export class LineSeries extends PlotItem {
         if (this.options?.showPointMarkers === 'onhover') {
             this._pointContainer?.classed('hidden', !hover);
         }
-   }
-
+    }
 }

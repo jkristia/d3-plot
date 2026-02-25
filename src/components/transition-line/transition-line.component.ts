@@ -93,5 +93,7 @@ export class TransitionLineComponent implements OnDestroy {
 
 	public ngOnDestroy(): void {
 		this.data.stop();
+		this.plot()?.destroy();
+		this.plot.set(null);
 	}
 }

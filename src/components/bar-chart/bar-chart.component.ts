@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, signal, OnDestroy } from '@angular/core';
 import { AxisAndGrid, AxisLabelItem, BarLegendItem, BarPlotItem, LinearScale, PlotBaseComponent, Plot, TitleItem } from '../../plot';
 import { BarChartStore } from './bar-chart.store';
 
@@ -11,7 +11,7 @@ import { BarChartStore } from './bar-chart.store';
 	templateUrl: './bar-chart.component.html',
 	styleUrls: ['./bar-chart.component.scss'],
 })
-export class BarChartComponent {
+export class BarChartComponent implements OnDestroy {
 	public readonly plot = signal<Plot | null>(null);
 	private readonly store = new BarChartStore();
 
@@ -68,5 +68,10 @@ export class BarChartComponent {
 		});
 		plot.center.setScale(axisScale);
 		this.plot.set(plot);
+	}
+
+	public ngOnDestroy(): void {
+		this.plot()?.destroy();
+		this.plot.set(null);
 	}
 }

@@ -16,10 +16,20 @@ export class PlotBaseComponent implements OnInit, OnDestroy {
 	public plot = input<Plot | null>(null);
 
 	protected _plotAnchorElm!: HTMLElement;
+	private _resizeTimeoutId?: ReturnType<typeof setTimeout>;
 
 	public constructor(
 		private _elm: ElementRef
 	) { }
+
+	public ngOnDestroy(): void {
+		window.removeEventListener('resize', this.onResize);
+		if (this._resizeTimeoutId) {
+			clearTimeout(this._resizeTimeoutId);
+		}
+		this.plot()?.destroy();
+	}
+
 	public ngOnInit(): void {
 		const elm = this._elm.nativeElement as HTMLElement;
 		this._plotAnchorElm = elm.querySelector('.plot-d3-container') as HTMLElement
@@ -28,16 +38,13 @@ export class PlotBaseComponent implements OnInit, OnDestroy {
 		}
 		window.addEventListener('resize', this.onResize);
 		this.onResize(null)
-		setTimeout(() => {
+		this._resizeTimeoutId = setTimeout(() => {
 			this.onResize(null)
 		});
 	}
-	public ngOnDestroy(): void {
-		window.removeEventListener('resize', this.onResize);
-	}
 	public updateSize() {
 		this.onResize(null);
-	}	
+	}
 	private onResize = (e: any) => {
 		const size = this._plotAnchorElm.getBoundingClientRect();
 		this.plot()?.size({

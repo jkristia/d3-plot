@@ -162,5 +162,7 @@ export class LineComponent implements OnDestroy {
 	public ngOnDestroy(): void {
 		this.jitterData.stop();
 		this.sinusData.stop();
+		this.plot()?.destroy();
+		this.plot.set(null);
 	}
 }

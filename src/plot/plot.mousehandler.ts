@@ -14,9 +14,9 @@ export class PlotMouseHandler implements IPlotOwner {
 	private _owner?: IPlotArea;
 	protected _scale: Scale = new Scale();
 
-    public get scale(): Scale {
-        return this._scale;
-    }
+	public get scale(): Scale {
+		return this._scale;
+	}
 	public setScale(scale: Scale): this {
 		this._scale = scale;
 		return this;
@@ -38,6 +38,17 @@ export class PlotMouseHandler implements IPlotOwner {
 			.on('pointerleave.mousehandler', e => this.handleMouseLeave(e))
 			.on('pointermove.mousehandler', e => this.handleMouseMove(e))
 	}
+	public destroy(): void {
+		// Remove event listeners to prevent memory leaks
+		this._rootElm?.on('pointerleave.mousehandler', null);
+		this._rootElm?.on('pointermove.mousehandler', null);
+		// Remove cursor container from DOM
+		this._container?.remove();
+		this._container = undefined;
+		this._rootElm = undefined;
+		this._cursor = undefined;
+		this._owner = undefined;
+	}
 	public updateLayout(area: Rect): void {
 	}
 	public setHoverItem(item: IPlotItem): void {
@@ -46,7 +57,7 @@ export class PlotMouseHandler implements IPlotOwner {
 	public clearHoverItem(item: IPlotItem): void {
 		// console.log(`clear hover id-${item.id}`);
 	}
-    private currentMousePosition(event: Event): Point {
+	private currentMousePosition(event: Event): Point {
 		const elm = this._rootElm!;
 		const coordinates = d3.pointer(event, elm.node())
 		return { x: coordinates[0], y: coordinates[1] };

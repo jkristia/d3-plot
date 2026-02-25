@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, signal, OnDestroy } from '@angular/core';
 import { AxisAndGrid, AxisLabelItem, BarPlotItem, LinearScale, PlotBaseComponent, Plot, TitleItem } from '../../plot';
 import { HistogramChartStore } from './histogram-chart.store';
 
@@ -11,7 +11,7 @@ import { HistogramChartStore } from './histogram-chart.store';
     templateUrl: './histogram-chart.component.html',
     styleUrls: ['./histogram-chart.component.scss'],
 })
-export class HistogramChartComponent {
+export class HistogramChartComponent implements OnDestroy {
     public readonly plot = signal<Plot | null>(null);
     private readonly store = new HistogramChartStore();
 
@@ -65,5 +65,10 @@ export class HistogramChartComponent {
         });
         plot.center.setScale(axisScale);
         this.plot.set(plot);
+    }
+
+    public ngOnDestroy(): void {
+        this.plot()?.destroy();
+        this.plot.set(null);
     }
 }

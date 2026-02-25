@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, signal, OnDestroy } from '@angular/core';
 import { LinearScale, PlotAreaSelection, PlotBaseComponent, Plot } from '../../plot';
 import { DataSeries, dataCluster, dataCnstl, dataMmp, dataSmp } from './demo-data';
 import { AxisAndGrid } from '../../plot/elements/axis-and-grid';
@@ -15,8 +15,10 @@ import { CrossCursor } from '../../plot/plot.cross-cursor';
 	templateUrl: './demo-1.component.html',
 	styleUrls: ['./demo-1.component.scss']
 })
-export class Demo1PlotComponent {
+export class Demo1PlotComponent implements OnDestroy {
 	public readonly plot = signal<Plot | null>(null);
+	private mouseHandler?: PlotMouseHandler;
+
 	public constructor() {
 		// goal is to duplicate this chart
 		// https://js.devexpress.com/Angular/Demos/WidgetsGallery/Demo/Charts/Spline/MaterialPurpleDark/
@@ -35,7 +37,7 @@ export class Demo1PlotComponent {
 		// 	{ x: 10, y: 0 },
 		// 	{ x: 0, y: 0 },
 		// ]
-		const mouseHandler = new PlotMouseHandler().setCursor(new CrossCursor());
+		this.mouseHandler = new PlotMouseHandler().setCursor(new CrossCursor());
 
 		const plot = new Plot({
 			cssClass: 'custom-1',
@@ -54,7 +56,14 @@ export class Demo1PlotComponent {
 				new DataSeries({ points: dataCluster() }, { cssClasses: ['cluster'], id: '#4', curveType: 'smooth' }),
 			]
 		})
-		plot.center.setScale(xyScale).setMouseHandler(mouseHandler);
+		plot.center.setScale(xyScale).setMouseHandler(this.mouseHandler);
 		this.plot.set(plot);
+	}
+
+	public ngOnDestroy(): void {
+		// Clean up plot and its resources
+		this.plot()?.destroy();
+		this.plot.set(null);
+		this.mouseHandler?.destroy();
 	}
 }
