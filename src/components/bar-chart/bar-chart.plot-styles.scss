@@ -45,6 +45,11 @@ $bar-chart-color-tooltip-text: #f2f2f4;
 			fill: $bar-chart-color-series-2026;
 			stroke: $bar-chart-color-series-2026;
 		}
+
+		.bar-item:hover {
+			stroke-width: 1.2;
+			opacity: 0.9;
+		}
 	}
 
 	.title-elm text {

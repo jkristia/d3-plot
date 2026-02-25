@@ -41,6 +41,11 @@ $histogram-color-tooltip-text: #f2f2f4;
             stroke: $histogram-color-bars;
             stroke-width: 0.5;
         }
+
+        .bar-item:hover {
+            stroke-width: 1.2;
+            opacity: 0.9;
+        }
     }
 
     .title-elm text {
