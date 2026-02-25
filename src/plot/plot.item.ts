@@ -26,6 +26,14 @@ export class PlotItem implements IPlotItem {
     }
     public constructor(protected _options?: IPlotItemOptions) {
     }
+    public destroy() {
+        this.onDestroy();
+        this._rootElm?.remove();
+        this._rootElm = null;
+    }
+    protected onDestroy() {
+        // for override, do any cleanup at this point, the root element is still available and can be used for cleanup if needed.
+    }
     public setOwner(owner: IPlotArea) {
         this._owner = owner;
     }
@@ -63,10 +71,10 @@ export class PlotItem implements IPlotItem {
         return this;
     }
     public currentMousePosition(event: Event): Point {
-		const elm = this._rootElm!;
-		const coordinates = d3.pointer(event, elm.node())
-		return { x: coordinates[0], y: coordinates[1] };
-	}
+        const elm = this._rootElm!;
+        const coordinates = d3.pointer(event, elm.node())
+        return { x: coordinates[0], y: coordinates[1] };
+    }
     protected getPlotArea(): Rect {
         if (this._areaFn) {
             return this._areaFn(this._area);
@@ -74,5 +82,11 @@ export class PlotItem implements IPlotItem {
         return this._area;
     }
     protected onMouseHover(hover: boolean) {
+    }
+    protected y(value: number): number {
+        return this.scale.yScale(value);
+    }
+    protected x(value: number): number {
+        return this.scale.xScale(value);
     }
 }
