@@ -47,22 +47,6 @@ $bar-chart-color-tooltip-text: #f2f2f4;
 		}
 	}
 
-	.plot-elm.bar-plot-elm .bar-tooltip {
-		&.hidden {
-			display: none;
-		}
-
-		rect {
-			fill: $bar-chart-color-tooltip-bg;
-			stroke: $bar-chart-color-tooltip-border;
-		}
-
-		text {
-			fill: $bar-chart-color-tooltip-text;
-			font-size: 12px;
-		}
-	}
-
 	.title-elm text {
 		font-size: 16px;
 		font-weight: 600;

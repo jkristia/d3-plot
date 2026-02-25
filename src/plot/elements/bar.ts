@@ -1,8 +1,9 @@
-import * as d3 from 'd3';
 import { Subject, Subscription } from 'rxjs';
 import { Point, Rect } from '../util';
 import { PlotItem } from '../plot.item';
 import { IPlotItemOptions } from '../plot.interface';
+import { ITooltip } from './tooltip';
+import { BarTooltipData } from './bar-tooltip';
 
 /**
  * Input payload for a bar chart.
@@ -33,6 +34,7 @@ export interface IBarOptions extends IPlotItemOptions {
 	seriesGapRatio?: number;
 	xLabelFormatter?: (x: number) => string;
 	yValueFormatter?: (y: number) => string;
+	tooltip?: ITooltip<BarTooltipData>;
 }
 
 /**
@@ -46,9 +48,7 @@ interface BarSeriesDataItem {
 }
 
 export class BarPlotItem extends PlotItem {
-	private tooltipElm?: d3.Selection<SVGGElement, unknown, null, undefined>;
-	private tooltipRect?: d3.Selection<SVGRectElement, unknown, null, undefined>;
-	private tooltipText?: d3.Selection<SVGTextElement, unknown, null, undefined>;
+	private tooltip?: ITooltip<BarTooltipData>;
 	private subscriptions: Subscription[] = [];
 
 	private get options(): IBarOptions | undefined {
@@ -57,6 +57,7 @@ export class BarPlotItem extends PlotItem {
 
 	public constructor(private _data: IBarChartData, options?: IBarOptions) {
 		super(options);
+		this.tooltip = options?.tooltip;
 		if (_data.dataChanged) {
 			this.subscriptions.push(
 				_data.dataChanged.subscribe(() => this.updateLayout(this._area))
@@ -75,23 +76,21 @@ export class BarPlotItem extends PlotItem {
 		// Unsubscribe from all data change subscriptions to prevent memory leaks
 		this.subscriptions.forEach(sub => sub.unsubscribe());
 		this.subscriptions = [];
-		// Clean up tooltip elements
-		this.tooltipElm?.remove();
-		this.tooltipRect?.remove();
-		this.tooltipText?.remove();
+		// Remove event listeners from bar elements
+		this._rootElm?.selectAll('.bar-item')
+			.on('mouseenter', null)
+			.on('mousemove', null)
+			.on('mouseleave', null);
+		// Clean up tooltip
+		this.tooltip?.destroy();
 	}
 
 	public override initializeLayout(): void {
 		super.initializeLayout();
 		this._rootElm?.classed('bar-plot-elm', true);
-		this.tooltipElm = this._rootElm?.append('g')
-			.classed('bar-tooltip hidden', true)
-			.style('pointer-events', 'none') as any;
-		this.tooltipRect = this.tooltipElm?.append('rect') as any;
-		this.tooltipText = this.tooltipElm
-			?.append('text')
-			.attr('text-anchor', 'middle')
-			.attr('dominant-baseline', 'middle') as any;
+		if (this.tooltip && this._rootElm) {
+			this.tooltip.initialize(this._rootElm);
+		}
 	}
 
 	public override updateLayout(area: Rect): void {
@@ -170,62 +169,21 @@ export class BarPlotItem extends PlotItem {
 		}));
 	}
 
-	private formatLines(datum: BarSeriesDataItem): [string, string] {
-		const xLabel = this.options?.xLabelFormatter
-			? this.options.xLabelFormatter(datum.point.x)
-			: datum.point.x.toString();
-		const yLabel = this.options?.yValueFormatter
-			? this.options.yValueFormatter(datum.point.y)
-			: datum.point.y.toString();
-		return [xLabel, `${datum.seriesLabel}: ${yLabel}`];
-	}
-
-	private showTooltip(event: MouseEvent, point: BarSeriesDataItem) {
-		if (!this.tooltipElm || !this.tooltipRect || !this.tooltipText) {
+	private showTooltip(event: MouseEvent, datum: BarSeriesDataItem) {
+		if (!this.tooltip) {
 			return;
 		}
-		this.tooltipElm.raise();
-		const lines = this.formatLines(point);
-		this.tooltipText
-			.selectAll('tspan')
-			.data(lines)
-			.join('tspan')
-			.attr('x', 0)
-			.attr('dy', (_d, i) => (i === 0 ? '0.9em' : '1.2em'))
-			.text((d) => d);
-		this.tooltipText.attr('x', 0).attr('y', 0);
-		const bbox = this.tooltipText.node()?.getBBox();
-		const width = (bbox?.width || 0) + 12;
-		const height = (bbox?.height || 0) + 8;
-		this.tooltipText
-			.attr('x', width / 2)
-			.attr('y', 3);
-		this.tooltipText
-			.selectAll('tspan')
-			.attr('x', width / 2);
-		this.tooltipRect
-			.attr('width', width)
-			.attr('height', height)
-			.attr('rx', 4)
-			.attr('ry', 4);
-
-		const mouse = this.currentMousePosition(event);
-		const bounds = this._area;
-		const gap = 10;
-		let tooltipX = mouse.x - width / 2;
-		let tooltipY = mouse.y - height - gap;
-
-		tooltipX = Math.max(bounds.left + 2, Math.min(tooltipX, bounds.right - width - 2));
-		if (tooltipY < bounds.top + 2) {
-			tooltipY = mouse.y + gap;
-		}
-
-		this.tooltipElm
-			.classed('hidden', false)
-			.attr('transform', `translate(${tooltipX}, ${tooltipY})`);
+		const tooltipData: BarTooltipData = {
+			point: datum.point,
+			seriesLabel: datum.seriesLabel,
+			xLabelFormatter: this.options?.xLabelFormatter,
+			yValueFormatter: this.options?.yValueFormatter,
+		};
+		this.tooltip.show(event, tooltipData, this._area);
 	}
 
 	private hideTooltip() {
-		this.tooltipElm?.classed('hidden', true);
+		console.log('hidetooltip')
+		this.tooltip?.hide();
 	}
 }

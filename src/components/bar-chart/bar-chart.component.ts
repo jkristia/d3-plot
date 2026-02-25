@@ -1,5 +1,5 @@
 import { Component, signal, OnDestroy } from '@angular/core';
-import { AxisAndGrid, AxisLabelItem, BarLegendItem, BarPlotItem, LinearScale, PlotBaseComponent, Plot, TitleItem } from '../../plot';
+import { AxisAndGrid, AxisLabelItem, BarLegendItem, BarPlotItem, BarTooltip, LinearScale, PlotBaseComponent, Plot, TitleItem } from '../../plot';
 import { BarChartStore } from './bar-chart.store';
 
 @Component({
@@ -20,6 +20,8 @@ export class BarChartComponent implements OnDestroy {
 		axisScale.margin = { top: 10, left: 42, right: 5, bottom: 30 };
 		axisScale.xDomain(() => ({ min: 0.5, max: 12.5 }));
 		axisScale.yDomain(() => ({ min: 0, max: 95 }));
+
+		const barTooltip = new BarTooltip();
 
 		const plot = new Plot({
 			cssClass: 'bar-chart-demo',
@@ -62,6 +64,7 @@ export class BarChartComponent implements OnDestroy {
 						seriesGapRatio: 0.05,
 						xLabelFormatter: (value) => this.store.monthFromValue(value),
 						yValueFormatter: (value) => `${Math.round(value)}k`,
+						tooltip: barTooltip,
 					},
 				),
 			],

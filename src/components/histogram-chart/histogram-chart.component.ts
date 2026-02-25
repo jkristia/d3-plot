@@ -1,5 +1,5 @@
 import { Component, signal, OnDestroy } from '@angular/core';
-import { AxisAndGrid, AxisLabelItem, BarPlotItem, LinearScale, PlotBaseComponent, Plot, TitleItem } from '../../plot';
+import { AxisAndGrid, AxisLabelItem, BarPlotItem, BarTooltip, LinearScale, PlotBaseComponent, Plot, TitleItem } from '../../plot';
 import { HistogramChartStore } from './histogram-chart.store';
 
 @Component({
@@ -20,6 +20,8 @@ export class HistogramChartComponent implements OnDestroy {
         axisScale.margin = { top: 10, left: 52, right: 5, bottom: 40 };
         axisScale.xDomain(() => ({ min: 0.5, max: this.store.ageData.length + 0.5 }));
         axisScale.yDomain(() => ({ min: 0, max: 14000 }));
+
+        const barTooltip = new BarTooltip();
 
         const plot = new Plot({
             cssClass: 'histogram-chart-demo',
@@ -59,6 +61,7 @@ export class HistogramChartComponent implements OnDestroy {
                         seriesGapRatio: 0,
                         xLabelFormatter: (value) => this.store.ageLabelFromValue(value),
                         yValueFormatter: (value) => `${Math.round(value).toLocaleString()}`,
+                        tooltip: barTooltip,
                     },
                 ),
             ],

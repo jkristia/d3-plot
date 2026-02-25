@@ -43,30 +43,6 @@ $histogram-color-tooltip-text: #f2f2f4;
         }
     }
 
-    .plot-elm.bar-plot-elm .bar-tooltip {
-        &.hidden {
-            opacity: 0;
-            pointer-events: none;
-        }
-
-        rect {
-            fill: $histogram-color-tooltip-bg;
-            stroke: $histogram-color-tooltip-border;
-            stroke-width: 1;
-        }
-
-        text {
-            fill: $histogram-color-tooltip-text;
-            stroke: none;
-            font-size: 12px;
-            font-weight: 500;
-
-            &.tooltip-label {
-                font-weight: 600;
-            }
-        }
-    }
-
     .title-elm text {
         font-size: 16px;
         font-weight: 600;
