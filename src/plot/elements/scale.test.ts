@@ -1,7 +1,17 @@
+import { expect, it, jest } from '@jest/globals';
+
+jest.mock('d3', () => {
+	try {
+		return jest.requireActual(`${process.cwd()}/node_modules/d3/dist/d3.min.js`);
+	} catch {
+		return jest.requireActual(`${process.cwd()}/client/node_modules/d3/dist/d3.min.js`);
+	}
+});
+
 import { Rect } from "../util";
 import { LinearScale, Scale } from "./scale"
 
-test('default scale', () => {
+it('default scale', () => {
 	// default scale is a linear scale with no margin
 	const s = new Scale();
 	s.updateScales(new Rect({ left: 0, top: 0, width: 200, height: 100 }));
@@ -12,7 +22,7 @@ test('default scale', () => {
 	expect(s.xScale(10)).toBe(10);
 	expect(s.yScale(11)).toBe(89); // inverted, max - value
 })
-test('margin', () => {
+it('margin', () => {
 	// default scale is a linear scale with no margin
 	const s = new Scale();
 	s.margin = { top: 5, left: 5, right: 5, bottom: 5 };
@@ -24,7 +34,7 @@ test('margin', () => {
 	expect(s.xScale(10)).toBe(10); 
 	expect(s.yScale(10)).toBe(85); // inverted, max - value
 })
-test('domain callback', () => {
+it('domain callback', () => {
 	const s = new LinearScale()
 		.xDomain(r => { return { min: 0, max: 400 } })
 		.yDomain(r => { return { min: 0, max: 200 } })
