@@ -1,3 +1,10 @@
+/**
+ * @jest-environment jsdom
+ */
+
+import { beforeEach, describe, expect, it, jest } from '@jest/globals';
+
+
 import * as d3 from 'd3';
 import { D3Selection, Rect } from './util';
 import { Plot } from './plot';
@@ -25,7 +32,7 @@ describe('plot areas', () => {
     beforeEach(() => {
         root = d3.create('div').node()!
     })
-    test('create areas', () => {
+    it('create areas', () => {
         let plot = new Plot({
             titleArea: { height: 20, plots: [] },
             leftArea: { width: 100, plots: [] },
@@ -83,7 +90,7 @@ describe('plot areas', () => {
         expect(plot.bottom.rect.toString()).toEqual('[empty]')
 
     })
-    test('item initialize', () => {
+    it('item initialize', () => {
         let plot = new Plot({
             titleArea: { height: 20, plots: [new UnitItem()] },
             leftArea: { width: 100, plots: [new UnitItem()] },
@@ -112,7 +119,7 @@ describe('plot areas', () => {
         expect(plot.right.plots).toEqual([])
         expect((plot.bottom.plots[0] as UnitItem).initcount).toBe(1)
     })
-    test('item initialize - size', () => {
+    it('item initialize - size', () => {
         const scale = new Scale().setMargin({ top: 5, left: 5, right: 5, bottom: 5 }) 
         let plot = new Plot({
             // check the item is using the adjusted area rect, set by the callbacl
@@ -140,7 +147,7 @@ describe('plot options', () => {
         root = d3.create('div').node()!
     })
 
-    test('root level css class', () => {
+    it('root level css class', () => {
         let p = new Plot({}).attach(root);
         let svg = root.firstChild as SVGSVGElement;
         expect(svg.classList.toString()).toBe('d3-plot')
@@ -148,7 +155,7 @@ describe('plot options', () => {
         svg = root.firstChild as SVGSVGElement;
         expect(svg.classList.toString()).toBe('d3-plot custom-css')
     })
-    test('add title elm', () => {
+    it('add title elm', () => {
         let p = new Plot({
             title: 'use default title',
             titleArea: { height: 20, plots: [new TitleItem('title text')] },
@@ -165,7 +172,7 @@ describe('plot options', () => {
         expect(elm?.innerHTML).toBe('use default title')
         expect(p.top.rect.toString()).toEqual('[top: 0, left: 0, width: 0, height: 40]')
     })
-    test('scale update size', () => {
+    it('scale update size', () => {
         let scale = new Scale();
         scale.margin = { top: 5, left: 5, right: 5, bottom: 5 };
         expect(scale.area.toString()).toBe('[empty]')
@@ -174,7 +181,7 @@ describe('plot options', () => {
         .size({ width: 100, height: 100 });
         expect(scale.area.toString()).toBe('[top: 5, left: 5, width: 90, height: 90]')
     })
-    test('single line elm', () => {
+    it('single line elm', () => {
         let scale = new Scale();
         let p = new Plot({
             scales: [ scale ],
@@ -184,5 +191,89 @@ describe('plot options', () => {
         .size({ width: 100, height: 100 });
         let elm = root.querySelector('.line-series-elm');
         expect(elm?.innerHTML).toBe('<path fill="none" d="M0,0L10,10"></path>');
+    })
+
+    it('clear and set replaces plot items', () => {
+        const first = new UnitItem();
+        const second = new UnitItem();
+        const p = new Plot({
+            titleArea: { height: 20, plots: [new TitleItem('t1')] },
+            plots: [first]
+        });
+        p.attach(root);
+        p.size({ width: 100, height: 100 });
+
+        expect(p.center.plots.length).toBe(1);
+
+        p.clear();
+        expect(p.center.plots.length).toBe(0);
+
+        p.set({
+            titleArea: { height: 20, plots: [new TitleItem('t2')] },
+            plots: [second]
+        });
+
+        expect(p.center.plots.length).toBe(1);
+        expect((p.center.plots[0] as UnitItem).initcount).toBeGreaterThan(0);
+        const title = root.querySelector('.title-elm text');
+        expect(title?.innerHTML).toBe('t2');
+    })
+
+    it('set ignores optional areas that do not exist', () => {
+        const p = new Plot({
+            plots: [new UnitItem()]
+        });
+        p.attach(root);
+        p.size({ width: 100, height: 100 });
+
+        expect(() => {
+            p.set({
+                titleArea: { height: 20, plots: [new TitleItem('should-be-ignored')] },
+                leftArea: { width: 10, plots: [new UnitItem()] },
+                rightArea: { width: 10, plots: [new UnitItem()] },
+                footerArea: { height: 10, plots: [new UnitItem()] }
+            });
+        }).not.toThrow();
+
+        expect(p.top.plots.length).toBe(0);
+        expect(p.left.plots.length).toBe(0);
+        expect(p.right.plots.length).toBe(0);
+        expect(p.bottom.plots.length).toBe(0);
+    })
+
+    it('set updates area dimensions and recalculates layout', () => {
+        const p = new Plot({
+            leftArea: { width: 20, plots: [new UnitItem()] },
+            plots: [new UnitItem()],
+        });
+        p.attach(root);
+        p.size({ width: 100, height: 100 });
+
+        expect(p.center.rect.width).toBe(80);
+
+        p.set({
+            leftArea: { width: 40 },
+        });
+
+        expect(p.left.rect.width).toBe(40);
+        expect(p.center.rect.width).toBe(60);
+
+        p.size({ width: 120, height: 100 });
+        expect(p.center.rect.width).toBe(80);
+    })
+
+    it('set applies first scale to center area', () => {
+        const firstScale = new Scale();
+        const secondScale = new Scale();
+        const p = new Plot({
+            scales: [firstScale],
+            plots: [new UnitItem()],
+        });
+        p.attach(root);
+        p.size({ width: 100, height: 100 });
+
+        p.set({ scales: [secondScale] });
+
+        expect(p.center.scale).toBe(secondScale);
     })
 })

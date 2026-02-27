@@ -68,6 +68,55 @@ export class Plot {
         this._rootElm = null;
     }
 
+    public clear(): Plot {
+        this._topArea.setPlots([]);
+        this._leftArea.setPlots([]);
+        this._centerArea.setPlots([]);
+        this._rightArea.setPlots([]);
+        this._bottomArea.setPlots([]);
+        return this;
+    }
+
+    public set(options: Partial<IPlotOptions>): Plot {
+        if (options.scales) {
+            this._options.scales = options.scales;
+        }
+        if (this._options.scales?.[0]) {
+            this._centerArea.setScale(this._options.scales[0]);
+        }
+        if (options.titleArea !== undefined && this._options.titleArea?.height) {
+            this._options.titleArea = { ...(this._options.titleArea || {}), ...options.titleArea };
+            if (options.titleArea.plots !== undefined) {
+                this._topArea.setPlots(this._options.titleArea.plots || []);
+            }
+        }
+        if (options.leftArea !== undefined && this._options.leftArea?.width) {
+            this._options.leftArea = { ...(this._options.leftArea || {}), ...options.leftArea };
+            if (options.leftArea.plots !== undefined) {
+                this._leftArea.setPlots(this._options.leftArea.plots || []);
+            }
+        }
+        if (options.rightArea !== undefined && this._options.rightArea?.width) {
+            this._options.rightArea = { ...(this._options.rightArea || {}), ...options.rightArea };
+            if (options.rightArea.plots !== undefined) {
+                this._rightArea.setPlots(this._options.rightArea.plots || []);
+            }
+        }
+        if (options.footerArea !== undefined && this._options.footerArea?.height) {
+            this._options.footerArea = { ...(this._options.footerArea || {}), ...options.footerArea };
+            if (options.footerArea.plots !== undefined) {
+                this._bottomArea.setPlots(this._options.footerArea.plots || []);
+            }
+        }
+        if (options.plots !== undefined) {
+            this._options.plots = options.plots;
+            this._centerArea.setPlots(options.plots || []);
+        }
+        this.calculateAreas();
+        this.updateLayout();
+        return this;
+    }
+
     public attach(rootElm: HTMLElement): Plot {
         // remove any existing nodes
         rootElm.innerHTML = ''

@@ -16,7 +16,6 @@ export class PlotBaseComponent implements OnInit, OnDestroy {
 	public plot = input<Plot | null>(null);
 
 	protected _plotAnchorElm!: HTMLElement;
-	private _resizeTimeoutId?: ReturnType<typeof setTimeout>;
 
 	public constructor(
 		private _elm: ElementRef
@@ -24,9 +23,6 @@ export class PlotBaseComponent implements OnInit, OnDestroy {
 
 	public ngOnDestroy(): void {
 		window.removeEventListener('resize', this.onResize);
-		if (this._resizeTimeoutId) {
-			clearTimeout(this._resizeTimeoutId);
-		}
 		this.plot()?.destroy();
 	}
 
@@ -38,9 +34,6 @@ export class PlotBaseComponent implements OnInit, OnDestroy {
 		}
 		window.addEventListener('resize', this.onResize);
 		this.onResize(null)
-		this._resizeTimeoutId = setTimeout(() => {
-			this.onResize(null)
-		});
 	}
 	public updateSize() {
 		this.onResize(null);
