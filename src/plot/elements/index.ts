@@ -7,3 +7,5 @@ export * from './bar-legend';
 export * from './axis-label';
 export * from './tooltip';
 export * from './bar-tooltip';
+export * from './line-tooltip';
+export * from './y-axis-right';

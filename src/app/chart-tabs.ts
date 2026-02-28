@@ -5,6 +5,7 @@ import { HistogramChartComponent } from '../components/histogram-chart/histogram
 import { TransitionLineComponent } from '../components/transition-line/transition-line.component';
 import { LineComponent } from '../components/line/line.component';
 import { PlotAreaComponent } from '../components/plot-area/plot-area.component';
+import { DualScaleComponent } from '../components/dual-scale/dual-scale.component';
 
 export interface ChartTab {
 	id: string;
@@ -37,6 +38,11 @@ export const CHART_TABS: ChartTab[] = [
 		id: 'bar-chart',
 		label: 'Bar Chart',
 		component: BarChartComponent,
+	},
+	{
+		id: 'dual-scale',
+		label: 'Dual Scale',
+		component: DualScaleComponent,
 	},
 	{
 		id: 'histogram-chart',

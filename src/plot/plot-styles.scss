@@ -8,6 +8,8 @@ $plot-color-cursor: #95959580;
 $plot-color-cursor-text: #b4b4b4;
 $plot-color-bar-legend-text: #5f5f66;
 $plot-color-range-selection: green;
+
+
 $plot-color-tooltip-bg: rgba(47, 47, 54, 0.92);
 $plot-color-tooltip-border: rgba(105, 105, 112, 0.95);
 $plot-color-tooltip-text: #f2f2f4;
@@ -88,6 +90,7 @@ $plot-color-tooltip-text: #f2f2f4;
             fill: $plot-color-tooltip-text;
             font-size: 12px;
             font-weight: 500;
+            stroke: transparent;
         }
     }
 

@@ -3,6 +3,8 @@ import { Subject, Subscription } from "rxjs";
 import { D3Selection, Point, Rect } from "../util";
 import { PlotItem } from "../plot.item";
 import { IPlotItemOptions } from "../plot.interface";
+import { ITooltip } from './tooltip';
+import { LineTooltipData } from './line-tooltip';
 
 export interface ILineData {
     points: (Point | null)[];   // null will break the line
@@ -13,6 +15,11 @@ export interface ILineOptions extends IPlotItemOptions {
     showPointMarkers?: 'always' | 'onhover';
     curveType?: 'linear' | 'smooth';
     transitionDurationMs?: number;
+    xTooltipFormatter?: (x: number) => string;
+    xTickFormatter?: (x: number) => string;
+    yTooltipFormatter?: (y: number) => string;
+    yTickFormatter?: (y: number) => string;
+    tooltip?: ITooltip<LineTooltipData>;
 }
 
 export class LineSeries extends PlotItem {
@@ -21,6 +28,7 @@ export class LineSeries extends PlotItem {
     private _pointContainer?: D3Selection
     private _hasRendered = false;
     private subscriptions: Subscription[] = [];
+    private tooltip?: ITooltip<LineTooltipData>;
 
     private get options(): ILineOptions | undefined {
         return this._options as ILineOptions;
@@ -40,6 +48,7 @@ export class LineSeries extends PlotItem {
 
     public constructor(protected _data: ILineData, options?: ILineOptions) {
         super(options)
+        this.tooltip = options?.tooltip;
         if (_data.dataChanged) {
             this.subscriptions.push(
                 _data.dataChanged.subscribe(() => this.updateLayout(this._area))
@@ -54,6 +63,10 @@ export class LineSeries extends PlotItem {
         // Clean up path and point marker elements
         this._pathElm?.remove();
         this._pointContainer?.remove();
+        this._rootElm
+            ?.on('mousemove.line-tooltip', null)
+            .on('mouseleave.line-tooltip', null);
+        this.tooltip?.destroy();
     }
 
     public override initializeLayout(): void {
@@ -61,6 +74,12 @@ export class LineSeries extends PlotItem {
         this._pathElm = this._rootElm?.classed('line-series-elm', true)
             .append('path')
             .attr('fill', 'none')
+        if (this.tooltip && this._rootElm) {
+            this.tooltip.initialize(this._rootElm);
+            this._rootElm
+                .on('mousemove.line-tooltip', (event: MouseEvent) => this.showTooltip(event))
+                .on('mouseleave.line-tooltip', () => this.hideTooltip());
+        }
     }
     public override updateLayout(area: Rect): void {
         super.updateLayout(area);
@@ -139,5 +158,51 @@ export class LineSeries extends PlotItem {
         if (this.options?.showPointMarkers === 'onhover') {
             this._pointContainer?.classed('hidden', !hover);
         }
+    }
+
+    private showTooltip(event: MouseEvent): void {
+        if (!this.tooltip || !this._rootElm) {
+            return;
+        }
+        const nearestPoint = this.getNearestPoint(event);
+        if (!nearestPoint) {
+            this.tooltip.hide();
+            return;
+        }
+        const tooltipData: LineTooltipData = {
+            point: nearestPoint,
+            seriesLabel: this.id || 'Line',
+            xTooltipFormatter: this.options?.xTooltipFormatter,
+            xTickFormatter: this.options?.xTickFormatter,
+            yTooltipFormatter: this.options?.yTooltipFormatter,
+            yTickFormatter: this.options?.yTickFormatter,
+        };
+        this.tooltip.show(event, tooltipData, this._area);
+    }
+
+    private hideTooltip(): void {
+        this.tooltip?.hide();
+    }
+
+    private getNearestPoint(event: MouseEvent): Point | undefined {
+        if (!this._rootElm) {
+            return undefined;
+        }
+        const points = this._data.points.filter((point): point is Point => point !== null);
+        if (points.length === 0) {
+            return undefined;
+        }
+        const [mouseX] = d3.pointer(event, this._rootElm.node());
+        let nearest = points[0];
+        let nearestDistance = Math.abs(this.scale.xScale(nearest.x) - mouseX);
+        for (let index = 1; index < points.length; index++) {
+            const point = points[index];
+            const distance = Math.abs(this.scale.xScale(point.x) - mouseX);
+            if (distance < nearestDistance) {
+                nearest = point;
+                nearestDistance = distance;
+            }
+        }
+        return nearest;
     }
 }

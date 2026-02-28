@@ -1,0 +1,85 @@
+$dual-scale-color-series-2025: #3f51b5;
+$dual-scale-color-surface: #dedee3;
+$dual-scale-color-axis-stroke: #9a9aa1;
+$dual-scale-color-axis-line: #a8a8af;
+$dual-scale-color-axis-text: #5f5f66;
+$dual-scale-color-grid-line: #b8b8bf;
+$dual-scale-color-line: #e06a3c;
+$dual-scale-color-line-hover: #e6d46a;
+
+
+.plot-d3-container .d3-plot.dual-scale-demo {
+	background-color: $dual-scale-color-surface;
+	fill: transparent;
+
+	.axis-container {
+		stroke: $dual-scale-color-axis-stroke;
+
+		path,
+		g.tick line {
+			stroke: $dual-scale-color-axis-line;
+			stroke-width: 0.7;
+		}
+
+		g.tick text {
+			stroke: transparent;
+			fill: $dual-scale-color-axis-text;
+			font-size: 12px;
+		}
+	}
+
+	.grid-container .grid-line {
+		stroke: $dual-scale-color-grid-line;
+		stroke-width: 0.6;
+	}
+
+	.plot-elm.bar-plot-elm.monthly-sales {
+		.bar-item.series-2025 {
+			fill: $dual-scale-color-series-2025;
+			stroke: $dual-scale-color-series-2025;
+		}
+
+		.bar-item:hover {
+			stroke-width: 1.2;
+			opacity: 0.9;
+		}
+	}
+
+	.plot-elm.line-series-elm.dual-scale-line {
+		.plot-tooltip {
+			text,
+			tspan {
+				stroke: transparent;
+			}
+		}
+
+		path {
+			stroke: $dual-scale-color-line;
+			stroke-width: 1.8;
+		}
+
+		.point-marker {
+			stroke: $dual-scale-color-line;
+			fill: $dual-scale-color-line;
+			r: 3;
+		}
+
+		&.mouse-hover {
+			path {
+				stroke: $dual-scale-color-line-hover;
+				stroke-width: 4;
+			}
+
+			.point-marker {
+				stroke: $dual-scale-color-line-hover;
+				fill: $dual-scale-color-line-hover;
+			}
+		}
+	}
+
+	.title-elm text {
+		font-size: 16px;
+		font-weight: 600;
+		fill: $dual-scale-color-axis-text;
+	}
+}

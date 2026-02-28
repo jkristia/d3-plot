@@ -66,15 +66,15 @@ export abstract class TooltipBase<TData = any> implements ITooltip<TData> {
 
         this.tooltipText.attr('x', 0).attr('y', 0);
         const bbox = this.tooltipText.node()?.getBBox();
-        const width = (bbox?.width || 0) + 14;
-        const height = (bbox?.height || 0) + 12;
+        const width = Math.round((bbox?.width || 0) + 14);
+        const height = Math.round((bbox?.height || 0) + 12);
 
         this.tooltipText
-            .attr('x', width / 2)
+            .attr('x', Math.round(width / 2))
             .attr('y', 3);
         this.tooltipText
             .selectAll('tspan')
-            .attr('x', width / 2);
+            .attr('x', Math.round(width / 2));
 
         this.tooltipRect
             .attr('width', width)
@@ -83,9 +83,11 @@ export abstract class TooltipBase<TData = any> implements ITooltip<TData> {
             .attr('ry', 4);
 
         const position = this.calculatePosition(event, width, height, bounds);
+        const x = Math.round(position.x);
+        const y = Math.round(position.y);
         this.tooltipElm
             .classed('hidden', false)
-            .attr('transform', `translate(${position.x}, ${position.y})`);
+            .attr('transform', `translate(${x}, ${y})`);
     }
 
     public hide(): void {
