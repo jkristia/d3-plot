@@ -1,6 +1,7 @@
 import { Type } from '@angular/core';
 import { Demo1PlotComponent } from '../components/demo-1/demo-1.component';
 import { BarChartComponent } from '../components/bar-chart/bar-chart.component';
+import { StackedBarChartComponent } from '../components/stacked-bar-chart/stacked-bar-chart.component';
 import { HistogramChartComponent } from '../components/histogram-chart/histogram-chart.component';
 import { TransitionLineComponent } from '../components/transition-line/transition-line.component';
 import { LineComponent } from '../components/line/line.component';
@@ -38,6 +39,11 @@ export const CHART_TABS: ChartTab[] = [
 		id: 'bar-chart',
 		label: 'Bar Chart',
 		component: BarChartComponent,
+	},
+	{
+		id: 'stacked-bar-chart',
+		label: 'Stacked Bar Chart',
+		component: StackedBarChartComponent,
 	},
 	{
 		id: 'dual-scale',

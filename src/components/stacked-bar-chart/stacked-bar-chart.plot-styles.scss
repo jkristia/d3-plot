@@ -1,0 +1,161 @@
+// Colors for stacked bar chart
+$stacked-bar-color-category-1: #4a90e2; // Blue for Category 1
+$stacked-bar-color-category-2: #7ed321; // Green for Category 2
+$stacked-bar-color-category-3: #f5a623; // Orange for Category 3
+$stacked-bar-color-surface: #dedee3;
+$stacked-bar-color-axis-stroke: #9a9aa1;
+$stacked-bar-color-axis-line: #a8a8af;
+$stacked-bar-color-axis-text: #5f5f66;
+$stacked-bar-color-grid-line: #b8b8bf;
+
+// Stacked bar chart styles
+.plot-d3-container .d3-plot.stacked-bar-chart-demo {
+    background-color: $stacked-bar-color-surface;
+    fill: transparent;
+
+    .axis-container {
+        stroke: $stacked-bar-color-axis-stroke;
+
+        path,
+        g.tick line {
+            stroke: $stacked-bar-color-axis-line;
+            stroke-width: 0.7;
+        }
+
+        g.tick text {
+            stroke: transparent;
+            fill: $stacked-bar-color-axis-text;
+            font-size: 12px;
+        }
+    }
+
+    .grid-container .grid-line {
+        stroke: $stacked-bar-color-grid-line;
+        stroke-width: 0.6;
+    }
+
+    .plot-elm.stacked-bar-plot-elm.quarterly-stacked-sales {
+        .stacked-bar-segment {
+            transition: opacity 0.2s ease;
+
+            // Default colors by category
+            &.category-0 {
+                fill: $stacked-bar-color-category-1;
+            }
+
+            &.category-1 {
+                fill: $stacked-bar-color-category-2;
+            }
+
+            &.category-2 {
+                fill: $stacked-bar-color-category-3;
+            }
+
+            // Hover state - change background
+            &.hovered {
+                opacity: 0.8;
+                stroke: #333;
+                stroke-width: 2px;
+            }
+
+            &:not(.hovered) {
+                opacity: 1;
+            }
+        }
+    }
+
+    .title-elm text {
+        font-size: 16px;
+        font-weight: 600;
+        fill: $stacked-bar-color-axis-text;
+    }
+
+    .plot-elm.bar-legend-item {
+        &.legend-category-1 rect {
+            fill: $stacked-bar-color-category-1;
+            stroke: $stacked-bar-color-category-1;
+        }
+
+        &.legend-category-2 rect {
+            fill: $stacked-bar-color-category-2;
+            stroke: $stacked-bar-color-category-2;
+        }
+
+        &.legend-category-3 rect {
+            fill: $stacked-bar-color-category-3;
+            stroke: $stacked-bar-color-category-3;
+        }
+    }
+}
+
+// Grouped bar chart styles
+.plot-d3-container .d3-plot.grouped-bar-chart-demo {
+    background-color: $stacked-bar-color-surface;
+    fill: transparent;
+
+    .axis-container {
+        stroke: $stacked-bar-color-axis-stroke;
+
+        path,
+        g.tick line {
+            stroke: $stacked-bar-color-axis-line;
+            stroke-width: 0.7;
+        }
+
+        g.tick text {
+            stroke: transparent;
+            fill: $stacked-bar-color-axis-text;
+            font-size: 12px;
+        }
+    }
+
+    .grid-container .grid-line {
+        stroke: $stacked-bar-color-grid-line;
+        stroke-width: 0.6;
+    }
+
+    .plot-elm.bar-plot-elm.quarterly-grouped-sales {
+        .bar-item.series-category-1 {
+            fill: $stacked-bar-color-category-1;
+            stroke: $stacked-bar-color-category-1;
+        }
+
+        .bar-item.series-category-2 {
+            fill: $stacked-bar-color-category-2;
+            stroke: $stacked-bar-color-category-2;
+        }
+
+        .bar-item.series-category-3 {
+            fill: $stacked-bar-color-category-3;
+            stroke: $stacked-bar-color-category-3;
+        }
+
+        .bar-item:hover {
+            stroke-width: 1.2;
+            opacity: 0.9;
+        }
+    }
+
+    .title-elm text {
+        font-size: 16px;
+        font-weight: 600;
+        fill: $stacked-bar-color-axis-text;
+    }
+
+    .plot-elm.bar-legend-item {
+        &.legend-category-1 rect {
+            fill: $stacked-bar-color-category-1;
+            stroke: $stacked-bar-color-category-1;
+        }
+
+        &.legend-category-2 rect {
+            fill: $stacked-bar-color-category-2;
+            stroke: $stacked-bar-color-category-2;
+        }
+
+        &.legend-category-3 rect {
+            fill: $stacked-bar-color-category-3;
+            stroke: $stacked-bar-color-category-3;
+        }
+    }
+}

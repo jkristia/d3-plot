@@ -104,7 +104,8 @@ Pre-built items in `src/plot/elements/`:
 
 - **AxisAndGrid** - X/Y axes with grid lines
 - **LineSeries** - Line chart with optional point markers
-- **BarPlotItem** - Grouped/stacked bar charts
+- **BarPlotItem** - Grouped bar charts
+- **StackedBarPlotItem** - Stacked bar charts with category layers
 - **TitleItem** - Centered or aligned text
 - **AxisLabelItem** - Rotatable axis labels
 - **RightYAxis** - Secondary Y-axis

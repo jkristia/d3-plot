@@ -8,7 +8,7 @@ Plot is a structured wrapper around [D3.js](https://d3js.org/) that provides:
 - **Composable items** - Create custom visualizations as `PlotItem` classes with lifecycle hooks
 - **Full D3 access** - No limitations; use any D3 feature you need
 - **Built-in scaling** - Automatic coordinate mapping with configurable domains
-- **Reusable elements** - Pre-built items for axes, lines, bars, tooltips, and more
+- **Reusable elements** - Pre-built items for axes, lines, bars, stacked bars, tooltips, and more
 
 ### Examples
 
@@ -16,7 +16,7 @@ Plot is a structured wrapper around [D3.js](https://d3js.org/) that provides:
 ![alt text](images/image-1.png)
 ![alt text](images/image.png)
 ![alt text](images/image_hist.png)
-
+![alt text](images/stacked.png)
 ## Learn More
 
 For a detailed guide on the architecture and how to build custom charts, see [Plot Architecture](src/plot/doc/README.md).

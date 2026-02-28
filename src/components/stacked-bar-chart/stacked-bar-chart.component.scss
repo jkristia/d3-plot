@@ -1,0 +1,12 @@
+.stacked-bar-chart-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px;
+    height: 100%;
+
+    .chart-section {
+        flex: 1;
+        min-height: 0;
+    }
+}
