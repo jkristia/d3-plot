@@ -74,8 +74,9 @@ export class LineSeries extends PlotItem {
         this._pathElm = this._rootElm?.classed('line-series-elm', true)
             .append('path')
             .attr('fill', 'none')
-        if (this.tooltip && this._rootElm) {
-            this.tooltip.initialize(this._rootElm);
+        const tooltipRoot = this._owner?.tooltipLayerElm || this._rootElm;
+        if (this.tooltip && tooltipRoot && this._rootElm) {
+            this.tooltip.initialize(tooltipRoot);
             this._rootElm
                 .on('mousemove.line-tooltip', (event: MouseEvent) => this.showTooltip(event))
                 .on('mouseleave.line-tooltip', () => this.hideTooltip());

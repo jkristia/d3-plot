@@ -90,8 +90,9 @@ export class BarPlotItem extends PlotItem {
 	public override initializeLayout(): void {
 		super.initializeLayout();
 		this._rootElm?.classed('bar-plot-elm', true);
-		if (this.tooltip && this._rootElm) {
-			this.tooltip.initialize(this._rootElm);
+		const tooltipRoot = this._owner?.tooltipLayerElm || this._rootElm;
+		if (this.tooltip && tooltipRoot) {
+			this.tooltip.initialize(tooltipRoot);
 		}
 	}
 

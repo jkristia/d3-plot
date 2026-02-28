@@ -8,6 +8,7 @@ import { PlotMouseHandler } from './plot.mousehandler';
 export interface IPlotArea extends IPlotOwner {
 	readonly rootElm: D3Selection;
 	readonly contentAreaElm: D3Selection;
+	readonly tooltipLayerElm: D3Selection;
 	readonly contentAreaRect: Rect;
 }
 
@@ -19,12 +20,17 @@ export class PlotArea implements IPlotOwner {
 	private _rootElm?: D3Selection;
 	private _background: D3Selection;
 	private _contentArea: D3Selection;
+	private _plotLayer: D3Selection;
+	private _tooltipLayer: D3Selection;
 
 	public get rootElm(): D3Selection {
 		return this._rootElm!;
 	}
 	public get contentAreaElm(): D3Selection {
 		return this._contentArea!;
+	}
+	public get tooltipLayerElm(): D3Selection {
+		return this._tooltipLayer!;
 	}
 
 	public rect: Rect = new Rect();
@@ -48,11 +54,15 @@ export class PlotArea implements IPlotOwner {
 		this._rootElm = root;
 		this._background = d3.create('svg:rect')
 		this._contentArea = d3.create('svg:rect')
+		this._plotLayer = d3.create('svg:g').classed('plot-layer', true)
+		this._tooltipLayer = d3.create('svg:g').classed('tooltip-layer', true)
 		if (root) {
 			root.append(() => this._background.node())
 				.classed('plot-background', true)
 			root.append(() => this._contentArea.node())
 				.classed('plot-content-area', true)
+			root.append(() => this._plotLayer.node())
+			root.append(() => this._tooltipLayer.node())
 		}
 	}
 	public destroy(): void {
@@ -66,6 +76,8 @@ export class PlotArea implements IPlotOwner {
 		// Remove background and content area elements
 		this._background?.remove();
 		this._contentArea?.remove();
+		this._plotLayer?.remove();
+		this._tooltipLayer?.remove();
 	}
 	public applyRect(): D3Selection {
 		this._rootElm!
@@ -97,7 +109,7 @@ export class PlotArea implements IPlotOwner {
 			p.setOwner(this);
 			p.initializeLayout();
 			if (p.plotElement) {
-				this._rootElm?.append(() => p.plotElement!.node())
+				this._plotLayer?.append(() => p.plotElement!.node())
 			}
 		});
 		this._mouseHandler?.initializeLayout(this);
@@ -119,7 +131,7 @@ export class PlotArea implements IPlotOwner {
 				p.setOwner(this);
 				p.initializeLayout();
 				if (p.plotElement) {
-					this.rootElm?.append(() => p.plotElement!.node())
+					this._plotLayer?.append(() => p.plotElement!.node())
 				}
 			});
 			this.updateLayout();
