@@ -16,18 +16,18 @@ export class DualScaleComponent implements OnDestroy {
 	private readonly store = new BarChartStore();
 	private readonly lineData: ILineData = {
 		points: [
-			{ x: 1, y: 18 },
-			{ x: 2, y: 26 },
-			{ x: 3, y: 34 },
-			{ x: 4, y: 45},
-			{ x: 5, y: 42},
-			{ x: 6, y: 55},
-			{ x: 7, y: 66 },
-			{ x: 8, y: 74 },
-			{ x: 9, y: 82 },
-			{ x: 10, y: 89 },
-			{ x: 11, y: 93 },
-			{ x: 12, y: 90 },
+			{ x: 1, y: 95 },
+			{ x: 2, y: 130 },
+			{ x: 3, y: 170 },
+			{ x: 4, y: 210 },
+			{ x: 5, y: 195 },
+			{ x: 6, y: 240 },
+			{ x: 7, y: 248},
+			{ x: 8, y: 320 },
+			{ x: 9, y: 260 },
+			{ x: 10, y: 405 },
+			{ x: 11, y: 450 },
+			{ x: 12, y: 430 },
 		],
 	};
 
@@ -37,9 +37,14 @@ export class DualScaleComponent implements OnDestroy {
 		axisScale.xDomain(() => ({ min: 0.5, max: 12.5 }));
 		axisScale.yDomain(() => ({ min: 0, max: 95 }));
 
+		const rightScale = new LinearScale();
+		rightScale.margin = { top: 10, left: 42, right: 42, bottom: 30 };
+		rightScale.xDomain(() => ({ min: 0.5, max: 12.5 }));
+		rightScale.yDomain(() => ({ min: 0, max: 500 }));
+
 		const xTickFormat = (value: number) => this.store.monthFromValue(value);
 		const yTickFormat = (value: number) => `${Math.round(value).toString()}k`;
-		const rightAxisTicks = Array.from({ length: 11 }, (_, index) => index * 10);
+		const rightAxisTicks = Array.from({ length: 21 }, (_, index) => index * 25);
 		const barTooltip = new BarTooltip();
 		const lineTooltip = new LineTooltip();
 
@@ -57,13 +62,13 @@ export class DualScaleComponent implements OnDestroy {
 			},
 			rightArea: {
 				width: 58,
-				plots: [new AxisLabelItem('Scale 0-100', 90)],
+				plots: [new AxisLabelItem('Scale 0-500', 90)],
 			},
 			footerArea: {
 				height: 54,
 				plots: [new AxisLabelItem('Month')],
 			},
-			scales: [axisScale],
+			scales: [axisScale, rightScale],
 			plots: [
 				new AxisAndGrid({
 					xTicks: 12,
@@ -74,11 +79,11 @@ export class DualScaleComponent implements OnDestroy {
 					showXGrid: false,
 				}),
 				new RightYAxis({
-					ticks: 10,
+					ticks: 20,
 					tickValues: rightAxisTicks,
-					domain: { min: 0, max: 100 },
+					domain: { min: 0, max: 500 },
 					tickFormat: value => Math.round(value).toString(),
-				}),
+				}).setScale(rightScale),
 				new BarPlotItem(
 					{
 						series: [
@@ -98,10 +103,11 @@ export class DualScaleComponent implements OnDestroy {
 					id: 'trend',
 					cssClasses: ['dual-scale-line'],
 					showPointMarkers: 'always',
+					curveType: 'smooth',
 					xTickFormatter: xTickFormat,
 					yTooltipFormatter: value => Math.round(value).toString(),
 					tooltip: lineTooltip,
-				}),
+				}).setScale(rightScale),
 			]
 		});
 		plot.center.setScale(axisScale);
