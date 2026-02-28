@@ -1,8 +1,14 @@
-# d3-plot
+## What is Plot?
 
-An Angular playground for building reusable D3 chart primitives and interactive plot demos.
+[D3.js](https://d3js.org/) is a chart framework for building interactive, composable visualizations with Angular.  
 
-This workspace uses the Plot architecture for all active chart development.
+Plot is a structured wrapper around [D3.js](https://d3js.org/) that provides:
+
+- **Layout system** - Divide charts into logical areas (top, left, center, right, bottom)
+- **Composable items** - Create custom visualizations as `PlotItem` classes with lifecycle hooks
+- **Full D3 access** - No limitations; use any D3 feature you need
+- **Built-in scaling** - Automatic coordinate mapping with configurable domains
+- **Reusable elements** - Pre-built items for axes, lines, bars, tooltips, and more
 
 ### Examples
 
@@ -11,33 +17,18 @@ This workspace uses the Plot architecture for all active chart development.
 ![alt text](images/image.png)
 ![alt text](images/image_hist.png)
 
-## Plot architecture
+## Learn More
 
-- Explicit area model (`PlotArea`): top, left, right, bottom, center each own rect, scale, and child items.
-- Composition is item-based (`PlotItem`) with clear lifecycle (`initializeLayout` / `updateLayout`).
-- Modular interaction model (scale handling, mouse handlers, cursor and selection behaviors).
-- Reusable chart elements (axis/grid, line series, title) with configurable options.
+For a detailed guide on the architecture and how to build custom charts, see [Plot Architecture](src/plot/doc/README.md).
 
-## Direction
-
-- **Use Plot only for new work.**
-- Active demos in the app route/tab shell target the current components under `src/components`.
-
-## Tech stack
+## Tech Stack
 
 - Angular 20 (standalone components)
 - TypeScript
 - D3 v7
 - Jest (unit tests for plot utilities and plot behavior)
 
-## Project layout
-
-- `src/components/*`: Angular demo components using Plot.
-- `src/plot/*`: Plot engine, areas, elements, scaling, and mouse handling.
-- `src/plot/util/*`: shared geometry/util helpers and tests.
-- `src/app/*`: application shell that hosts demos.
-
-## Getting started
+## Getting Started
 
 Install dependencies:
 
@@ -80,4 +71,3 @@ npm test
 ## Notes
 
 - D3 rendering is encapsulated in plot base components that attach SVG output to a container and react to window resize.
-- Demo components now use Angular signals for plot bindings passed into base components.
