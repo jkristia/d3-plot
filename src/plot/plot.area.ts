@@ -113,6 +113,7 @@ export class PlotArea implements IPlotOwner {
 			}
 		});
 		this._mouseHandler?.initializeLayout(this);
+		this.ensureTooltipLayerOnTop();
 	}
 	public setPlots(plots: PlotItem[]): PlotArea {
 		// cleanup
@@ -135,6 +136,7 @@ export class PlotArea implements IPlotOwner {
 				}
 			});
 			this.updateLayout();
+			this.ensureTooltipLayerOnTop();
 		}
 		return this;
 	}
@@ -166,5 +168,15 @@ export class PlotArea implements IPlotOwner {
 		this._scale = scale;
 		this._mouseHandler?.setScale(scale);
 		return this;
+	}
+
+	/**
+	 * Ensures the tooltip layer is always rendered on top of all other layers.
+	 * This is called after operations that might add new elements to the root.
+	 */
+	private ensureTooltipLayerOnTop(): void {
+		if (this._tooltipLayer && this._rootElm) {
+			this._tooltipLayer.raise();
+		}
 	}
 }
